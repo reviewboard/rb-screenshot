@@ -4,7 +4,8 @@ gulp.task('default', function() {
 	console.log("I have configured a gulpfile");
 });
 
-gulp.task('build', ['chrome', 'icons'], function() {
+gulp.task('build', ['chrome', 'chrome-icons', 'firefox',
+					'firefox-icons'], function() {
 	console.log("Building.");
 });
 
@@ -13,7 +14,17 @@ gulp.task('chrome', function() {
 		.pipe(gulp.dest(".build/chrome"));
 });
 
-gulp.task('icons', function() {
+gulp.task('chrome-icons', function() {
 	return gulp.src("content/icons/*")
 		.pipe(gulp.dest(".build/chrome/icons"));
+});
+
+gulp.task('firefox', function() {
+	return gulp.src("xpi/*")
+		.pipe(gulp.dest(".build/firefox"));
+});
+
+gulp.task("firefox-icons", function() {
+	return gulp.src("content/icons/*")
+		.pipe(gulp.dest(".build/firefox/data"));
 });

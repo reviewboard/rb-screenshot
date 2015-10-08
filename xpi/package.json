@@ -1,0 +1,12 @@
+{
+  "title": "Review Board Screenshot Tool",
+  "name": "rbscreenshot",
+  "version": "0.0.1",
+  "description": "Tool for Review Board that allows you to take screenshots and send them to a review board server.",
+  "main": "index.js",
+  "author": "Review Board",
+  "engines": {
+    "firefox": ">=38.0a1"
+  },
+  "license": "MIT"
+}
