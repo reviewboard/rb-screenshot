@@ -10,6 +10,7 @@
 	},
 
 	"browser_action": {
-		"default_title": "Review Board Screenshot Tool"
+		"default_title": "Review Board Screenshot Tool",
+		"default_popup": "popup.html"
 	}
 }
