@@ -6,7 +6,7 @@ gulp.task('default', function() {
 });
 
 gulp.task('build', ['chrome', 'icons', 'chrome-html',
-					'firefox', 'css'], function() {
+					'firefox', 'css', 'js'], function() {
 	console.log("Building.");
 });
 
@@ -25,6 +25,11 @@ gulp.task('css', function() {
 	return gulp.src("content/css/*.less")
 		.pipe(less())
 		.pipe(gulp.dest(".build/chrome/css"));
+});
+
+gulp.task('js', function() {
+	return gulp.src("content/*.js")
+		.pipe(gulp.dest(".build/chrome"));
 });
 
 gulp.task('chrome-html', function() {
