@@ -1,10 +1,10 @@
 function click() {
-	window.alert("Button Clicked");
+	window.alert("Button Clicked, id: " + this.id);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-	var divs = document.querySelectorAll('div');
-	for (var i = 0; i < divs.length; i++) {
-		divs[i].addEventListener('click', click);
+	var buttons = document.querySelectorAll('a');
+	for (var i = 0; i < buttons.length; i++) {
+		buttons[i].addEventListener('click', click);
 	}
 });
