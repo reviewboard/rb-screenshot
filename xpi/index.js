@@ -6,9 +6,9 @@ var button = ToggleButton({
     id: "reviewboard-icon",
     label: "Review Board Screenshot Tool",
     icon: {
-        "16": "./icon16.png",
-        "32": "./icon32.png",
-        "64": "./icon64.png"
+        "16": "./images/icons/icon16.png",
+        "32": "./images/icons/icon32.png",
+        "64": "./images/icons/icon64.png"
     },
     onChange: handleChange
 });
