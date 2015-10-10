@@ -16,9 +16,9 @@ gulp.task('chrome', function() {
 });
 
 gulp.task('icons', function() {
-	return gulp.src("content/icons/*")
-		.pipe(gulp.dest(".build/chrome/icons"))
-		.pipe(gulp.dest(".build/firefox/data"));
+	return gulp.src("content/images/icons/*")
+		.pipe(gulp.dest(".build/chrome/images/icons"))
+		.pipe(gulp.dest(".build/firefox/data/images/icons"));
 });
 
 gulp.task('css', function() {
@@ -29,9 +29,9 @@ gulp.task('css', function() {
 });
 
 gulp.task('js', function() {
-	return gulp.src("content/*.js")
-		.pipe(gulp.dest(".build/chrome"))
-		.pipe(gulp.dest(".build/firefox/data"));
+	return gulp.src("content/js/*.js")
+		.pipe(gulp.dest(".build/chrome/js"))
+		.pipe(gulp.dest(".build/firefox/data/js"));
 });
 
 gulp.task('html', function() {
