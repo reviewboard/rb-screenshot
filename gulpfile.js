@@ -1,8 +1,8 @@
 var gulp = require('gulp');
 var less = require('gulp-less')
 
-gulp.task('default', function() {
-	console.log("I have configured a gulpfile");
+gulp.task('default', ['build'], function() {
+	console.log("Building Chrome and Firefox extensions.");
 });
 
 gulp.task('build', ['chrome', 'icons', 'html',
