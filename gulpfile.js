@@ -1,52 +1,63 @@
 var gulp = require('gulp');
-var less = require('gulp-less')
+var less = require('gulp-less');
 
 gulp.task('default', ['build'], function() {
-	console.log("Building Chrome and Firefox extensions.");
+	console.log('Building Chrome and Firefox extensions.');
 });
 
-gulp.task('build', ['chrome', 'icons', 'html',
-					'firefox', 'css', 'js',
-					'chrome js'], function() {
-	console.log("Building.");
+gulp.task('build', ['chrome', 'firefox'], function() {
+	console.log('Building.');
 });
 
-gulp.task('chrome', function() {
-	return gulp.src("crx/*")
-		.pipe(gulp.dest(".build/chrome"));
+gulp.task('chrome', ['chrome js', 'css', 'html', 'images', 'js'],
+		  function() {
+	return gulp.src('crx/*')
+		.pipe(gulp.dest('.build/chrome'));
 });
 
 gulp.task('chrome js', function() {
-	return gulp.src("crx/js/*.js")
-		.pipe(gulp.dest(".build/chrome/js"))
+	return gulp.src('crx/js/*.js')
+		.pipe(gulp.dest('.build/chrome/js'));
 });
 
-gulp.task('icons', function() {
-	return gulp.src("content/images/icons/*")
-		.pipe(gulp.dest(".build/chrome/images/icons"))
-		.pipe(gulp.dest(".build/firefox/data/images/icons"));
+gulp.task('firefox', ['firefox js', 'css', 'html', 'images', 'js'],
+		  function() {
+	return gulp.src('xpi/*')
+		.pipe(gulp.dest('.build/firefox'));
+});
+
+gulp.task('firefox js', function() {
+	return gulp.src('xpi/js/*.js')
+		.pipe(gulp.dest('.build/firefox/data/js'));
 });
 
 gulp.task('css', function() {
-	return gulp.src("content/css/*.less")
+	return gulp.src('content/css/*.less')
 		.pipe(less())
-		.pipe(gulp.dest(".build/chrome/css"))
-		.pipe(gulp.dest(".build/firefox/data/css"));
-});
-
-gulp.task('js', function() {
-	return gulp.src("content/js/*.js")
-		.pipe(gulp.dest(".build/chrome/js"))
-		.pipe(gulp.dest(".build/firefox/data/js"));
+		.pipe(gulp.dest('.build/chrome/css'))
+		.pipe(gulp.dest('.build/firefox/data/css'));
 });
 
 gulp.task('html', function() {
-	return gulp.src("content/*.html")
-		.pipe(gulp.dest(".build/chrome"))
-		.pipe(gulp.dest(".build/firefox/data"));
+	return gulp.src('content/*.html')
+		.pipe(gulp.dest('.build/chrome'))
+		.pipe(gulp.dest('.build/firefox/data'));
 });
 
-gulp.task('firefox', function() {
-	return gulp.src("xpi/*")
-		.pipe(gulp.dest(".build/firefox"));
+gulp.task('icons', function() {
+	return gulp.src('content/images/icons/*')
+		.pipe(gulp.dest('.build/chrome/images/icons'))
+		.pipe(gulp.dest('.build/firefox/data/images/icons'));
+});
+
+gulp.task('images', ['icons'], function() {
+	return gulp.src('content/images/*.png')
+		.pipe(gulp.dest('.build/firefox/data/images'))
+		.pipe(gulp.dest('.build/chrome/images'));
+});
+
+gulp.task('js', function() {
+	return gulp.src('content/js/*.js')
+		.pipe(gulp.dest('.build/chrome/js'))
+		.pipe(gulp.dest('.build/firefox/data/js'));
 });
