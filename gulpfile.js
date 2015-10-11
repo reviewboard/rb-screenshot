@@ -22,7 +22,7 @@ gulp.task('chrome js', function() {
 
 gulp.task('firefox', ['firefox js', 'css', 'html', 'images', 'js'],
 		  function() {
-	return gulp.src('xpi/*')
+	return gulp.src(['xpi/*', '!xpi/js'])
 		.pipe(gulp.dest('.build/firefox'));
 });
 

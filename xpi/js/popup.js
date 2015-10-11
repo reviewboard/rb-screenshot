@@ -1,7 +1,7 @@
 var id = 100;
 
 function click() {
-    alert(this.id);
+    console.log('Test');
 }
 
 document.addEventListener('DOMContentLoaded', function() {

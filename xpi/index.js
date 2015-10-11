@@ -17,6 +17,7 @@ var panel = panels.Panel({
     height: 210,
     width: 200,
     contentURL: self.data.url("popup.html"),
+    contentScriptFile: self.data.url("js/popup.js"),
     onHide: handleHide
 });
 
