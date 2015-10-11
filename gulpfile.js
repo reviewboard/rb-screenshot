@@ -6,13 +6,19 @@ gulp.task('default', ['build'], function() {
 });
 
 gulp.task('build', ['chrome', 'icons', 'html',
-					'firefox', 'css', 'js'], function() {
+					'firefox', 'css', 'js',
+					'chrome js'], function() {
 	console.log("Building.");
 });
 
 gulp.task('chrome', function() {
 	return gulp.src("crx/*")
 		.pipe(gulp.dest(".build/chrome"));
+});
+
+gulp.task('chrome js', function() {
+	return gulp.src("crx/js/*.js")
+		.pipe(gulp.dest(".build/chrome/js"))
 });
 
 gulp.task('icons', function() {

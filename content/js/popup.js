@@ -1,5 +1,12 @@
+var id = 100;
+
 function click() {
-	window.alert("Button Clicked, id: " + this.id);
+    tab_screenshot();
+}
+
+function tab_screenshot() {
+    var background = chrome.extension.getBackgroundPage();
+    console.log(background.tab_screenshot());
 }
 
 document.addEventListener('DOMContentLoaded', function() {
