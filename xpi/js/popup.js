@@ -1,7 +1,7 @@
 var id = 100;
 
 function click() {
-    console.log('Test');
+    self.port.emit('alert', 'message from contentscript');
 }
 
 document.addEventListener('DOMContentLoaded', function() {
