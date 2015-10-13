@@ -1,11 +1,15 @@
 var id = 100;
 
 function click() {
-	var background = chrome.extension.getBackgroundPage();
-	console.log(this.id);
     switch(this.id) {
     	case '1':
-    		background.tab_screenshot();
+    		chrome.runtime.sendMessage({option: 'all-webcontent'}, function() {
+    			this.close();
+    		});
+    		break;
+    	default:
+    		alert('Button ID not recognized');
+    		// TODO: Update above error message
     }
 }
 
