@@ -1,9 +1,40 @@
 <!doctype html>
 <html>
     <script src="js/screenshot.js"></script>
+    <style>
+    	#options-section {
+    		background-color: gainsboro;
+    		display: flex;
+    		flex-direction: row;
+    		justify-content: center;
+    		line-height: 25px;
+    		padding: 5px;
+    		width: 100%;
+    	}
+    	.option-title {
+    		padding-right: 5px;
+    	}
+    	select {
+    		margin-right: 30px;
+    		padding-right: 5px;
+    	}
+    	body {
+    		margin: 0px;
+    	}
+    </style>
     <body>
-    <p>
-        <img id="screenshot" src="images/filler.png">
-    </p>
-    </body>
+    	<div id="options-section">
+    		<span class ="option-title">Account:</span>
+	    		<select>
+	    			<option value="test 1">Test</option>
+	    		</select>
+    		<span class="option-title">Review Request:</span>
+	    		<select>
+	    			<option value="test 2">Test Again</option>
+	    		</select>
+    		Post
+    	</div>
+    	<div id="screenshot-section">
+	        <img id="screenshot" src="images/filler.png">
+        </div>
 </html>

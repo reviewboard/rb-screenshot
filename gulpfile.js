@@ -9,7 +9,7 @@ gulp.task('build', ['chrome', 'firefox'], function() {
 	console.log('Building.');
 });
 
-gulp.task('chrome', ['chrome js', 'css', 'chrome html', 'images', 'js'],
+gulp.task('chrome', ['chrome js', 'css', 'chrome html', 'images', 'js', 'html'],
 		  function() {
 	return gulp.src('crx/*')
 		.pipe(gulp.dest('.build/chrome'));
@@ -20,7 +20,7 @@ gulp.task('chrome js', function() {
 		.pipe(gulp.dest('.build/chrome/js'));
 });
 
-gulp.task('firefox', ['firefox js', 'css', 'firefox html', 'images', 'js'],
+gulp.task('firefox', ['firefox js', 'css', 'firefox html', 'images', 'js', 'html'],
 		  function() {
 	return gulp.src(['xpi/*', '!xpi/js', '!xpi/*.html'])
 		.pipe(gulp.dest('.build/firefox'));
@@ -45,6 +45,12 @@ gulp.task('chrome html', function() {
 
 gulp.task('firefox html', function() {
 	return gulp.src('xpi/*.html')
+		.pipe(gulp.dest('.build/firefox/data'));
+});
+
+gulp.task('html', function() {
+	return gulp.src('content/*.html')
+		.pipe(gulp.dest('.build/chrome'))
 		.pipe(gulp.dest('.build/firefox/data'));
 });
 
