@@ -27,7 +27,8 @@ var panel = panels.Panel({
 panel.port.on('alert', function(message) {
     var wm = Cc["@mozilla.org/appshell/window-mediator;1"]
                .getService(Ci.nsIWindowMediator);
-    var window = wm.getMostRecentWindow("navigator:browser").gBrowser.contentWindow;
+    var gBrowser = wm.getMostRecentWindow("navigator:browser").gBrowser;
+    var window = gBrowser.contentWindow;
     var document = window.document;
     var canvas = document.createElement('canvas');
     canvas.width = window.innerWidth;
@@ -39,8 +40,13 @@ panel.port.on('alert', function(message) {
     var dataUrl = canvas.toDataURL();
     canvas = null;
 
-    tabs.open(dataUrl);
-    tabs.open('chrome://rb-screenshot/content/screenshot.html');
+    var tab = gBrowser.addTab('chrome://rbscreenshot/content/screenshot.html');
+    gBrowser.selectedTab = tab;
+    var newTabBrowser = gBrowser.getBrowserForTab(tab);
+    newTabBrowser.addEventListener("load", function() {
+        newTabBrowser.contentDocument.getElementById('screenshot').src = dataUrl;
+    }, true);
+
 });
 
 function handleChange(state) {
