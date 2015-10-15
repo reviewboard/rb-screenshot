@@ -4,7 +4,7 @@
 	"version": "1.0",
 	"background": {
 		"persistent": false,
-		"scripts": ["js/background.js"]
+		"scripts": ["js/jquery-2.1.4.min.js", "js/background.js"]
 	},
 
 	"icons": {
