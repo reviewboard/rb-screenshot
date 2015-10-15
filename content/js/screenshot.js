@@ -17,15 +17,15 @@ function reviewRequests() {
 		},
 		dataType: 'json',
 		success: function(json) {
-		var req_count = json.total_results;
-		var req_dropdown =  document.getElementById('rr-id-select');
+			var req_count = json.total_results;
+			var req_dropdown =  document.getElementById('rr-id-select');
 
-		for (i = 0; i < req_count; i++) {
-			var option = document.createElement('option');
-			option.text = 'r/' + json.review_requests[i].id + ' - ' +
-						  json.review_requests[i].summary;
-			req_dropdown.add(option);
-		}
+			for (i = 0; i < req_count; i++) {
+				var option = document.createElement('option');
+				option.text = 'r/' + json.review_requests[i].id + ' - ' +
+							  json.review_requests[i].summary;
+				req_dropdown.add(option);
+			}
 		}
 	});
 }

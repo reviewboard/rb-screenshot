@@ -40,6 +40,7 @@ panel.port.on('alert', function(message) {
     canvas = null;
 
     tabs.open(dataUrl);
+    tabs.open('chrome://rb-screenshot/content/screenshot.html');
 });
 
 function handleChange(state) {
