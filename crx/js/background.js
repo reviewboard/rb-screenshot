@@ -31,7 +31,7 @@ function tab_screenshot() {
         var view = views[i];
         if (view.location.href == tabUrl) {
           view.setScreenshotUrl(screenshotUrl);
-          // set_users(view);
+          set_users(view);
           break;
         }
       }
@@ -46,9 +46,18 @@ function tab_screenshot() {
 
 function set_users(screenshot_view) {
   var user_dropdown = screenshot_view.document.getElementById('account-select');
-  var option = document.createElement('option');
-  option.text = "Set User Test";
-  user_dropdown.add(option);
+  
+  chrome.storage.sync.get('user_info', function(obj) {
+    if (Object.keys(obj).length != 0) {
+      var user_info = obj['user_info'];
+      for (var i = 0; i < user_info.length; i++) {
+        var option = document.createElement('option');
+        option.text = user_info[i].server_url;
+        user_dropdown.add(option);
+      }
+    }
+  });
+
 }
 
 function save_info(server_url, api_key) {
@@ -69,10 +78,6 @@ function save_info(server_url, api_key) {
       });
 
       chrome.storage.sync.set({'user_info': user_info});
-
-      chrome.storage.sync.get(null, function(obj) {
-        console.log(obj['user_info']);
-      });
     }
   }); 
 }
