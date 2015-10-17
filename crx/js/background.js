@@ -6,6 +6,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
     case 'all-webcontent':
         tab_screenshot();
         break;
+    case 'save_info':
+        save_info(request.server_url, request.api_key);
+        break;
     default:
         alert('Unmatched request from script to background');
         // Todo: Add request to above string
@@ -38,4 +41,15 @@ function tab_screenshot() {
       targetTabId = tab.id;
     });
   });
+}
+
+function save_info(server_url, api_key) {
+  chrome.storage.sync.set({
+   'server_url': server_url,
+   'api_key': api_key
+  });
+
+  chrome.storage.sync.get('server_url', function(obj) {
+    console.log('server', obj['server_url']);
+  }); 
 }
