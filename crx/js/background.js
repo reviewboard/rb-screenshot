@@ -31,6 +31,7 @@ function tab_screenshot() {
         var view = views[i];
         if (view.location.href == tabUrl) {
           view.setScreenshotUrl(screenshotUrl);
+          // set_users(view);
           break;
         }
       }
@@ -43,13 +44,35 @@ function tab_screenshot() {
   });
 }
 
-function save_info(server_url, api_key) {
-  chrome.storage.sync.set({
-   'server_url': server_url,
-   'api_key': api_key
-  });
+function set_users(screenshot_view) {
+  var user_dropdown = screenshot_view.document.getElementById('account-select');
+  var option = document.createElement('option');
+  option.text = "Set User Test";
+  user_dropdown.add(option);
+}
 
-  chrome.storage.sync.get('server_url', function(obj) {
-    console.log('server', obj['server_url']);
+function save_info(server_url, api_key) {
+  chrome.storage.sync.get('user_info', function(obj) {
+    if (Object.keys(obj).length == 0) {
+      var user_info = [{
+        server_url: server_url,
+        api_key: api_key
+      }];
+
+      chrome.storage.sync.set({'user_info': user_info});
+
+    } else {
+      var user_info = obj['user_info'];
+      user_info.push({
+        server_url: server_url,
+        api_key: api_key
+      });
+
+      chrome.storage.sync.set({'user_info': user_info});
+
+      chrome.storage.sync.get(null, function(obj) {
+        console.log(obj['user_info']);
+      });
+    }
   }); 
 }
