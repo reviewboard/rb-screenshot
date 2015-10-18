@@ -1,5 +1,7 @@
+var browserify = require('browserify');
 var gulp = require('gulp');
 var less = require('gulp-less');
+var source = require('vinyl-source-stream');
 
 gulp.task('default', ['build'], function() {
 	console.log('Building Chrome and Firefox extensions.');
@@ -9,7 +11,8 @@ gulp.task('build', ['chrome', 'firefox'], function() {
 	console.log('Building.');
 });
 
-gulp.task('chrome', ['chrome js', 'css', 'chrome html', 'images', 'js', 'html'],
+gulp.task('chrome', ['chrome js', 'css', 'chrome html', 'images', 'js', 'html',
+					 'browserify'],
 		  function() {
 	return gulp.src('crx/*')
 		.pipe(gulp.dest('.build/chrome'));
@@ -30,6 +33,18 @@ gulp.task('firefox js', function() {
 	return gulp.src('xpi/js/*.js')
 		.pipe(gulp.dest('.build/firefox/data/js'));
 });
+
+gulp.task('browserify', function() {
+	var bundle_stream = browserify(
+	{
+		entries: 'content/js/screenshot.js',
+		standalone: 'setScreenshotUrl'
+	});
+	return bundle_stream
+		.bundle()
+		.pipe(source('screenshot.js'))
+		.pipe(gulp.dest('.build/chrome/js'));
+})
 
 gulp.task('css', function() {
 	return gulp.src('content/css/*.less')

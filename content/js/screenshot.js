@@ -1,8 +1,10 @@
+var $ = require('jquery');
+
 $(document).ready(function() {
 	reviewRequests();
 });
 
-function setScreenshotUrl(url) {
+module.exports = function setScreenshotUrl(url) {
     document.getElementById('screenshot').src = url;
 }
 
