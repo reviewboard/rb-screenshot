@@ -1,0 +1,14 @@
+{
+	"ecmaFeatures": {
+		"destructuring": true
+	},
+
+	"env": {
+		"browser": true,
+		"jquery": true
+	},
+
+	"globals": {
+		"chrome": true
+	}
+}
