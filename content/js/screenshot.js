@@ -20,17 +20,19 @@ exports.getServerValue = function getServerValue() {
 
 // CURRENT CODE IS FOR TESTING ON MY LOCALSERVER
 // WILL NOT WORK ON OTHER SERVERS YET
-exports.reviewRequests = function reviewRequests() {
+exports.reviewRequests = function reviewRequests(server_url, username) {
+	var request_url = urljoin(server_url, 'api', 'review-requests/');
+	console.log(request_url);
 	$.ajax({
-		url: 'http://localhost:8080/api/review-requests/',
+		url: request_url,
 		type: 'get',
 		data: {
-			'from-user': 'qyfcb'
+			'from-user': username
 		},
 		dataType: 'json',
 		success: function(json) {
 			var req_count = json.total_results;
-			var req_dropdown =  document.getElementById('rr-id-select');
+			var req_dropdown =  document.getElementById('rr-select');
 
 			for (i = 0; i < req_count; i++) {
 				var option = document.createElement('option');

@@ -7,7 +7,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
         tab_screenshot();
         break;
     case 'save_info':
-        save_info(request.server_url, request.api_key, request.username);
+        save_new_user_info(request.server_url, request.api_key, request.username);
         break;
     default:
         alert('Unmatched request from script to background');
@@ -52,18 +52,24 @@ function set_listener(screenshot_view) {
     var document = screenshot_view.document;
     var server_dropdown = document.getElementById('account-select');
     server_dropdown.addEventListener("change", function() {
-        set_user(server_dropdown.options[server_dropdown.selectedIndex].value,
+        // sets the username span in option bar and review requests dropdown
+        set_info(server_dropdown.options[server_dropdown.selectedIndex].value,
                  screenshot_view);
     });
 }
 
-function set_user(server_id, screenshot_view) {
+function set_info(server_id, screenshot_view) {
+    // Sets information in screenshot.html whenever server dropdown value changes
     if (server_id != 'new') {
         chrome.storage.sync.get('user_info', function(obj) {
             var user_info = obj['user_info'];
+
+            var server_url = user_info[server_id].server_url;
             var username = user_info[server_id].username;
             var username_text = screenshot_view.document.getElementById('username');
+
             username_text.innerHTML = "Username: " + username;
+            screenshot_view.screenshot.reviewRequests(server_url, username);
         });
     }
 }
@@ -85,7 +91,7 @@ function set_servers(screenshot_view) {
 
 }
 
-function save_info(server_url, api_key, username) {
+function save_new_user_info(server_url, api_key, username) {
     chrome.storage.sync.get('user_info', function(obj) {
         var user_info;
         if (Object.keys(obj).length == 0) {
