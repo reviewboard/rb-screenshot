@@ -1,6 +1,7 @@
 // Variable to keep an id for when user opens multiple screenshot tabs.
 var id = 1;
 
+// Listens to messages from other scripts. Executes commands based on message.
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
     switch (request.option) {
     case 'all-webcontent':
@@ -15,6 +16,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
     }
 });
 
+// Take screenshot of all visible web content.
 function tab_screenshot() {
     chrome.tabs.captureVisibleTab(function (screenshotUrl) {
         var tabUrl = chrome.extension.getURL('screenshot.html?id=' + id++);
@@ -26,6 +28,7 @@ function tab_screenshot() {
             }
             chrome.tabs.onUpdated.removeListener(listener);
 
+            // May have to move out of here when other screenshot functions added
             var views = chrome.extension.getViews();
             for (var i = 0; i < views.length; i++) {
                 var view = views[i];
@@ -75,6 +78,7 @@ function set_info(server_id, screenshot_view) {
 }
 
 function set_servers(screenshot_view) {
+    // Set screenshot.html server dropdown with saved servers information
     var user_dropdown = screenshot_view.document.getElementById('account-select');
 
     chrome.storage.sync.get('user_info', function(obj) {
@@ -92,6 +96,7 @@ function set_servers(screenshot_view) {
 }
 
 function save_new_user_info(server_url, api_key, username) {
+    // Saves user information when submitted through add_user.html form
     chrome.storage.sync.get('user_info', function(obj) {
         var user_info;
         if (Object.keys(obj).length == 0) {
