@@ -1,16 +1,26 @@
 var $ = require('jquery');
+var urljoin = require('url-join')
+var exports = module.exports;
 
 $(document).ready(function() {
-	reviewRequests();
+	$('#account-select').change(function() {
+		screenshot.getServerValue();
+	});
 });
 
-module.exports = function setScreenshotUrl(url) {
+// Functions below are exported under the name 'screenshot'
+exports.setScreenshotUrl = function setScreenshotUrl(url) {
     document.getElementById('screenshot').src = url;
+}
+
+exports.getServerValue = function getServerValue() {
+	var server_value = $('#account-select').val();
+	return server_value;
 }
 
 // CURRENT CODE IS FOR TESTING ON MY LOCALSERVER
 // WILL NOT WORK ON OTHER SERVERS YET
-function reviewRequests() {
+exports.reviewRequests = function reviewRequests() {
 	$.ajax({
 		url: 'http://localhost:8080/api/review-requests/',
 		type: 'get',
