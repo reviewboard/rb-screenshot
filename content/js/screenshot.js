@@ -1,5 +1,5 @@
 var $ = require('jquery');
-var urljoin = require('url-join')
+var url = require('url');
 var exports = module.exports;
 
 // Functions below are exported under the name 'screenshot'
@@ -17,7 +17,7 @@ exports.getServerValue = function getServerValue() {
 // Makes request to a Review Board server for a given user's Review Requests.
 // Function then updates the review request dropdown box in screenshot.html.
 exports.reviewRequests = function reviewRequests(server_url, username) {
-	var request_url = urljoin(server_url, 'api', 'review-requests/');
+	var request_url = url.resolve(server_url, 'api/review-requests/');
 	console.log(request_url);
 	$.ajax({
 		url: request_url,

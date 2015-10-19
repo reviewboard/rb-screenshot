@@ -37,7 +37,7 @@ function tab_screenshot() {
                     view.screenshot.setScreenshotUrl(screenshotUrl);
                     set_listener(view);
                     set_servers(view);
-                    set_user(server_id, view);
+                    set_info(server_id, view);
                     break;
                 }
             }
