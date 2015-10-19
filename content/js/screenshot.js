@@ -29,6 +29,7 @@ exports.reviewRequests = function reviewRequests(server_url, username) {
 		success: function(json) {
 			var req_count = json.total_results;
 			var req_dropdown =  document.getElementById('rr-select');
+			req_dropdown.options.length = 0;
 
 			for (i = 0; i < req_count; i++) {
 				var option = document.createElement('option');
