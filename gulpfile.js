@@ -38,7 +38,7 @@ gulp.task('browserify', function() {
 	var bundle_stream = browserify(
 	{
 		entries: 'content/js/screenshot.js',
-		standalone: 'setScreenshotUrl'
+		standalone: 'screenshot',
 	});
 	return bundle_stream
 		.bundle()
