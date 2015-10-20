@@ -3,6 +3,7 @@ var { Cc, Ci } = require('chrome');
 var tabs = require('sdk/tabs');
 var self = require('sdk/self');
 var panels = require("sdk/panel");
+var pageMod = require("sdk/page-mod");
 
 var button = ToggleButton({
     id: "reviewboard-icon",
@@ -24,7 +25,17 @@ var panel = panels.Panel({
     onHide: handleHide
 });
 
-panel.port.on('alert', function(message) {
+pageMod.PageMod({
+  include: 'chrome://rbscreenshot/content/add_user.html',
+  contentScriptFile: './js/save_user.js',
+  onAttach: function(worker) {
+    worker.port.on('save_info', function(user_info) {
+        console.log(user_info);
+    });
+  }
+});
+
+panel.port.on('capture-all-content', function() {
     var wm = Cc["@mozilla.org/appshell/window-mediator;1"]
                .getService(Ci.nsIWindowMediator);
     var gBrowser = wm.getMostRecentWindow("navigator:browser").gBrowser;

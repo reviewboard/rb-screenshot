@@ -1,7 +1,8 @@
 var id = 100;
 
+// Check for button id when more screenshot functionality added
 function click() {
-    self.port.emit('alert', 'message from contentscript');
+    self.port.emit('capture-all-content');
 }
 
 document.addEventListener('DOMContentLoaded', function() {
