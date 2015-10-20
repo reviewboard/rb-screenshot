@@ -1,40 +1,29 @@
 <!doctype html>
 <html>
-    <style>
-    	#options-section {
-    		background-color: gainsboro;
-    		display: flex;
-    		flex-direction: row;
-    		justify-content: center;
-    		line-height: 25px;
-    		padding: 5px;
-    		width: 100%;
-    	}
-    	.option-title {
-    		padding-right: 5px;
-    	}
-    	select {
-    		margin-right: 30px;
-    		padding-right: 5px;
-    	}
-    	body {
-    		margin: 0px;
-    	}
-    </style>
+    <head>
+    <link rel="stylesheet" type="text/css" href="css/screenshot.css">
+    </head>
     <body>
     	<div id="options-section">
-    		<span class ="option-title">Account:</span>
-	    		<select id="account-select">
-	    			<option value="new">Add New Server</option>
-	    		</select>
-    		<span class="option-title">Review Request:</span>
-	    		<select id="rr-select"></select>
-            <span id="username">Username: </span>
-    	</div>
+            <div id="new-user-section">
+                <button type="button">Add User</button>
+            </div>
+            <div id="user-section">
+        		<span class ="option-title">Account:</span>
+    	    		<select id="account-select">
+    	    			<option value="new">Add New Server</option>
+    	    		</select>
+        		<span class="option-title">Review Request:</span>
+    	    		<select id="rr-select"></select>
+                <span id="username">Username: </span>
+    	   </div>
+           <div id="send-section">
+                <button type="button">Send Image</button>
+           </div>
+       </div>
     	<div id="screenshot-section">
-	        <img id="screenshot" src="images/filler.png">
+	        <img id="screenshot" height="640" src="images/filler.png">
         </div>
     </body>
-    <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/screenshot.js"></script>
 </html>
