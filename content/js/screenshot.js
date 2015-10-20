@@ -14,6 +14,10 @@ exports.getServerValue = function getServerValue() {
 	return server_value;
 }
 
+exports.setUsername = function setUsername(username) {
+	$('#username').html('Username: ' + username);
+}
+
 // Makes request to a Review Board server for a given user's Review Requests.
 // Function then updates the review request dropdown box in screenshot.html.
 exports.reviewRequests = function reviewRequests(server_url, username) {

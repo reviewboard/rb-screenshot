@@ -77,10 +77,13 @@ panel.port.on('capture-all-content', function() {
 });
 
 function set_listeners(browser) {
+    // Listens to change in server dropbox and updates values
     var server_dropdown = browser.contentDocument.getElementById('account-select');
     server_dropdown.addEventListener('change', function() {
         var index = server_dropdown.options[server_dropdown.selectedIndex].value;
         var user_info = ss.storage.user_info[index]
+
+        browser.contentWindow.screenshot.setUsername(user_info.username);
         browser.contentWindow.screenshot.reviewRequests(user_info.server, user_info.username);
     });
 }

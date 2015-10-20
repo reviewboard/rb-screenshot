@@ -69,9 +69,8 @@ function set_info(server_id, screenshot_view) {
 
             var server_url = user_info[server_id].server_url;
             var username = user_info[server_id].username;
-            var username_text = screenshot_view.document.getElementById('username');
 
-            username_text.innerHTML = "Username: " + username;
+            screenshot_view.screenshot.setUsername(username);
             screenshot_view.screenshot.reviewRequests(server_url, username);
         });
     }
