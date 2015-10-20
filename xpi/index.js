@@ -64,14 +64,30 @@ panel.port.on('capture-all-content', function() {
     var dataUrl = canvas.toDataURL();
     canvas = null;
 
+    // Below may need to be refactored when other screenshot features added
     var tab = gBrowser.addTab('chrome://rbscreenshot/content/screenshot.html');
     gBrowser.selectedTab = tab;
     var newTabBrowser = gBrowser.getBrowserForTab(tab);
     newTabBrowser.addEventListener("load", function() {
         newTabBrowser.contentDocument.getElementById('screenshot').src = dataUrl;
+        set_servers(newTabBrowser);
     }, true);
 
 });
+
+function set_servers(browser) {
+    var server_dropdown = browser.contentDocument.getElementById('account-select');
+    console.log(server_dropdown);
+    var user_info = ss.storage.user_info;
+    if (user_info) {
+        for (var i = 0; i < user_info.length; i++) {
+            var option = browser.contentDocument.createElement('option');
+            option.value = i;
+            option.text = user_info[i].server;
+            server_dropdown.add(option);
+        }
+    }
+}
 
 function handleChange(state) {
     if(state.checked) {
