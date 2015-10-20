@@ -23,7 +23,8 @@ gulp.task('chrome js', function() {
 		.pipe(gulp.dest('.build/chrome/js'));
 });
 
-gulp.task('firefox', ['firefox js', 'css', 'firefox html', 'images', 'js', 'html'],
+gulp.task('firefox', ['firefox js', 'css', 'firefox html', 'images', 'js', 'html',
+					  'browserify'],
 		  function() {
 	return gulp.src(['xpi/*', '!xpi/js', '!xpi/*.html'])
 		.pipe(gulp.dest('.build/firefox'));
@@ -43,7 +44,8 @@ gulp.task('browserify', function() {
 	return bundle_stream
 		.bundle()
 		.pipe(source('screenshot.js'))
-		.pipe(gulp.dest('.build/chrome/js'));
+		.pipe(gulp.dest('.build/chrome/js'))
+		.pipe(gulp.dest('.build/firefox/data/js'));
 })
 
 gulp.task('css', function() {

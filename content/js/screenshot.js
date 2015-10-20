@@ -18,7 +18,6 @@ exports.getServerValue = function getServerValue() {
 // Function then updates the review request dropdown box in screenshot.html.
 exports.reviewRequests = function reviewRequests(server_url, username) {
 	var request_url = url.resolve(server_url, 'api/review-requests/');
-	console.log(request_url);
 	$.ajax({
 		url: request_url,
 		type: 'get',

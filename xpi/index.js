@@ -70,14 +70,23 @@ panel.port.on('capture-all-content', function() {
     var newTabBrowser = gBrowser.getBrowserForTab(tab);
     newTabBrowser.addEventListener("load", function() {
         newTabBrowser.contentDocument.getElementById('screenshot').src = dataUrl;
+        set_listeners(newTabBrowser);
         set_servers(newTabBrowser);
     }, true);
 
 });
 
+function set_listeners(browser) {
+    var server_dropdown = browser.contentDocument.getElementById('account-select');
+    server_dropdown.addEventListener('change', function() {
+        var index = server_dropdown.options[server_dropdown.selectedIndex].value;
+        var user_info = ss.storage.user_info[index]
+        browser.contentWindow.screenshot.reviewRequests(user_info.server, user_info.username);
+    });
+}
+
 function set_servers(browser) {
     var server_dropdown = browser.contentDocument.getElementById('account-select');
-    console.log(server_dropdown);
     var user_info = ss.storage.user_info;
     if (user_info) {
         for (var i = 0; i < user_info.length; i++) {
