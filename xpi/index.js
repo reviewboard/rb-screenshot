@@ -2,8 +2,9 @@ var { ToggleButton } = require('sdk/ui/button/toggle');
 var { Cc, Ci } = require('chrome');
 var tabs = require('sdk/tabs');
 var self = require('sdk/self');
-var panels = require("sdk/panel");
-var pageMod = require("sdk/page-mod");
+var panels = require('sdk/panel');
+var pageMod = require('sdk/page-mod');
+var ss = require('sdk/simple-storage');
 
 var button = ToggleButton({
     id: "reviewboard-icon",
@@ -30,7 +31,19 @@ pageMod.PageMod({
   contentScriptFile: './js/save_user.js',
   onAttach: function(worker) {
     worker.port.on('save_info', function(user_info) {
-        console.log(user_info);
+        if (ss.storage.user_info) {
+            ss.storage.user_info.push({
+                api_key: user_info.api_key,
+                username: user_info.username,
+                server: user_info.server
+            });
+        } else {
+            ss.storage.user_info = [{
+                api_key: user_info.api_key,
+                username: user_info.username,
+                server: user_info.server
+            }];
+        }
     });
   }
 });

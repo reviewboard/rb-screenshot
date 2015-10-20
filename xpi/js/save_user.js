@@ -17,7 +17,7 @@ function save_information() {
 }
 
 $(document).ready(function() {
-	document.getElementById("submit").addEventListener("click", function() {
+	document.getElementById("submit").onclick = function() {
 		save_information();
-	});
+	};
 });
