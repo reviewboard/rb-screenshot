@@ -14,4 +14,15 @@ function save_information() {
         username: username,
         server_url: server
     });
+
+    screenshot.addServerToList(server);
+
+    chrome.runtime.onMessage.addListener(function(request, sender, response) {
+        switch (request.option) {
+            case 'update':
+                var update_event = new Event('update');
+                document.getElementById('user-form').dispatchEvent(update_event)
+                break;
+        }
+    });
 }

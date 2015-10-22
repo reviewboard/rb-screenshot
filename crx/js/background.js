@@ -10,8 +10,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
     case 'save_info':
         save_new_user_info(request.server_url, request.api_key, request.username);
         break;
+    case 'update':
+        break;
     default:
-        alert('Unmatched request from script to background');
+        alert('Unmatched request from script to background 1');
         // Todo: Add request to above string
     }
 });
@@ -60,24 +62,28 @@ function set_listeners(screenshot_view) {
                  screenshot_view);
     });
 
-    server_dropdown.addEventListener("mouseover", function() {
-        set_servers(screenshot_view);
+    var form = document.getElementById('user-form');
+    form.addEventListener('update', function() {
+        // updates server select when new server added
+        set_info(server_dropdown.options[server_dropdown.selectedIndex].value,
+                 screenshot_view);
     });
 }
 
 function set_info(server_id, screenshot_view) {
     // Sets information in screenshot.html whenever server dropdown value changes
-    if (server_id != 'new') {
-        chrome.storage.sync.get('user_info', function(obj) {
+    chrome.storage.sync.get('user_info', function(obj) {
+        if (obj) {
             var user_info = obj['user_info'];
-
+            console.log(user_info);
+            console.log(server_id);
             var server_url = user_info[server_id].server_url;
             var username = user_info[server_id].username;
 
             screenshot_view.screenshot.setUsername(username);
             screenshot_view.screenshot.reviewRequests(server_url, username);
-        });
-    }
+        }
+    });
 }
 
 function set_servers(screenshot_view) {
@@ -114,5 +120,6 @@ function save_new_user_info(server_url, api_key, username) {
 
             chrome.storage.sync.set({'user_info': user_info});
         }
+        chrome.runtime.sendMessage({option: 'update'});
     });
 }

@@ -29,6 +29,20 @@ exports.setServers = function setServers(user_info) {
     }
 };
 
+exports.addServerToList = function addServerToList(server) {
+	var server_dropdown = document.getElementById('account-select');
+	var option = document.createElement('option');
+
+	if (server_dropdown.options.length == 0) {
+		option.value = 0;
+	} else {
+		option.value = server_dropdown.options.length;
+	}
+
+	option.text = server;
+	server_dropdown.add(option);
+};
+
 // Makes request to a Review Board server for a given user's Review Requests.
 // Function then updates the review request dropdown box in screenshot.html.
 exports.reviewRequests = function reviewRequests(server_url, username) {

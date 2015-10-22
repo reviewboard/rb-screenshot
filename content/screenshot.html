@@ -11,9 +11,7 @@
             </div>
             <div id="user-section">
         		<span class ="option-title">Account:</span>
-    	    		<select id="account-select">
-    	    			<option value="new">Add New Server</option>
-    	    		</select>
+    	    		<select id="account-select"></select>
         		<span class="option-title">Review Request:</span>
     	    		<select id="rr-select"></select>
                 <span id="username">Username: </span>
@@ -27,7 +25,7 @@
         </div>
 
         <div id="dialog-form" title="Create new user">
-        <form class="form">
+        <form class="form" id="user-form">
             <p class="server">
                 <input type="text" name="server" id="server">
                 <label for="server">Server</label>
@@ -51,7 +49,7 @@
     </body>
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
+    <script src="js/screenshot.js"></script>
     <script src="js/save_user.js"></script>
     <script src="js/add_user.js"></script>
-    <script src="js/screenshot.js"></script>
 </html>
