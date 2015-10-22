@@ -35,7 +35,7 @@ function tab_screenshot() {
                 if (view.location.href == tabUrl) {
                     var server_id = view.screenshot.getServerValue();
                     view.screenshot.setScreenshotUrl(screenshotUrl);
-                    set_listener(view);
+                    set_listeners(view);
                     set_servers(view);
                     set_info(server_id, view);
                     break;
@@ -50,7 +50,7 @@ function tab_screenshot() {
     });
 }
 
-function set_listener(screenshot_view) {
+function set_listeners(screenshot_view) {
     // Sets a listener for the server dropdown box
     var document = screenshot_view.document;
     var server_dropdown = document.getElementById('account-select');
@@ -58,6 +58,11 @@ function set_listener(screenshot_view) {
         // sets the username span in option bar and review requests dropdown
         set_info(server_dropdown.options[server_dropdown.selectedIndex].value,
                  screenshot_view);
+    });
+
+    var add_user_button = document.getElementById('add-user-button');
+    add_user_button.addEventListener("click", function() {
+        console.log('clicked');
     });
 }
 

@@ -8,4 +8,19 @@ $(document).ready(function() {
         save_information();
     });
 
+    var dialog;
+	var form;
+
+	function addUser() {
+		console.log('Add User');
+	}
+
+	dialog = $('#dialog-form').dialog({
+		autoOpen: false
+	});
+
+	$('#add-user-button').button().on('click', function() {
+		dialog.dialog('open');
+	});
+
 });

@@ -48,7 +48,13 @@ gulp.task('browserify', function() {
 		.pipe(gulp.dest('.build/firefox/data/js'));
 })
 
-gulp.task('css', function() {
+gulp.task('css', ['less'], function() {
+	return gulp.src('content/css/*.css')
+		.pipe(gulp.dest('.build/chrome/css'))
+		.pipe(gulp.dest('.build/firefox/data/css'));
+});
+
+gulp.task('less', function() {
 	return gulp.src('content/css/*.less')
 		.pipe(less())
 		.pipe(gulp.dest('.build/chrome/css'))

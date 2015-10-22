@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var url = require('url');
 var exports = module.exports;
 
