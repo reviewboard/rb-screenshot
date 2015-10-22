@@ -60,9 +60,8 @@ function set_listeners(screenshot_view) {
                  screenshot_view);
     });
 
-    var add_user_button = document.getElementById('add-user-button');
-    add_user_button.addEventListener("click", function() {
-        console.log('clicked');
+    server_dropdown.addEventListener("mouseover", function() {
+        set_servers(screenshot_view);
     });
 }
 
@@ -83,17 +82,10 @@ function set_info(server_id, screenshot_view) {
 
 function set_servers(screenshot_view) {
     // Set screenshot.html server dropdown with saved servers information
-    var user_dropdown = screenshot_view.document.getElementById('account-select');
-
     chrome.storage.sync.get('user_info', function(obj) {
         if (Object.keys(obj).length != 0) {
             var user_info = obj['user_info'];
-            for (var i = 0; i < user_info.length; i++) {
-                var option = document.createElement('option');
-                option.value = i;
-                option.text = user_info[i].server_url;
-                user_dropdown.add(option);
-            }
+            screenshot_view.screenshot.setServers(user_info);
         }
     });
 

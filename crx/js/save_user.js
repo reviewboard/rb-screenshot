@@ -1,6 +1,6 @@
 function save_information() {
     var api_key = $('#api_key').val();
-    var username = $('#username').val();
+    var username = $('#username-input').val();
     var server = $('#server').val();
 
     if (!server || !api_key || !username) {
