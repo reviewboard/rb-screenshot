@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+    <head>
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="css/screenshot.css">
+    </head>
+    <body>
+        <div id="options-section">
+            <div id="new-user-section">
+                <button type="button" id="add-user-button">Add User</button>
+            </div>
+            <div id="user-section">
+                <span class ="option-title">Account:</span>
+                    <select id="account-select"></select>
+                <span class="option-title">Review Request:</span>
+                    <select id="rr-select"></select>
+                <span id="username">Username: </span>
+           </div>
+           <div id="send-section">
+                <button type="button" id="send-button">Send Image</button>
+           </div>
+       </div>
+        <div id="screenshot-section">
+            <img id="screenshot" height="640" src="images/filler.png">
+        </div>
+
+        <div id="dialog-form" title="Create new user">
+        <form class="form" id="user-form">
+            <p class="server">
+                <input type="text" name="server" id="server">
+                <label for="server">Server</label>
+            </p>
+
+            <p class="username">
+                <input type="text" name="username" id="username-input">
+                <label for"username">Username</label>
+            </p>
+
+            <p class="api-key">
+                <input type="text" name="api_key" id="api_key">
+                <label for="api_key">API Key</label>
+            </p>
+
+            <p class="submit">
+                <button id="submit">Submit</button>
+            </p>
+        </form>
+        </div>
+    </body>
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/screenshot.js"></script>
+    <script src="js/save_user.js"></script>
+    <script src="js/add_user.js"></script>
+</html>
