@@ -44,6 +44,7 @@ pageMod.PageMod({
                 server: user_info.server
             }];
         }
+        worker.port.emit('update');
     });
   }
 });
@@ -80,12 +81,23 @@ function set_listeners(browser) {
     // Listens to change in server dropbox and updates values
     var server_dropdown = browser.contentDocument.getElementById('account-select');
     server_dropdown.addEventListener('change', function() {
-        var index = server_dropdown.options[server_dropdown.selectedIndex].value;
-        var user_info = ss.storage.user_info[index]
-
-        browser.contentWindow.screenshot.setUsername(user_info.username);
-        browser.contentWindow.screenshot.reviewRequests(user_info.server, user_info.username);
+        set_info(browser);
     });
+
+    var form = browser.contentDocument.getElementById('user-form');
+    form.addEventListener('update', function() {
+        // updates server select when new server added
+        set_info(browser);
+    });
+}
+
+function set_info(browser) {
+    var server_dropdown = browser.contentDocument.getElementById('account-select');
+    var index = server_dropdown.options[server_dropdown.selectedIndex].value;
+    var user_info = ss.storage.user_info[index];
+
+    browser.contentWindow.screenshot.setUsername(user_info.username);
+    browser.contentWindow.screenshot.reviewRequests(user_info.server, user_info.username);
 }
 
 function set_servers(browser) {

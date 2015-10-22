@@ -75,8 +75,6 @@ function set_info(server_id, screenshot_view) {
     chrome.storage.sync.get('user_info', function(obj) {
         if (obj) {
             var user_info = obj['user_info'];
-            console.log(user_info);
-            console.log(server_id);
             var server_url = user_info[server_id].server_url;
             var username = user_info[server_id].username;
 

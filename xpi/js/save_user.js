@@ -8,12 +8,19 @@ function save_information() {
 		return;
 	}
 
+	screenshot.addServerToList(server);
+
 	var form_info =  {
 		api_key: api_key,
 		username: username,
 		server: server
 	}
 	self.port.emit('save_info', form_info);
+
+	self.port.on('update', function() {
+		var update_event = new Event('update');
+    	document.getElementById('user-form').dispatchEvent(update_event)
+	});
 }
 
 $(document).ready(function() {
