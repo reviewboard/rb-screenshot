@@ -27,7 +27,7 @@ var panel = panels.Panel({
 });
 
 pageMod.PageMod({
-  include: 'chrome://rbscreenshot/content/add_user.html',
+  include: 'chrome://rbscreenshot/content/screenshot.html',
   contentScriptFile: './js/save_user.js',
   onAttach: function(worker) {
     worker.port.on('save_info', function(user_info) {
