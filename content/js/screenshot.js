@@ -7,63 +7,63 @@ exports.setScreenshotUrl = function setScreenshotUrl(url) {
 }
 
 // Gets value of the server in the spinnerbox which is also the value
-// of it's index in the saved user_info array.
+// of it's index in the saved userInfo array.
 exports.getServerValue = function getServerValue() {
-	var server_value = $('#account-select').val();
-	return server_value;
+	var serverValue = $('#account-select').val();
+	return serverValue;
 }
 
 exports.setUsername = function setUsername(username) {
 	$('#username').html('Username: ' + username);
 }
 
-exports.setServers = function setServers(user_info) {
-	var server_dropdown = document.getElementById('account-select');
-	server_dropdown.options.length = 0;
+exports.setServers = function setServers(userInfo) {
+	var serverDropdown = document.getElementById('account-select');
+	serverDropdown.options.length = 0;
 
-    for (var i = 0; i < user_info.length; i++) {
+    for (var i = 0; i < userInfo.length; i++) {
         var option = document.createElement('option');
         option.value = i;
-        option.text = user_info[i].server_url;
-        server_dropdown.add(option);
+        option.text = userInfo[i].serverUrl;
+        serverDropdown.add(option);
     }
 };
 
 exports.addServerToList = function addServerToList(server) {
-	var server_dropdown = document.getElementById('account-select');
+	var serverDropdown = document.getElementById('account-select');
 	var option = document.createElement('option');
 
-	if (server_dropdown.options.length == 0) {
+	if (serverDropdown.options.length == 0) {
 		option.value = 0;
 	} else {
-		option.value = server_dropdown.options.length;
+		option.value = serverDropdown.options.length;
 	}
 
 	option.text = server;
-	server_dropdown.add(option);
+	serverDropdown.add(option);
 };
 
 // Makes request to a Review Board server for a given user's Review Requests.
 // Function then updates the review request dropdown box in screenshot.html.
-exports.reviewRequests = function reviewRequests(server_url, username) {
-	var request_url = url.resolve(server_url, 'api/review-requests/');
+exports.reviewRequests = function reviewRequests(serverUrl, username) {
+	var requestUrl = url.resolve(serverUrl, 'api/review-requests/');
 	$.ajax({
-		url: request_url,
+		url: requestUrl,
 		type: 'get',
 		data: {
 			'from-user': username
 		},
 		dataType: 'json',
 		success: function(json) {
-			var req_count = json.total_results;
-			var req_dropdown =  document.getElementById('rr-select');
-			req_dropdown.options.length = 0;
+			var reqCount = json.total_results;
+			var reqDropdown =  document.getElementById('rr-select');
+			reqDropdown.options.length = 0;
 
-			for (i = 0; i < req_count; i++) {
+			for (i = 0; i < reqCount; i++) {
 				var option = document.createElement('option');
 				option.text = 'r/' + json.review_requests[i].id + ' - ' +
 							  json.review_requests[i].summary;
-				req_dropdown.add(option);
+				reqDropdown.add(option);
 			}
 		}
 	});

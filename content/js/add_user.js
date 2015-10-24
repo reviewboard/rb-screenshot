@@ -3,7 +3,7 @@ $(document).ready(function() {
 
     $('#submit').click(function(event) {
         event.preventDefault();
-        save_information();
+        saveInformation();
         dialog.dialog('close');
     });
 

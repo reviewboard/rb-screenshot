@@ -30,18 +30,18 @@ pageMod.PageMod({
   include: 'chrome://rbscreenshot/content/screenshot.html',
   contentScriptFile: './js/save_user.js',
   onAttach: function(worker) {
-    worker.port.on('save_info', function(user_info) {
-        if (ss.storage.user_info) {
-            ss.storage.user_info.push({
-                api_key: user_info.api_key,
-                username: user_info.username,
-                server: user_info.server
+    worker.port.on('save-info', function(userInfo) {
+        if (ss.storage.userInfo) {
+            ss.storage.userInfo.push({
+                apiKey: userInfo.apiKey,
+                username: userInfo.username,
+                server: userInfo.server
             });
         } else {
-            ss.storage.user_info = [{
-                api_key: user_info.api_key,
-                username: user_info.username,
-                server: user_info.server
+            ss.storage.userInfo = [{
+                apiKey: userInfo.apiKey,
+                username: userInfo.username,
+                server: userInfo.server
             }];
         }
         worker.port.emit('update');
@@ -71,44 +71,44 @@ panel.port.on('capture-all-content', function() {
     var newTabBrowser = gBrowser.getBrowserForTab(tab);
     newTabBrowser.addEventListener("load", function() {
         newTabBrowser.contentDocument.getElementById('screenshot').src = dataUrl;
-        set_listeners(newTabBrowser);
-        set_servers(newTabBrowser);
+        setListeners(newTabBrowser);
+        setServers(newTabBrowser);
     }, true);
 
 });
 
-function set_listeners(browser) {
+function setListeners(browser) {
     // Listens to change in server dropbox and updates values
-    var server_dropdown = browser.contentDocument.getElementById('account-select');
-    server_dropdown.addEventListener('change', function() {
-        set_info(browser);
+    var serverDropdown = browser.contentDocument.getElementById('account-select');
+    serverDropdown.addEventListener('change', function() {
+        setInfo(browser);
     });
 
     var form = browser.contentDocument.getElementById('user-form');
     form.addEventListener('update', function() {
         // updates server select when new server added
-        set_info(browser);
+        setInfo(browser);
     });
 }
 
-function set_info(browser) {
-    var server_dropdown = browser.contentDocument.getElementById('account-select');
-    var index = server_dropdown.options[server_dropdown.selectedIndex].value;
-    var user_info = ss.storage.user_info[index];
+function setInfo(browser) {
+    var serverDropdown = browser.contentDocument.getElementById('account-select');
+    var index = serverDropdown.options[serverDropdown.selectedIndex].value;
+    var userInfo = ss.storage.userInfo[index];
 
-    browser.contentWindow.screenshot.setUsername(user_info.username);
-    browser.contentWindow.screenshot.reviewRequests(user_info.server, user_info.username);
+    browser.contentWindow.screenshot.setUsername(userInfo.username);
+    browser.contentWindow.screenshot.reviewRequests(userInfo.server, userInfo.username);
 }
 
-function set_servers(browser) {
-    var server_dropdown = browser.contentDocument.getElementById('account-select');
-    var user_info = ss.storage.user_info;
-    if (user_info) {
-        for (var i = 0; i < user_info.length; i++) {
+function setServers(browser) {
+    var serverDropdown = browser.contentDocument.getElementById('account-select');
+    var userInfo = ss.storage.userInfo;
+    if (userInfo) {
+        for (var i = 0; i < userInfo.length; i++) {
             var option = browser.contentDocument.createElement('option');
             option.value = i;
-            option.text = user_info[i].server;
-            server_dropdown.add(option);
+            option.text = userInfo[i].server;
+            serverDropdown.add(option);
         }
     }
 }
