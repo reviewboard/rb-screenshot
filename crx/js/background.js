@@ -59,14 +59,33 @@ function setListeners(screenshotView) {
     serverDropdown.addEventListener("change", function() {
         // sets the username span in option bar and review requests dropdown
         setInfo(serverDropdown.options[serverDropdown.selectedIndex].value,
-                 screenshotView);
+                screenshotView);
     });
 
     var form = document.getElementById('user-form');
     form.addEventListener('update', function() {
         // updates server select when new server added
         setInfo(serverDropdown.options[serverDropdown.selectedIndex].value,
-                 screenshotView);
+                screenshotView);
+    });
+
+    var send = document.getElementById('send-button');
+    send.addEventListener('click', function() {
+        chrome.storage.sync.get('userInfo', function(obj) {
+            if (Object.keys(obj).length != 0) {
+                var selectedValue = serverDropdown.options[serverDropdown.selectedIndex].value;
+                var reviewRequest = screenshotView.screenshot.getReviewId();
+                var screenshotUri = screenshotView.screenshot.getScreenshotUri();
+
+                var userInfo = obj['userInfo'];
+                var server = userInfo[selectedValue].serverUrl;
+                var username = userInfo[selectedValue].username;
+                var apiKey = userInfo[selectedValue].apiKey;
+
+                screenshotView.screenshot.postScreenshot(server, username, apiKey, reviewRequest,
+                                                         screenshotUri);
+            }
+        });
     });
 }
 
