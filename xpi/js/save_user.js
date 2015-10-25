@@ -24,7 +24,22 @@ function saveInformation() {
 }
 
 $(document).ready(function() {
-	document.getElementById("submit").onclick = function() {
-		saveInformation();
-	};
+    // Replaces the submit event on the add_user form.
+    $('#submit').click(function(event) {
+        event.preventDefault();
+        saveInformation();
+        dialog.dialog('close');
+    });
+
+    // Set up add user form
+    var dialog;
+    var form;
+
+    dialog = $('#dialog-form').dialog({
+    	autoOpen: false
+    });
+
+    $('#add-user-button').button().on('click', function() {
+    	dialog.dialog('open');
+    });
 });
