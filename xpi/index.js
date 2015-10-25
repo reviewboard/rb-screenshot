@@ -89,6 +89,24 @@ function setListeners(browser) {
         // updates server select when new server added
         setInfo(browser);
     });
+
+    var send = browser.contentDocument.getElementById('send-button');
+    send.addEventListener('click', function() {
+        if(ss.storage.userInfo) {
+            var screenshot = browser.contentWindow.screenshot;
+            var selectedValue = screenshot.getServerValue();
+            var userInfo = ss.storage.userInfo[selectedValue];
+            var reviewRequest = screenshot.getReviewId();
+            var screenshotUri = screenshot.getScreenshotUri();
+
+            var serverUrl = userInfo.server;
+            var username = userInfo.username;
+            var apiKey = userInfo.apiKey;
+
+            screenshot.postScreenshot(serverUrl, username, apiKey, reviewRequest,
+                                      screenshotUri);
+        }
+    });
 }
 
 function setInfo(browser) {
