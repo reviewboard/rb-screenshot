@@ -10,6 +10,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
     case 'save-info':
         saveNewUserInfo(request.serverUrl, request.apiKey, request.username);
         break;
+    case 'area':
+        tabScreenshot('area');
+        break;
     case 'update':
         break;
     default:
@@ -19,7 +22,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 });
 
 // Take screenshot of all visible web content.
-function tabScreenshot() {
+function tabScreenshot(type) {
     chrome.tabs.captureVisibleTab(function (screenshotUrl) {
         var tabUrl = chrome.extension.getURL('screenshot.html?id=' + id++);
         var targetTabId = null;
@@ -40,6 +43,10 @@ function tabScreenshot() {
                     setListeners(view);
                     setServers(view);
                     setInfo(serverId, view);
+
+                    if (type == 'area') {
+                        view.screenshot.setCrop();
+                    }
                     break;
                 }
             }

@@ -103,3 +103,9 @@ exports.reviewRequests = function reviewRequests(serverUrl, username) {
 		}
 	});
 }
+
+exports.setCrop = function setCrop() {
+	jQuery(function($) {
+		$('#screenshot').Jcrop();
+	});
+}

@@ -7,6 +7,11 @@ function click() {
     			this.close();
     		});
     		break;
+        case '2':
+            chrome.runtime.sendMessage({option: 'area'}, function() {
+                this.close();
+            });
+            break;
     	default:
     		alert('Button ID not recognized');
     		// TODO: Update above error message
