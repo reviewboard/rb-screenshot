@@ -4,12 +4,10 @@ var exports = module.exports;
 
 // Functions below are exported under the name 'screenshot'
 exports.setScreenshotUrl = function setScreenshotUrl(url) {
+    document.getElementById('screenshot').src = url;
     var width = document.getElementById('screenshot').width * 0.9;
     var height = document.getElementById('screenshot').height * 0.9;
-    var screenshotSource = document.getElementById('screenshot').src;
-    screenshotSource = url;
-    screenshotSource = resizeImage(document.getElementById('screenshot'),
-    							   width, height);
+    document.getElementById('screenshot').src = resizeImage(document.getElementById('screenshot'), width, height);
 }
 
 // Gets value of the server in the spinnerbox which is also the value
@@ -110,8 +108,10 @@ exports.reviewRequests = function reviewRequests(serverUrl, username) {
 }
 
 exports.setCrop = function setCrop() {
-	jQuery(function($) {
-		$('#screenshot').Jcrop();
+	$('#screenshot').Jcrop({
+		bgColor: 'black',
+		bgOpacity: .4,
+		setSelect: [100, 100, 50, 50]
 	});
 }
 
