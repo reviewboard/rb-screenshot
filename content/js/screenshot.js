@@ -4,7 +4,12 @@ var exports = module.exports;
 
 // Functions below are exported under the name 'screenshot'
 exports.setScreenshotUrl = function setScreenshotUrl(url) {
-    document.getElementById('screenshot').src = url;
+    var width = document.getElementById('screenshot').width * 0.9;
+    var height = document.getElementById('screenshot').height * 0.9;
+    var screenshotSource = document.getElementById('screenshot').src;
+    screenshotSource = url;
+    screenshotSource = resizeImage(document.getElementById('screenshot'),
+    							   width, height);
 }
 
 // Gets value of the server in the spinnerbox which is also the value
@@ -108,4 +113,15 @@ exports.setCrop = function setCrop() {
 	jQuery(function($) {
 		$('#screenshot').Jcrop();
 	});
+}
+
+function resizeImage(img, width, height) {
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    canvas.width = width;
+    canvas.height = height;
+    context.drawImage(img, 0, 0, width, height);
+
+    return canvas.toDataURL();
 }
