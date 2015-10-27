@@ -99,7 +99,7 @@ function setListeners(screenshotView) {
 function setInfo(serverId, screenshotView) {
     // Sets information in screenshot.html whenever server dropdown value changes
     chrome.storage.sync.get('userInfo', function(obj) {
-        if (obj) {
+        if (Object.keys(obj).length != 0) {
             var userInfo = obj['userInfo'];
             var serverUrl = userInfo[serverId].serverUrl;
             var username = userInfo[serverId].username;
