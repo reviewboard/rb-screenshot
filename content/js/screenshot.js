@@ -111,6 +111,7 @@ exports.setCrop = function setCrop() {
 	$('#screenshot').Jcrop({
 		bgColor: 'black',
 		bgOpacity: .4,
+		onSelect: updateCoords,
 		setSelect: [100, 100, 50, 50]
 	});
 }
@@ -125,3 +126,41 @@ function resizeImage(img, width, height) {
 
     return canvas.toDataURL();
 }
+
+function updateCoords(c) {
+	$('#x').val(c.x);
+	$('#y').val(c.y);
+	$('#w').val(c.w);
+	$('#h').val(c.h);
+}
+
+function drawCanvas(x, y, width, height) {
+	var canvas = document.getElementById('canvas');
+	var context = canvas.getContext('2d');
+	var image = document.getElementById('screenshot');
+
+	canvas.height = height;
+	canvas.width = width;
+
+	context.drawImage(image, x, y, width, height, 0, 0, width, height);
+
+	return canvas.toDataURL();
+}
+
+$(document).ready(function() {
+	$('#crop-button').click(function() {
+		event.preventDefault();
+		var x = $('#x').val();
+		var y = $('#y').val();
+		var w = $('#w').val();
+		var h = $('#h').val();
+		document.getElementById('screenshot').src = drawCanvas(x, y, w, h);
+		document.getElementById('screenshot').style.visibility = 'visible';
+		document.getElementById('screenshot').style.display = 'block';
+		document.getElementById('screenshot').style.height = '100%';
+		document.getElementById('screenshot').style.width = 'auto';
+		$('.jcrop-holder').hide(0, function() {
+			$(this).remove();
+		});
+	});
+});

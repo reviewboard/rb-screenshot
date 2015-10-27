@@ -17,7 +17,8 @@
                     <select id="rr-select"></select>
                 <span id="username">Username: </span>
            </div>
-           <div id="send-section">
+           <div id="end-section">
+                <button type="button" id="crop-button">Crop Image</button>
                 <button type="button" id="send-button">Send Image</button>
            </div>
        </div>
@@ -25,7 +26,6 @@
             <canvas id='canvas'></canvas>
             <img id="screenshot" src="images/filler.png">
         </div>
-
         <div id="dialog-form" title="Create new user">
         <form class="form" id="user-form">
             <p class="server">
@@ -48,6 +48,13 @@
             </p>
         </form>
         </div>
+        <!-- Form for holding crop box values-->
+        <form>
+            <input type="hidden" id="x" name="x" />
+            <input type="hidden" id="y" name="y" />
+            <input type="hidden" id="w" name="w" />
+            <input type="hidden" id="h" name="h" />
+        </form>
     </body>
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
