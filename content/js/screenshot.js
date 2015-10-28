@@ -114,6 +114,7 @@ exports.setCrop = function setCrop() {
 		onSelect: updateCoords,
 		setSelect: [100, 100, 50, 50]
 	});
+	document.getElementById('crop-button').disabled = false;
 }
 
 // Used in Chrome to add the save_user.js script. Firefox has a
@@ -175,4 +176,5 @@ $(document).ready(function() {
 			$(this).remove();
 		});
 	});
+	document.getElementById('crop-button').disabled = true;
 });
