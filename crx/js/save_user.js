@@ -1,13 +1,4 @@
-function saveInformation() {
-    var apiKey = $('#api-key').val();
-    var username = $('#username-input').val();
-    var server = $('#server').val();
-
-    if (!server || !apiKey || !username) {
-        alert('Please fill in all fields.');
-        return;
-    }
-
+function saveInformation(apiKey, server, username) {
     chrome.runtime.sendMessage({
         option: 'save-info',
         apiKey: apiKey,

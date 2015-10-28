@@ -2,7 +2,16 @@ $(document).ready(function() {
     // Replaces the submit event on the add user form.
     $('#submit').click(function(event) {
         event.preventDefault();
-        saveInformation();
+        var apiKey = $('#api-key').val();
+        var username = $('#username-input').val();
+        var server = $('#server').val();
+
+        if (!server || !apiKey || !username) {
+            alert('Please fill in all fields.');
+            return;
+        }
+
+        saveInformation(apiKey, server, username);
         dialog.dialog('close');
     });
 
