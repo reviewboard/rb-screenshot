@@ -116,6 +116,16 @@ exports.setCrop = function setCrop() {
 	});
 }
 
+// Used in Chrome to add the save_user.js script. Firefox has a
+// specific method for attaching javascript to a popup.
+exports.setScript = function setScript() {
+	var head = document.getElementsByTagName('head')[0];
+	var script = document.createElement('script');
+
+	script.src = 'js/save_user.js';
+	head.appendChild(script);
+}
+
 function resizeImage(img, width, height) {
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');

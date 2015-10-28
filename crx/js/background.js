@@ -40,6 +40,7 @@ function tabScreenshot(type) {
                 if (view.location.href == tabUrl) {
                     var serverId = view.screenshot.getServerValue();
                     view.screenshot.setScreenshotUrl(screenshotUrl);
+                    view.screenshot.setScript();
                     setListeners(view);
                     setServers(view);
                     setInfo(serverId, view);
