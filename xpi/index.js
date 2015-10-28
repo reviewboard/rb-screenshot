@@ -27,7 +27,7 @@ var panel = panels.Panel({
 });
 
 pageMod.PageMod({
-  include: 'chrome://rbscreenshot/content/screenshot.html',
+  include: 'chrome://rb-screenshot/content/screenshot.html',
   contentScriptFile: ['./js/save_user.js',
                       './js/user_form.js'],
   onAttach: function(worker) {
@@ -67,7 +67,7 @@ panel.port.on('capture-all-content', function() {
     canvas = null;
 
     // Below may need to be refactored when other screenshot features added
-    var tab = gBrowser.addTab('chrome://rbscreenshot/content/screenshot.html');
+    var tab = gBrowser.addTab('chrome://rb-screenshot/content/screenshot.html');
     gBrowser.selectedTab = tab;
     var newTabBrowser = gBrowser.getBrowserForTab(tab);
     newTabBrowser.addEventListener("load", function() {
