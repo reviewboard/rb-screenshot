@@ -120,10 +120,13 @@ exports.setCrop = function setCrop() {
 // specific method for attaching javascript to a popup.
 exports.setScript = function setScript() {
 	var head = document.getElementsByTagName('head')[0];
-	var script = document.createElement('script');
+	var saveScript = document.createElement('script');
+	var userScript = document.createElement('script');
 
-	script.src = 'js/save_user.js';
-	head.appendChild(script);
+	saveScript.src = 'js/save_user.js';
+	userScript.src = 'js/user_form.js';
+	head.appendChild(saveScript);
+	head.appendChild(userScript);
 }
 
 function resizeImage(img, width, height) {

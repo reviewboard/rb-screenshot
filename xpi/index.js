@@ -28,7 +28,8 @@ var panel = panels.Panel({
 
 pageMod.PageMod({
   include: 'chrome://rbscreenshot/content/screenshot.html',
-  contentScriptFile: './js/save_user.js',
+  contentScriptFile: ['./js/save_user.js',
+                      './js/user_form.js'],
   onAttach: function(worker) {
     worker.port.on('save-info', function(userInfo) {
         if (ss.storage.userInfo) {
