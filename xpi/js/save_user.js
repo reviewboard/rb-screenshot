@@ -1,13 +1,4 @@
-function saveInformation() {
-	var apiKey = $('#api-key').val();
-	var username = $('#username-input').val();
-	var server = $('#server').val();
-
-	if (!apiKey || !username || !server) {
-		alert('Please fill in all form information.');
-		return;
-	}
-
+function saveInformation(apiKey, server, username) {
 	screenshot.addServerToList(server);
 
 	var formInfo =  {
