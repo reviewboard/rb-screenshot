@@ -5,13 +5,13 @@ var id = 1;
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
     switch (request.option) {
     case 'all-webcontent':
-        tabScreenshot();
+        tabScreenshot(false);
         break;
     case 'save-info':
         saveNewUserInfo(request.serverUrl, request.apiKey, request.username);
         break;
     case 'area':
-        tabScreenshot('area');
+        tabScreenshot(true);
         break;
     case 'update':
         break;
@@ -22,7 +22,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 });
 
 // Take screenshot of all visible web content.
-function tabScreenshot(type) {
+function tabScreenshot(area) {
     chrome.tabs.captureVisibleTab(function (screenshotUrl) {
         var tabUrl = chrome.extension.getURL('screenshot.html?id=' + id++);
         var targetTabId = null;
@@ -45,7 +45,7 @@ function tabScreenshot(type) {
                     setServers(view);
                     setInfo(serverId, view);
 
-                    if (type == 'area') {
+                    if (area) {
                         view.screenshot.setCrop();
                     }
                     break;

@@ -2,7 +2,16 @@ var id = 100;
 
 // Check for button id when more screenshot functionality added
 function click() {
-    self.port.emit('capture-all-content');
+	switch(this.id) {
+		case '1':
+			self.port.emit('capture-all-content');
+			break;
+		case '2':
+			self.port.emit('capture-area');
+			break;
+		default:
+			alert('Unhandled id');
+	}
 }
 
 document.addEventListener('DOMContentLoaded', function() {

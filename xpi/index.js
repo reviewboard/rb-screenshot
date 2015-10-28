@@ -51,8 +51,16 @@ pageMod.PageMod({
 });
 
 panel.port.on('capture-all-content', function() {
+    setScreenshot(false);
+});
+
+panel.port.on('capture-area', function() {
+    setScreenshot(true);
+})
+
+function setScreenshot(area) {
     var wm = Cc["@mozilla.org/appshell/window-mediator;1"]
-               .getService(Ci.nsIWindowMediator);
+             .getService(Ci.nsIWindowMediator);
     var gBrowser = wm.getMostRecentWindow("navigator:browser").gBrowser;
     var window = gBrowser.contentWindow;
     var document = window.document;
@@ -74,9 +82,12 @@ panel.port.on('capture-all-content', function() {
         newTabBrowser.contentDocument.getElementById('screenshot').src = dataUrl;
         setListeners(newTabBrowser);
         setServers(newTabBrowser);
-    }, true);
 
-});
+        if (area) {
+            newTabBrowser.contentWindow.screenshot.setCrop();
+        }
+    }, true);
+}
 
 function setListeners(browser) {
     // Listens to change in server dropbox and updates values

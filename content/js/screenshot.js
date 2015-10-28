@@ -162,7 +162,6 @@ function drawCanvas(x, y, width, height) {
 
 $(document).ready(function() {
 	$('#crop-button').click(function() {
-		event.preventDefault();
 		var x = $('#x').val();
 		var y = $('#y').val();
 		var w = $('#w').val();
