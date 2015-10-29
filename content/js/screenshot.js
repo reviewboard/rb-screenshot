@@ -4,8 +4,12 @@ var toastr = require('toastr');
 var exports = module.exports;
 
 // Functions below are exported under the name 'screenshot'
+
 exports.setScreenshotUrl = function setScreenshotUrl(url) {
     document.getElementById('screenshot').src = url;
+
+    // Resize screenshot to 90% of original size. This ensures the screenshot
+    // fits on the screen for whatever browser size the user has.
     var width = document.getElementById('screenshot').width * 0.9;
     var height = document.getElementById('screenshot').height * 0.9;
     document.getElementById('screenshot').src = resizeImage(document.getElementById('screenshot'), width, height);
