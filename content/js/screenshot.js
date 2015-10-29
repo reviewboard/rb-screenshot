@@ -1,5 +1,6 @@
 var url = require('url');
 var toBlob = require('data-uri-to-blob');
+var toastr = require('toastr');
 var exports = module.exports;
 
 // Functions below are exported under the name 'screenshot'
@@ -68,7 +69,9 @@ exports.postScreenshot = function postScreenshot(serverUrl, username, apiKey, re
         contentType: false,
         processData: false,
         success: function(json) {
-            console.log('Success');
+            var rrSelect = document.getElementById('rr-select');
+            toastr.success('Successfully posted screenshot',
+                            rrSelect.options[rrSelect.selectedIndex].innerHTML);
         }
     });
 };
@@ -177,4 +180,17 @@ $(document).ready(function() {
         });
     });
     document.getElementById('crop-button').disabled = true;
+
+    toastr.options = {
+        "closeButton": true,
+        "positionClass": "toast-top-full-width",
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "3500",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
 });
