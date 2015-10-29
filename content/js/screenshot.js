@@ -57,6 +57,7 @@ exports.postScreenshot = function postScreenshot(serverUrl, username, apiKey, re
     var postUrl = url.resolve(serverUrl, request);
     var fd = new FormData();
     var screenshot = toBlob(screenshotUri);
+    var rrSelect = document.getElementById('rr-select');
     fd.append('path', screenshot);
 
     $.ajax({
@@ -68,8 +69,13 @@ exports.postScreenshot = function postScreenshot(serverUrl, username, apiKey, re
         },
         contentType: false,
         processData: false,
+        error: function(jqXHR, textStatus, errorThrown) {
+            var errorString = 'Failed to post screenshot. ' + textStatus +
+                        ': ' + errorThrown;
+            toastr.error(errorString,
+                         rrSelect.options[rrSelect.selectedIndex].innerHTML);
+        },
         success: function(json) {
-            var rrSelect = document.getElementById('rr-select');
             toastr.success('Successfully posted screenshot',
                             rrSelect.options[rrSelect.selectedIndex].innerHTML);
         }
