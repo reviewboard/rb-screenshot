@@ -9,22 +9,22 @@
     <body>
         <div id="options-section">
             <div id="new-user-section">
-                <button type="button" id="add-user-button">Add User</button>
+                <button id="add-user-button">Add User</button>
             </div>
             <div id="user-section">
-                <span class ="option-title">Account:</span>
+                    <label for="account-select">Account:</label>
                     <select id="account-select"></select>
-                <span class="option-title">Review Request:</span>
+                    <label for="rr-select">Review Request:
                     <select id="rr-select"></select>
                 <span id="username">Username: </span>
            </div>
            <div id="end-section">
-                <button type="button" id="crop-button">Crop Image</button>
-                <button type="button" id="send-button">Send Image</button>
+                <button id="crop-button">Crop Image</button>
+                <button id="send-button">Send Image</button>
            </div>
        </div>
         <div id="screenshot-section">
-            <canvas id='canvas'></canvas>
+            <canvas id="canvas"></canvas>
             <img id="screenshot" src="images/filler.png">
         </div>
         <div id="dialog-form" title="Create new user">
