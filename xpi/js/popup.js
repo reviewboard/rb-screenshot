@@ -2,6 +2,7 @@ var id = 100;
 
 // Check for button id when more screenshot functionality added
 function click() {
+    self.port.emit('close');
     switch(this.id) {
         case '1':
             self.port.emit('capture-all-content');

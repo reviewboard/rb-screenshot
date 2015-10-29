@@ -58,6 +58,10 @@ panel.port.on('capture-area', function() {
     setScreenshot(true);
 })
 
+panel.port.on('close', function() {
+    panel.hide();
+})
+
 function setScreenshot(area) {
     var wm = Cc["@mozilla.org/appshell/window-mediator;1"]
              .getService(Ci.nsIWindowMediator);
