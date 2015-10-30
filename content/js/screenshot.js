@@ -4,14 +4,14 @@ var exports = module.exports;
 
 // Functions below are exported under the name 'screenshot'
 
-exports.setScreenshotUrl = function setScreenshotUrl(url) {
+exports.setScreenshotUrl = function setScreenshotUrl(url, resize) {
     document.getElementById('screenshot').src = url;
 
     // Resize screenshot to 90% of original size. This ensures the screenshot
     // fits on the screen for whatever browser size the user has.
-    var width = document.getElementById('screenshot').width * 0.9;
-    var height = document.getElementById('screenshot').height * 0.9;
-    document.getElementById('screenshot').src = resizeImage(document.getElementById('screenshot'), width, height);
+    if (resize) {
+        document.getElementById('screenshot').addEventListener('load', resizeImage);
+    }
 }
 
 // Gets value of the server in the spinnerbox which is also the value
@@ -134,13 +134,15 @@ exports.reviewRequests = function reviewRequests(serverUrl, username) {
 }
 
 exports.setCrop = function setCrop() {
-    $('#screenshot').Jcrop({
-        bgColor: 'black',
-        bgOpacity: .4,
-        onSelect: updateCoords,
-        setSelect: [100, 100, 50, 50]
+    document.getElementById('screenshot').addEventListener('load', function() {
+        $('#screenshot').Jcrop({
+            bgColor: 'black',
+            bgOpacity: .4,
+            onSelect: updateCoords,
+            setSelect: [100, 100, 50, 50]
+        });
+        document.getElementById('crop-button').disabled = false;
     });
-    document.getElementById('crop-button').disabled = false;
 }
 
 // Used in Chrome to add the save_user.js script. Firefox has a
@@ -156,15 +158,19 @@ exports.setScript = function setScript() {
     head.appendChild(userScript);
 }
 
-function resizeImage(img, width, height) {
+function resizeImage() {
+    var screenshot = document.getElementById('screenshot');
+    var width = screenshot.width * 0.9;
+    var height = screenshot.height * 0.9;
+
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
 
     canvas.width = width;
     canvas.height = height;
-    context.drawImage(img, 0, 0, width, height);
-
-    return canvas.toDataURL();
+    context.drawImage(screenshot, 0, 0, width, height);
+    screenshot.src = canvas.toDataURL();
+    screenshot.removeEventListener('load', resizeImage);
 }
 
 function updateCoords(c) {

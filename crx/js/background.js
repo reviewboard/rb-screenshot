@@ -38,16 +38,15 @@ function tabScreenshot(area) {
             for (var i = 0; i < views.length; i++) {
                 var view = views[i];
                 if (view.location.href == tabUrl) {
-                    view.screenshot.setScreenshotUrl(screenshotUrl);
                     view.screenshot.setScript();
                     setListeners(view);
                     setServers(view);
-
-                    if (area) {
-                        view.screenshot.setCrop();
-                    }
+                    view.screenshot.setScreenshotUrl(screenshotUrl, true);
                     break;
                 }
+            }
+            if (area) {
+                view.screenshot.setCrop();
             }
         });
 

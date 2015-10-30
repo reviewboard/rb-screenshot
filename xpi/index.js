@@ -69,8 +69,8 @@ function setScreenshot(area) {
     var window = gBrowser.contentWindow;
     var document = window.document;
     var canvas = document.createElement('canvas');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth * 0.9;
+    canvas.height = window.innerHeight * 0.9;
 
     var ctx = canvas.getContext('2d');
     ctx.drawWindow(window, 0, 0, canvas.width, canvas.height, 'rgb(255,255,255)');
@@ -83,7 +83,7 @@ function setScreenshot(area) {
     gBrowser.selectedTab = tab;
     var newTabBrowser = gBrowser.getBrowserForTab(tab);
     newTabBrowser.addEventListener("load", function() {
-        newTabBrowser.contentDocument.getElementById('screenshot').src = dataUrl;
+        newTabBrowser.contentWindow.screenshot.setScreenshotUrl(dataUrl, false);
         setListeners(newTabBrowser);
         setServers(newTabBrowser);
 
