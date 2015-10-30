@@ -74,8 +74,10 @@ exports.postScreenshot = function postScreenshot(serverUrl, username, apiKey, re
         contentType: false,
         processData: false,
         error: function(jqXHR, textStatus, errorThrown) {
-            var errorString = 'Failed to post screenshot. ' + textStatus +
-                        ': ' + errorThrown;
+            var errorString = 'Failed to post screenshot. ';
+            if(errorThrown) {
+                errorString = errorString + textStatus + ': ' + errorThrown;
+            }
             toastr.error(errorString,
                          rrSelect.options[rrSelect.selectedIndex].innerHTML);
         },
@@ -97,6 +99,7 @@ exports.getReviewId = function getReviewId() {
 // Function then updates the review request dropdown box in screenshot.html.
 exports.reviewRequests = function reviewRequests(serverUrl, username) {
     var requestUrl = url.resolve(serverUrl, 'api/review-requests/');
+    var rrSelect =  document.getElementById('rr-select');
     $.ajax({
         url: requestUrl,
         type: 'get',
@@ -104,17 +107,23 @@ exports.reviewRequests = function reviewRequests(serverUrl, username) {
             'from-user': username
         },
         dataType: 'json',
+        error: function(jqXHR, textStatus, errorThrown) {
+            var errorString = 'Failed to get review requests. '
+            if(errorThrown) {
+                errorString = errorString + textStatus + ': ' + errorThrown;
+            }
+            toastr.error(errorString);
+        },
         success: function(json) {
             var reqCount = json.total_results;
-            var reqDropdown =  document.getElementById('rr-select');
-            reqDropdown.options.length = 0;
+            rrSelect.options.length = 0;
 
             for (i = 0; i < reqCount; i++) {
                 var option = document.createElement('option');
                 option.value = json.review_requests[i].id;
                 option.text = 'r/' + json.review_requests[i].id + ' - ' +
                               json.review_requests[i].summary;
-                reqDropdown.add(option);
+                rrSelect.add(option);
             }
         }
     });
