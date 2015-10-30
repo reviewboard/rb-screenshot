@@ -144,6 +144,7 @@ function setServers(browser) {
             option.text = userInfo[i].server;
             serverDropdown.add(option);
         }
+        setInfo(browser);
     }
 }
 

@@ -38,12 +38,10 @@ function tabScreenshot(area) {
             for (var i = 0; i < views.length; i++) {
                 var view = views[i];
                 if (view.location.href == tabUrl) {
-                    var serverId = view.screenshot.getServerValue();
                     view.screenshot.setScreenshotUrl(screenshotUrl);
                     view.screenshot.setScript();
                     setListeners(view);
                     setServers(view);
-                    setInfo(serverId, view);
 
                     if (area) {
                         view.screenshot.setCrop();
@@ -66,22 +64,20 @@ function setListeners(screenshotView) {
     var serverDropdown = document.getElementById('account-select');
     serverDropdown.addEventListener("change", function() {
         // sets the username span in option bar and review requests dropdown
-        setInfo(serverDropdown.options[serverDropdown.selectedIndex].value,
-                screenshotView);
+        setInfo(screenshotView);
     });
 
     var form = document.getElementById('user-form');
     form.addEventListener('update', function() {
         // updates server select when new server added
-        setInfo(serverDropdown.options[serverDropdown.selectedIndex].value,
-                screenshotView);
+        setInfo(screenshotView);
     });
 
     var send = document.getElementById('send-button');
     send.addEventListener('click', function() {
         chrome.storage.sync.get('userInfo', function(obj) {
             if (Object.keys(obj).length != 0) {
-                var selectedValue = serverDropdown.options[serverDropdown.selectedIndex].value;
+                var selectedValue = screenshotView.screenshot.getServerValue()
                 var reviewRequest = screenshotView.screenshot.getReviewId();
                 var screenshotUri = screenshotView.screenshot.getScreenshotUri();
 
@@ -97,11 +93,12 @@ function setListeners(screenshotView) {
     });
 }
 
-function setInfo(serverId, screenshotView) {
+function setInfo(screenshotView) {
     // Sets information in screenshot.html whenever server dropdown value changes
     chrome.storage.sync.get('userInfo', function(obj) {
         if (Object.keys(obj).length != 0) {
             var userInfo = obj['userInfo'];
+            var serverId = screenshotView.screenshot.getServerValue();
             var serverUrl = userInfo[serverId].serverUrl;
             var username = userInfo[serverId].username;
 
@@ -117,6 +114,7 @@ function setServers(screenshotView) {
         if (Object.keys(obj).length != 0) {
             var userInfo = obj['userInfo'];
             screenshotView.screenshot.setServers(userInfo);
+            setInfo(screenshotView);
         }
     });
 
