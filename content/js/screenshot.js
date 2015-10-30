@@ -223,3 +223,11 @@ $(document).ready(function() {
         "hideMethod": "fadeOut"
     }
 });
+
+$(document).ajaxStart(function() {
+    $('#loading-div').show();
+});
+
+$(document).ajaxStop(function() {
+    $('#loading-div').hide();
+});

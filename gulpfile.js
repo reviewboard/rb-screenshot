@@ -97,7 +97,7 @@ gulp.task('icons', function() {
 });
 
 gulp.task('images', ['icons'], function() {
-    return gulp.src('content/images/*.png')
+    return gulp.src('content/images/*')
         .pipe(gulp.dest('.build/firefox/data/images'))
         .pipe(gulp.dest('.build/chrome/images'));
 });
