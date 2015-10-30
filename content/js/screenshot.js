@@ -18,8 +18,8 @@ exports.setScreenshotUrl = function setScreenshotUrl(url) {
 // Gets value of the server in the spinnerbox which is also the value
 // of it's index in the saved userInfo array.
 exports.getServerValue = function getServerValue() {
-    var serverValue = $('#account-select').val();
-    return serverValue;
+    var serverSelect = document.getElementById('account-select');
+    return serverSelect.options[serverSelect.selectedIndex].value;
 }
 
 exports.setUsername = function setUsername(username) {
@@ -100,6 +100,7 @@ exports.getReviewId = function getReviewId() {
 exports.reviewRequests = function reviewRequests(serverUrl, username) {
     var requestUrl = url.resolve(serverUrl, 'api/review-requests/');
     var rrSelect =  document.getElementById('rr-select');
+    rrSelect.options.length = 0;
     $.ajax({
         url: requestUrl,
         type: 'get',
@@ -116,14 +117,18 @@ exports.reviewRequests = function reviewRequests(serverUrl, username) {
         },
         success: function(json) {
             var reqCount = json.total_results;
-            rrSelect.options.length = 0;
 
-            for (i = 0; i < reqCount; i++) {
-                var option = document.createElement('option');
-                option.value = json.review_requests[i].id;
-                option.text = 'r/' + json.review_requests[i].id + ' - ' +
-                              json.review_requests[i].summary;
-                rrSelect.add(option);
+            if(reqCount == 0) {
+                toastr.info('No open or draft review requests found for user: ' +
+                            username + '.');
+            } else {
+                for (i = 0; i < reqCount; i++) {
+                    var option = document.createElement('option');
+                    option.value = json.review_requests[i].id;
+                    option.text = 'r/' + json.review_requests[i].id + ' - ' +
+                                  json.review_requests[i].summary;
+                    rrSelect.add(option);
+                }
             }
         }
     });
