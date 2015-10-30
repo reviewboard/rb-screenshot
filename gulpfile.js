@@ -12,7 +12,7 @@ gulp.task('build', ['chrome', 'firefox'], function() {
 });
 
 gulp.task('chrome', ['chrome js', 'css', 'chrome html', 'images', 'js', 'html',
-                     'browserify'],
+                     'browserify', 'browserify2'],
           function() {
     return gulp.src('crx/*')
         .pipe(gulp.dest('.build/chrome'));
@@ -24,7 +24,7 @@ gulp.task('chrome js', function() {
 });
 
 gulp.task('firefox', ['firefox js', 'css', 'firefox html', 'images', 'js', 'html',
-                      'browserify'],
+                      'browserify', 'browserify2'],
           function() {
     return gulp.src(['xpi/*', '!xpi/js', '!xpi/*.html'])
         .pipe(gulp.dest('.build/firefox'));
@@ -46,7 +46,20 @@ gulp.task('browserify', function() {
         .pipe(source('screenshot.js'))
         .pipe(gulp.dest('.build/chrome/js'))
         .pipe(gulp.dest('.build/firefox/data/js'));
-})
+});
+
+// Combine browserify and browserify2
+gulp.task('browserify2', function() {
+    var bundle_stream = browserify(
+    {
+        entries: 'content/js/user_form.js'
+    });
+    return bundle_stream
+        .bundle()
+        .pipe(source('user_form.js'))
+        .pipe(gulp.dest('.build/chrome/js'))
+        .pipe(gulp.dest('.build/firefox/data/js'));
+});
 
 gulp.task('css', ['less'], function() {
     return gulp.src('content/css/*.css')
