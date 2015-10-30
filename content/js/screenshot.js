@@ -1,6 +1,5 @@
 var url = require('url');
 var toBlob = require('data-uri-to-blob');
-var toastr = require('toastr');
 var exports = module.exports;
 
 // Functions below are exported under the name 'screenshot'
