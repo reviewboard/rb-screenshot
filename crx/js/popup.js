@@ -3,14 +3,13 @@ var id = 100;
 function click() {
     switch(this.id) {
         case '1':
-            chrome.runtime.sendMessage({option: 'all-webcontent'}, function() {
-                this.close();
-            });
+            chrome.runtime.sendMessage({option: 'visible-content'});
             break;
         case '2':
-            chrome.runtime.sendMessage({option: 'area'}, function() {
-                this.close();
-            });
+            chrome.runtime.sendMessage({option: 'area'});
+            break;
+        case '3':
+            chrome.runtime.sendMessage({option: 'all-content'});
             break;
         default:
             alert('Button ID not recognized');

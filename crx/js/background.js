@@ -4,7 +4,7 @@ var id = 1;
 // Listens to messages from other scripts. Executes commands based on message.
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
     switch (request.option) {
-    case 'all-webcontent':
+    case 'visible-content':
         tabScreenshot(false);
         break;
     case 'save-info':
@@ -13,6 +13,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
     case 'area':
         tabScreenshot(true);
         break;
+    case 'all-content':
+        chrome.tabs.executeScript(null, {
+            file: 'js/all_content.js'
+        });
+        break;
     case 'update':
         break;
     default:
@@ -20,6 +25,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
         // Todo: Add request to above string
     }
 });
+
+function tabScreenshotEntire() {
+    chrome.tabs.getCurrent(function (tab) {
+
+    });
+}
 
 // Take screenshot of all visible web content.
 function tabScreenshot(area) {
