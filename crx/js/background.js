@@ -18,6 +18,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
             file: 'js/all_content.js'
         });
         break;
+    case 'user-info':
+        chrome.tabs.create({'url': chrome.extension.getURL('users.html')});
     case 'update':
         break;
     default:

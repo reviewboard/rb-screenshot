@@ -1,0 +1,43 @@
+table {
+	border-collapse: collapse;
+}
+
+thead {
+	padding-bottom: 5px;
+}
+
+thead tr th {
+	border-bottom: 2px solid black;
+	padding: 5px;
+}
+
+tbody tr td {
+	padding: 5px 15px;
+	border-bottom: 1px solid gray;
+}
+
+tbody tr:hover td{
+ 	background-color: lightgray;
+}
+
+tbody tr td:empty:before {
+    color: gray;
+    content: attr(data-attr);
+}
+
+tfoot tr td {
+    padding: 5px;
+    border-bottom: 2px solid black;
+}
+
+button {
+    margin: 5px;
+}
+
+#add {
+    padding-left: 60px;
+}
+
+#user-select {
+	list-style-type: none;
+}
