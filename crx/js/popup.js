@@ -12,7 +12,8 @@ function click() {
             chrome.runtime.sendMessage({option: 'all-content'});
             break;
         case '4':
-            chrome.runtime.sendMessage({option: 'user-info'});
+            chrome.runtime.sendMessage({option: 'user'});
+            break;
         default:
             alert('Button ID not recognized');
             // TODO: Update above error message

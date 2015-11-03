@@ -1,33 +1,5 @@
 var table = document.getElementById('user-info-body');
-var userLength = 2;
 var currentElement = false;
-
-// Add test data
-for (var i = 0; i < userLength; i++) {
-    var row = table.insertRow(i);
-    var server = row.insertCell(0);
-    var user = row.insertCell(1);
-    var apiKey = row.insertCell(2);
-    var del = row.insertCell(3);
-    var pad = row.insertCell(4);
-
-    server.innerHTML = 'test server' + i;
-    server.id = 'server' + i;
-    user.innerHTML = 'test user' + i;
-    user.id = 'user' + i;
-    apiKey.innerHTML = 'aaaaaaaaaabbbbbbbbbccccccccccddddddddd' + i;
-    apiKey.id = 'apiKey' + i;
-    del.innerHTML = '<i class="fa fa-times"></i>';
-    del.id = i;
-    del.className = 'delete';
-    pad.className = 'non-edit';
-}
-
-// Set double click and enter listener for each table cell (except footer)
-var tableCells = document.getElementsByTagName('td');
-for (i = 0; i < tableCells.length; i++) {
-    setCellListeners(tableCells[i], i);
-}
 
 // Add listener to remove focus on element if user clicks outside element
 document.addEventListener('click', function(e) {

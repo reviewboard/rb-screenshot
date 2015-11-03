@@ -18,8 +18,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
             file: 'js/all_content.js'
         });
         break;
-    case 'user-info':
-        chrome.tabs.create({'url': chrome.extension.getURL('users.html')});
+    case 'user':
+        var tabUrl = chrome.extension.getURL('users.html');
+        chrome.tabs.create({url: tabUrl});
+        break;
     case 'update':
         break;
     default:
@@ -28,11 +30,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
     }
 });
 
-function tabScreenshotEntire() {
-    chrome.tabs.getCurrent(function (tab) {
-
-    });
-}
+function tabScreenshotEntire() {}
 
 // Take screenshot of all visible web content.
 function tabScreenshot(area) {
