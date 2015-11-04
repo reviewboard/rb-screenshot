@@ -40,18 +40,8 @@ document.getElementById('add').addEventListener('click', function() {
 
 // Sets all the cell listeners for a given cell
 function setCellListeners(tableCell) {
-    if (tableCell.className == 'delete') {
-        var button = document.getElementById(tableCell.id);
-        var server = document.getElementById('server' + tableCell.id).innerHTML;
-
-        button.addEventListener('click', function() {
-            var conf = confirm('Are you sure you want to delete: ' + server);
-            if (conf) {
-                table.deleteRow(tableCell.parentNode.rowIndex - 1);
-            }
-        });
-    } else if (tableCell.id != 'footer-text' &&
-               tableCell.className != 'non-edit') {
+    if (tableCell.id != 'footer-text' && tableCell.className != 'delete' &&
+        tableCell.className != 'non-edit') {
         tableCell.addEventListener('dblclick', function() {
             tableCell.contentEditable = true;
             tableCell.focus();
