@@ -88,10 +88,7 @@ exports.postScreenshot = function postScreenshot(serverUrl, username, apiKey, re
 };
 
 exports.getReviewId = function getReviewId() {
-    var reqSelect = document.getElementById('rr-select');
-    var selectedRequestId = reqSelect.options[reqSelect.selectedIndex].value;
-
-    return selectedRequestId;
+    return $('#rr-select').val();
 }
 
 // Makes request to a Review Board server for a given user's Review Requests.

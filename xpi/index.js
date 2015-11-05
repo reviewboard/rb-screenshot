@@ -76,7 +76,6 @@ function setScreenshot(area) {
     ctx.drawWindow(window, 0, 0, canvas.width, canvas.height, 'rgb(255,255,255)');
 
     var dataUrl = canvas.toDataURL();
-    canvas = null;
 
     // Below may need to be refactored when other screenshot features added
     var tab = gBrowser.addTab('chrome://rb-screenshot/content/screenshot.html');

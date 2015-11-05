@@ -12,8 +12,3 @@ What does the extension do?
 The RB Screenshot Extension allows a user to take a screenshot of their
 browser's web content and send it to a review request associated with a specific
 Review Board server and account.
-
-TODO
-----
-
-Expand the README when extension more fully fleshed out.

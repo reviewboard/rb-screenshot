@@ -11,33 +11,32 @@ gulp.task('build', ['chrome', 'firefox'], function() {
     console.log('Building.');
 });
 
-gulp.task('chrome', ['chrome js', 'css', 'chrome html', 'images', 'js', 'html',
+gulp.task('chrome', ['chrome:js', 'css', 'chrome:html', 'images', 'js', 'html',
                      'browserify', 'browserify2', 'font-awesome'],
           function() {
     return gulp.src('crx/*')
         .pipe(gulp.dest('.build/chrome'));
 });
 
-gulp.task('chrome js', function() {
+gulp.task('chrome:js', function() {
     return gulp.src('crx/js/*.js')
         .pipe(gulp.dest('.build/chrome/js'));
 });
 
-gulp.task('firefox', ['firefox js', 'css', 'firefox html', 'images', 'js', 'html',
+gulp.task('firefox', ['firefox:js', 'css', 'firefox:html', 'images', 'js', 'html',
                       'browserify', 'browserify2', 'font-awesome'],
           function() {
     return gulp.src(['xpi/*', '!xpi/js', '!xpi/*.html'])
         .pipe(gulp.dest('.build/firefox'));
 });
 
-gulp.task('firefox js', function() {
+gulp.task('firefox:js', function() {
     return gulp.src('xpi/js/*.js')
         .pipe(gulp.dest('.build/firefox/data/js'));
 });
 
 gulp.task('browserify', function() {
-    var bundle_stream = browserify(
-    {
+    var bundle_stream = browserify({
         entries: 'content/js/screenshot.js',
         standalone: 'screenshot',
     });
@@ -74,12 +73,12 @@ gulp.task('less', function() {
         .pipe(gulp.dest('.build/firefox/data/css'));
 });
 
-gulp.task('chrome html', function() {
+gulp.task('chrome:html', function() {
     return gulp.src('crx/*.html')
         .pipe(gulp.dest('.build/chrome'));
 });
 
-gulp.task('firefox html', function() {
+gulp.task('firefox:html', function() {
     return gulp.src('xpi/*.html')
         .pipe(gulp.dest('.build/firefox/data'));
 });
