@@ -63,6 +63,8 @@ saveButton.addEventListener('click', function() {
     chrome.storage.sync.get('userInfo', function(obj) {
         if (Object.keys(obj) != 0) {
             var userInfo = obj['userInfo'];
+        } else {
+            var userInfo = [];
         }
 
         // Update changed information
