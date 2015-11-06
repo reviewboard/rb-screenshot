@@ -119,10 +119,26 @@ function setDeleteListener(deleteButton) {
         var conf = confirm('Are you sure you want to delete: ' + server.innerHTML);
         if (conf) {
             table.deleteRow(server.parentNode.rowIndex - 1);
+            resetIds();
 
             if (toDelete.indexOf(Number(this.id)) == -1) {
                 toDelete.push(Number(this.id));
             }
         }
     });
+}
+
+// Reset ids after a row is deleted
+function resetIds() {
+    var rows = table.rows;
+
+    for (var i = 0; i < rows.length; i++) {
+        var cells = rows[i].getElementsByTagName('td');
+
+        // Modify cell ids to correspond to correct rows
+        cells[0].id = 'server' + i;
+        cells[1].id = 'user' + i;
+        cells[2].id = 'apiKey' + i;
+        cells[3].id = i;
+    }
 }
