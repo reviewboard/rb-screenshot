@@ -4,7 +4,7 @@ function saveInformation(apiKey, server, username) {
     var formInfo =  {
         apiKey: apiKey,
         username: username,
-        server: server
+        serverUrl: server
     }
     self.port.emit('save-info', formInfo);
 

@@ -36,18 +36,32 @@ pageMod.PageMod({
             ss.storage.userInfo.push({
                 apiKey: userInfo.apiKey,
                 username: userInfo.username,
-                server: userInfo.server
+                serverUrl: userInfo.serverUrl
             });
         } else {
             ss.storage.userInfo = [{
                 apiKey: userInfo.apiKey,
                 username: userInfo.username,
-                server: userInfo.server
+                serverUrl: userInfo.serverUrl
             }];
         }
         worker.port.emit('update');
     });
   }
+});
+
+pageMod.PageMod({
+    include: 'chrome://rb-screenshot/content/users.html',
+    contentScriptFile: ['./js/modify_users.js'],
+    onAttach: function(worker) {
+        worker.port.on('send-users', function() {
+            worker.port.emit('users', ss.storage.userInfo);
+        });
+
+        worker.port.on('modify-users', function(users) {
+            ss.storage.userInfo = users;
+        });
+    }
 });
 
 panel.port.on('capture-all-content', function() {
@@ -56,11 +70,15 @@ panel.port.on('capture-all-content', function() {
 
 panel.port.on('capture-area', function() {
     setScreenshot(true);
-})
+});
+
+panel.port.on('user', function() {
+    tabs.open('chrome://rb-screenshot/content/users.html');
+});
 
 panel.port.on('close', function() {
     panel.hide();
-})
+});
 
 function setScreenshot(area) {
     var wm = Cc["@mozilla.org/appshell/window-mediator;1"]
@@ -114,7 +132,7 @@ function setListeners(browser) {
             var reviewRequest = screenshot.getReviewId();
             var screenshotUri = screenshot.getScreenshotUri();
 
-            var serverUrl = userInfo.server;
+            var serverUrl = userInfo.serverUrl;
             var username = userInfo.username;
             var apiKey = userInfo.apiKey;
 
@@ -130,7 +148,7 @@ function setInfo(browser) {
     var userInfo = ss.storage.userInfo[index];
 
     browser.contentWindow.screenshot.setUsername(userInfo.username);
-    browser.contentWindow.screenshot.reviewRequests(userInfo.server, userInfo.username);
+    browser.contentWindow.screenshot.reviewRequests(userInfo.serverUrl, userInfo.username);
 }
 
 function setServers(browser) {
@@ -140,7 +158,7 @@ function setServers(browser) {
         for (var i = 0; i < userInfo.length; i++) {
             var option = browser.contentDocument.createElement('option');
             option.value = i;
-            option.text = userInfo[i].server;
+            option.text = userInfo[i].serverUrl;
             serverDropdown.add(option);
         }
         setInfo(browser);

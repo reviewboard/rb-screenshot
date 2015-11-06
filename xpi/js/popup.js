@@ -10,6 +10,9 @@ function click() {
         case '2':
             self.port.emit('capture-area');
             break;
+        case '4':
+            self.port.emit('user');
+            break;
         default:
             alert('Unhandled id');
     }
