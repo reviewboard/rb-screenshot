@@ -1,6 +1,4 @@
 var table = document.getElementById('user-info-body');
-var toDelete = [];
-var toAdd = [];
 var modified = false;
 
 // Set listeners for all table cells
@@ -33,24 +31,6 @@ self.port.on('users', function(users) {
         for (i = 0; i < tableCells.length; i++) {
             setCellListeners(tableCells[i]);
         }
-
-        // Set listener for delete buttons
-        var rows = table.rows.length;
-        for (var i = 0 ; i < rows; i++) {
-            var deleteButton = document.getElementById(i);
-            setDeleteListener(deleteButton)
-        }
-    }
-});
-
-// Set listener for add button
-var addButton = document.getElementById('add');
-addButton.addEventListener('click', function() {
-    var deleteButton = document.getElementById(table.rows.length - 1);
-    setDeleteListener(deleteButton)
-
-    if(toAdd.indexOf(table.rows.length - 1) == -1) {
-        toAdd.push(table.rows.length - 1);
     }
 });
 
@@ -98,8 +78,7 @@ saveButton.addEventListener('click', function() {
         }
 
         // Delete rows in deleteDiff
-        var deleteDiff = difference(toDelete, toAdd);
-        deleteDiff.sort();
+        var deleteDiff = difference();
 
         // Remove deleted information in reverse order as to not change
         // the indices while removing objects
@@ -108,40 +87,8 @@ saveButton.addEventListener('click', function() {
                 userInfo.splice(deleteDiff[i-1], 1);
             }
         }
-        toDelete = [];
-        toAdd = [];
         resetIds();
 
         self.port.emit('modify-users', userInfo);
     });
 });
-
-function setDeleteListener(deleteButton) {
-    deleteButton.addEventListener('click', function() {
-        var rowIndex = this.parentNode.rowIndex - 1;
-        var server = this.parentNode.cells[0];
-        var conf = confirm('Are you sure you want to delete: ' + server.innerHTML);
-        if (conf) {
-            table.deleteRow(rowIndex);
-
-            if (toDelete.indexOf(Number(this.id)) == -1) {
-                toDelete.push(Number(this.id));
-            }
-        }
-    });
-}
-
-// Reset ids after a row is deleted
-function resetIds() {
-    var rows = table.rows;
-
-    for (var i = 0; i < rows.length; i++) {
-        var cells = rows[i].getElementsByTagName('td');
-
-        // Modify cell ids to correspond to correct rows
-        cells[0].id = 'server' + i;
-        cells[1].id = 'user' + i;
-        cells[2].id = 'apiKey' + i;
-        cells[3].id = i;
-    }
-}

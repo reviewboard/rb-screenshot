@@ -1,5 +1,7 @@
 var table = document.getElementById('user-info-body');
 var currentElement = false;
+var toDelete = [];
+var toAdd = [];
 
 // Add listener to remove focus on element if user clicks outside element
 document.addEventListener('click', function(e) {
@@ -36,7 +38,12 @@ document.getElementById('add').addEventListener('click', function() {
     for (var i = 0; i < row.cells.length; i++) {
         setCellListeners(row.cells[i]);
     }
+
+    if(toAdd.indexOf(table.rows.length - 1) == -1) {
+        toAdd.push(table.rows.length - 1);
+    }
 });
+
 
 // Sets all the cell listeners for a given cell
 function setCellListeners(tableCell) {
@@ -54,16 +61,51 @@ function setCellListeners(tableCell) {
                 tableCell.blur();
             }
         });
+    } else if (tableCell.className == 'delete') {
+        setDeleteListener(tableCell);
     }
 }
 
-// Get the difference between arrays a and b
-function difference(a, b) {
+function setDeleteListener(deleteButton) {
+    deleteButton.addEventListener('click', function() {
+        var rowIndex = this.parentNode.rowIndex - 1;
+        var server = this.parentNode.cells[0];
+        var conf = confirm('Are you sure you want to delete: ' + server.innerHTML);
+        if (conf) {
+            table.deleteRow(rowIndex);
+
+            if (toDelete.indexOf(Number(this.id)) == -1) {
+                toDelete.push(Number(this.id));
+            }
+        }
+    });
+}
+
+// Reset ids after a row is deleted
+function resetIds() {
+    var rows = table.rows;
+
+    for (var i = 0; i < rows.length; i++) {
+        var cells = rows[i].getElementsByTagName('td');
+
+        // Modify cell ids to correspond to correct rows
+        cells[0].id = 'server' + i;
+        cells[1].id = 'user' + i;
+        cells[2].id = 'apiKey' + i;
+        cells[3].id = i;
+    }
+}
+
+// Get the difference between the toDelete array and the
+// toAdd array.
+function difference() {
     var diff = [];
-    a.forEach(function(key) {
-        if (b.indexOf(key) == -1) {
+    toDelete.forEach(function(key) {
+        if (toAdd.indexOf(key) == -1) {
             diff.push(key);
         }
     });
-    return diff;
+    toDelete = [];
+    toAdd = [];
+    return diff.sort();
 }
