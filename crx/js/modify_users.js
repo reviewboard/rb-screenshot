@@ -107,6 +107,7 @@ saveButton.addEventListener('click', function() {
         }
         toDelete = [];
         toAdd = [];
+        resetIds();
 
         chrome.storage.sync.set({'userInfo': userInfo});
     });
@@ -114,12 +115,11 @@ saveButton.addEventListener('click', function() {
 
 function setDeleteListener(deleteButton) {
     deleteButton.addEventListener('click', function() {
-        var serverId = 'server' + this.id;
-        var server = document.getElementById(serverId);
+        var rowIndex = this.parentNode.rowIndex - 1;
+        var server = this.parentNode.cells[0];
         var conf = confirm('Are you sure you want to delete: ' + server.innerHTML);
         if (conf) {
-            table.deleteRow(server.parentNode.rowIndex - 1);
-            resetIds();
+            table.deleteRow(rowIndex);
 
             if (toDelete.indexOf(Number(this.id)) == -1) {
                 toDelete.push(Number(this.id));
