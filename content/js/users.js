@@ -60,8 +60,6 @@ function setCellListeners(tableCell) {
 // Get the difference between arrays a and b
 function difference(a, b) {
     var diff = [];
-    console.log(a);
-    console.log(b);
     a.forEach(function(key) {
         if (b.indexOf(key) == -1) {
             diff.push(key);

@@ -1,11 +1,12 @@
 var table = document.getElementById('user-info-body');
 var toDelete = [];
 var toAdd = [];
+var modified = false;
 
 // Set listeners for all table cells
 self.port.emit('send-users');
 self.port.on('users', function(users) {
-    if(users != undefined && users.length != table.rows.length) {
+    if(users != undefined && users.length != table.rows.length && !modified) {
         for (var i = 0; i < users.length; i++) {
 
             var row = table.insertRow(i);
@@ -56,12 +57,18 @@ addButton.addEventListener('click', function() {
 // Set listener for save button
 var saveButton = document.getElementById('save');
 saveButton.addEventListener('click', function() {
+    modified = true;
     var tableRows = document.getElementById('user-info').rows;
     var tableCells = document.getElementsByTagName('td');
 
     self.port.emit('send-users');
     self.port.on('users', function(users) {
-        console.log(users);
+
+        if (users) {
+            userInfo = users;
+        } else {
+            userInfo = [];
+        }
 
         var tableCells = document.getElementsByTagName('td');
 
@@ -74,35 +81,51 @@ saveButton.addEventListener('click', function() {
                 var saveData = tableCells[i].id.slice(0, -1);
 
                 // If userInfo already exists or if it needs to be created
-                if (users[id]) {
+                if (userInfo[id]) {
                     if (saveData == 'server') {
-                        users[id].serverUrl = tableCells[i].innerHTML;
+                        userInfo[id].serverUrl = tableCells[i].innerHTML;
                     } else if (saveData == 'user') {
-                        users[id].username = tableCells[i].innerHTML;
+                        userInfo[id].username = tableCells[i].innerHTML;
                     } else if (saveData == 'apiKey') {
-                        users[id].apiKey = tableCells[i].innerHTML;
+                        userInfo[id].apiKey = tableCells[i].innerHTML;
                     }
                 } else {
                     // If it DNE, Server is the first unknown cell to be seen so
                     // push that information onto array.
-                    users.push({serverUrl: tableCells[i].innerHTML});
+                    userInfo.push({serverUrl: tableCells[i].innerHTML});
                 }
             }
         }
 
-    self.port.emit('modify-users', users);
+        // Delete rows in deleteDiff
+        var deleteDiff = difference(toDelete, toAdd);
+        deleteDiff.sort();
+
+        // Remove deleted information in reverse order as to not change
+        // the indices while removing objects
+        if (deleteDiff.length > 0) {
+            for (var i = deleteDiff.length; i > 0; i--) {
+                userInfo.splice(deleteDiff[i-1], 1);
+            }
+        }
+        toDelete = [];
+        toAdd = [];
+
+        self.port.emit('modify-users', userInfo);
     });
 });
 
 function setDeleteListener(deleteButton) {
     deleteButton.addEventListener('click', function() {
-        var serverId = 'server' + this.id;
+        var rowIndex = this.parentNode.rowIndex - 1;
+        var serverId = 'server' + rowIndex;
         var server = document.getElementById(serverId);
         var conf = confirm('Are you sure you want to delete: ' + server.innerHTML);
         if (conf) {
-            table.deleteRow(server.parentNode.rowIndex - 1);
+            table.deleteRow(this.parentNode.rowIndex - 1);
             resetIds();
 
+            console.log('delete for: ' + this.id);
             if (toDelete.indexOf(Number(this.id)) == -1) {
                 toDelete.push(Number(this.id));
             }
@@ -121,6 +144,5 @@ function resetIds() {
         cells[0].id = 'server' + i;
         cells[1].id = 'user' + i;
         cells[2].id = 'apiKey' + i;
-        cells[3].id = i;
     }
 }
