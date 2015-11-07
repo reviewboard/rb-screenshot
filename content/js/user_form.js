@@ -7,7 +7,7 @@ $(document).ready(function() {
     var server = $('#server');
     var allFields = $([]).add(apiKey).add(username).add(server);
 
-    $('#submit').click(function(event) {
+    $('#submit').button().on('click', function(event) {
         event.preventDefault();
         allFields.removeClass('ui-state-error');
 
@@ -47,9 +47,6 @@ $(document).ready(function() {
         dialog.dialog('open');
     });
 });
-
-function checkApiKey(apiKey) {
-}
 
 function updateTips(text) {
     var tips = $('.validateTips');

@@ -191,7 +191,10 @@ function drawCanvas(x, y, width, height) {
 }
 
 $(document).ready(function() {
-    $('#crop-button').click(function() {
+    // Set JQuery UI elements
+    $('#send-button').button();
+
+    $('#crop-button').button().on('click', function() {
         var x = $('#x').val();
         var y = $('#y').val();
         var w = $('#w').val();
