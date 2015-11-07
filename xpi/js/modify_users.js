@@ -110,6 +110,7 @@ saveButton.addEventListener('click', function() {
         }
         toDelete = [];
         toAdd = [];
+        resetIds();
 
         self.port.emit('modify-users', userInfo);
     });
@@ -118,14 +119,11 @@ saveButton.addEventListener('click', function() {
 function setDeleteListener(deleteButton) {
     deleteButton.addEventListener('click', function() {
         var rowIndex = this.parentNode.rowIndex - 1;
-        var serverId = 'server' + rowIndex;
-        var server = document.getElementById(serverId);
+        var server = this.parentNode.cells[0];
         var conf = confirm('Are you sure you want to delete: ' + server.innerHTML);
         if (conf) {
-            table.deleteRow(this.parentNode.rowIndex - 1);
-            resetIds();
+            table.deleteRow(rowIndex);
 
-            console.log('delete for: ' + this.id);
             if (toDelete.indexOf(Number(this.id)) == -1) {
                 toDelete.push(Number(this.id));
             }
@@ -144,5 +142,6 @@ function resetIds() {
         cells[0].id = 'server' + i;
         cells[1].id = 'user' + i;
         cells[2].id = 'apiKey' + i;
+        cells[3].id = i;
     }
 }
