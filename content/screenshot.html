@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="css/screenshot.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.Jcrop.min.css">
     <link rel="stylesheet" type="text/css" href="css/toastr.css">
@@ -18,20 +18,20 @@
                 <button id="add-user-button">Add User</button>
             </div>
             <div id="user-section">
-                    <label for="account-select">Account:</label>
-                    <select name="account-select" id="account-select"></select>
-                    <label for="rr-select">Review Request:</label>
-                    <select name="rr-select" id="rr-select"></select>
-                    <span id="username">Username: </span>
-           </div>
-           <div id="end-section">
+                <label for="account-select">Account:</label>
+                <select name="account-select" id="account-select"></select>
+                <label for="rr-select">Review Request:</label>
+                <select name="rr-select" id="rr-select"></select>
+                <span id="username">Username: </span>
+            </div>
+            <div id="end-section">
                 <button id="crop-button">Crop Image</button>
                 <button id="send-button">Send Image</button>
-           </div>
-       </section>
-       <div id="loading-div">
+            </div>
+        </section>
+        <div id="loading-div">
             <i id="loading" class="fa fa-spinner fa-spin fa-3x"></i>
-       </div>
+        </div>
         <section id="screenshot-section">
             <canvas id="canvas"></canvas>
             <img id="screenshot" src="images/filler.png">

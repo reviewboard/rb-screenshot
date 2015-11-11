@@ -35,6 +35,10 @@ exports.setServers = function setServers(userInfo) {
         option.text = userInfo[i].serverUrl;
         serverDropdown.add(option);
     }
+    serverDropdown.options[0].selected = true;
+    $('#account-select').selectmenu({
+        width: $(this).attr('width')
+    });
 };
 
 exports.addServerToList = function addServerToList(server) {
@@ -125,6 +129,10 @@ exports.reviewRequests = function reviewRequests(serverUrl, username) {
                                   json.review_requests[i].summary;
                     rrSelect.add(option);
                 }
+                rrSelect.options[0].selected = true;
+                $('#rr-select').selectmenu({
+                    width: $(this).attr('width')
+                });
             }
         }
     });
