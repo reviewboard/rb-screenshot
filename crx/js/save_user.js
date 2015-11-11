@@ -12,7 +12,7 @@ function saveInformation(apiKey, server, username) {
         switch (request.option) {
             case 'update':
                 var updateEvent = new Event('update');
-                document.getElementById('user-form').dispatchEvent(updateEvent)
+                document.getElementById('user-form').dispatchEvent(updateEvent);
                 break;
         }
     });

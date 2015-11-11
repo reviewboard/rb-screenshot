@@ -26,7 +26,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
         break;
     default:
         alert('Unmatched request from script to background 1');
-        // Todo: Add request to above string
     }
 });
 

@@ -155,12 +155,7 @@ function setServers(browser) {
     var serverDropdown = browser.contentDocument.getElementById('account-select');
     var userInfo = ss.storage.userInfo;
     if (userInfo) {
-        for (var i = 0; i < userInfo.length; i++) {
-            var option = browser.contentDocument.createElement('option');
-            option.value = i;
-            option.text = userInfo[i].serverUrl;
-            serverDropdown.add(option);
-        }
+        browser.contentWindow.screenshot.setServers(userInfo);
         setInfo(browser);
     }
 }

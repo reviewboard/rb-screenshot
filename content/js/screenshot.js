@@ -26,19 +26,29 @@ exports.setUsername = function setUsername(username) {
 }
 
 exports.setServers = function setServers(userInfo) {
+    console.log('a');
     var serverDropdown = document.getElementById('account-select');
     serverDropdown.options.length = 0;
 
+    console.log('b');
     for (var i = 0; i < userInfo.length; i++) {
         var option = document.createElement('option');
         option.value = i;
         option.text = userInfo[i].serverUrl;
         serverDropdown.add(option);
     }
+    console.log('c');
     serverDropdown.options[0].selected = true;
+    console.log('run');
     $('#account-select').selectmenu({
-        width: $(this).attr('width')
+        width: $(this).attr('width'),
+        change: function(event, data) {
+            var serverSelect = document.getElementById('account-select');
+            serverSelect.selectedIndex = data.item.value;
+            sendUpdateEvent();
+        }
     });
+    console.log('ran');
 };
 
 exports.addServerToList = function addServerToList(server) {
@@ -133,6 +143,7 @@ exports.reviewRequests = function reviewRequests(serverUrl, username) {
                 $('#rr-select').selectmenu({
                     width: $(this).attr('width')
                 });
+                $('#rr-select').selectmenu('refresh');
             }
         }
     });
@@ -196,6 +207,11 @@ function drawCanvas(x, y, width, height) {
     context.drawImage(image, x, y, width, height, 0, 0, width, height);
 
     return canvas.toDataURL();
+}
+
+function sendUpdateEvent() {
+    var updateEvent = new Event('update');
+    document.getElementById('user-form').dispatchEvent(updateEvent);
 }
 
 $(document).ready(function() {
