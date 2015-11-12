@@ -138,6 +138,7 @@ exports.reviewRequests = function reviewRequests(serverUrl, username) {
                 $('#rr-select').selectmenu({
                     width: $(this).attr('width')
                 });
+                $('#rr-select').selectmenu('refresh');
             }
         }
     });
