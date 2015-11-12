@@ -35,15 +35,7 @@ exports.setServers = function setServers(userInfo) {
         option.text = userInfo[i].serverUrl;
         serverDropdown.add(option);
     }
-    serverDropdown.options[0].selected = true;
-    $('#account-select').selectmenu({
-        width: $(this).attr('width'),
-        change: function(event, data) {
-            var serverSelect = document.getElementById('account-select');
-            serverSelect.selectedIndex = data.item.value;
-            sendUpdateEvent();
-        }
-    });
+    setServerSelectMenu(serverDropdown);
 };
 
 exports.addServerToList = function addServerToList(server) {
@@ -58,6 +50,7 @@ exports.addServerToList = function addServerToList(server) {
 
     option.text = server;
     serverDropdown.add(option);
+    setServerSelectMenu(serverDropdown);
 };
 
 exports.getScreenshotUri = function getScreenshotUri() {
@@ -136,7 +129,7 @@ exports.reviewRequests = function reviewRequests(serverUrl, username) {
                 }
                 rrSelect.options[0].selected = true;
                 $('#rr-select').selectmenu({
-                    width: $(this).attr('width')
+                    width: '50%'
                 });
                 $('#rr-select').selectmenu('refresh');
             }
@@ -169,8 +162,17 @@ exports.setScript = function setScript() {
     head.appendChild(userScript);
 }
 
-function largestWidth() {
-
+function setServerSelectMenu(serverDropdown) {
+    serverDropdown.options[0].selected = true;
+    $('#account-select').selectmenu({
+        width: '25%',
+        change: function(event, data) {
+            var serverSelect = document.getElementById('account-select');
+            serverSelect.selectedIndex = data.item.value;
+            sendUpdateEvent();
+        }
+    });
+    $('#account-select').selectmenu('refresh');
 }
 
 function resizeImage() {
@@ -216,6 +218,7 @@ function sendUpdateEvent() {
 $(document).ready(function() {
     // Set JQuery UI elements
     $('#send-button').button();
+    $('select').selectmenu();
 
     $('#crop-button').button().on('click', function() {
         var x = $('#x').val();
