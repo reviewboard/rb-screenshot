@@ -1,4 +1,5 @@
 var table = document.getElementById('user-info-body');
+var editCell;
 var currentElement = false;
 var toDelete = [];
 var toAdd = [];
@@ -9,6 +10,7 @@ document.addEventListener('click', function(e) {
         if (e.target.id != currentElement) {
             var current = document.getElementById(currentElement);
             current.contentEditable = false;
+            editCell.removeEventListener('paste', pasteListener);
             current.blur();
             currentElement = false;
         }
@@ -44,13 +46,16 @@ document.getElementById('add').addEventListener('click', function() {
     }
 });
 
-
 // Sets all the cell listeners for a given cell
 function setCellListeners(tableCell) {
     if (tableCell.id != 'footer-text' && tableCell.className != 'delete' &&
         tableCell.className != 'non-edit') {
         tableCell.addEventListener('dblclick', function() {
             tableCell.contentEditable = true;
+
+            editCell = document.querySelector('td[contentEditable=true]');
+            editCell.addEventListener('paste', pasteListener);
+
             tableCell.focus();
             currentElement = tableCell.id;
         });
@@ -58,12 +63,19 @@ function setCellListeners(tableCell) {
         tableCell.addEventListener('keypress', function(e) {
             if (e.keyCode == 13) {
                 tableCell.contentEditable = false;
+                editCell.removeEventListener('paste', pasteListener);
                 tableCell.blur();
             }
         });
     } else if (tableCell.className == 'delete') {
         setDeleteListener(tableCell);
     }
+}
+
+var pasteListener = function(event) {
+    event.preventDefault();
+    var text = event.clipboardData.getData('text/plain');
+    document.execCommand('insertHTML', false, text);
 }
 
 function setDeleteListener(deleteButton) {
