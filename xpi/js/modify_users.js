@@ -92,3 +92,7 @@ saveButton.addEventListener('click', function() {
         self.port.emit('modify-users', userInfo);
     });
 });
+
+self.port.on('success', function() {
+    toastr.success('User information successfully saved.');
+});

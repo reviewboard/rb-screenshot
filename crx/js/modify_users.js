@@ -85,6 +85,8 @@ saveButton.addEventListener('click', function() {
         }
         resetIds();
 
-        chrome.storage.sync.set({'userInfo': userInfo});
+        chrome.storage.sync.set({'userInfo': userInfo}, function() {
+            toastr.success('User information successfully saved.');
+        });
     });
 });

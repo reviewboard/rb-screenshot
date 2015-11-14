@@ -60,6 +60,7 @@ pageMod.PageMod({
 
         worker.port.on('modify-users', function(users) {
             ss.storage.userInfo = users;
+            worker.port.emit('success');
         });
     }
 });
