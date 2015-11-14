@@ -36,6 +36,7 @@ exports.setServers = function setServers(userInfo) {
         serverDropdown.add(option);
     }
     setServerSelectMenu(serverDropdown);
+    setSelectMenuWidth('account-select', 'account-overflow');
 };
 
 exports.addServerToList = function addServerToList(server) {
@@ -51,6 +52,7 @@ exports.addServerToList = function addServerToList(server) {
     option.text = server;
     serverDropdown.add(option);
     setServerSelectMenu(serverDropdown);
+    setSelectMenuWidth('account-select', 'account-overflow');
 };
 
 exports.getScreenshotUri = function getScreenshotUri() {
@@ -129,9 +131,10 @@ exports.reviewRequests = function reviewRequests(serverUrl, username) {
                 }
                 rrSelect.options[0].selected = true;
                 $('#rr-select').selectmenu({
-                    width: '50%'
+                    width: '35%'
                 });
                 $('#rr-select').selectmenu('refresh');
+                setSelectMenuWidth('rr-select', 'rr-overflow');
             }
         }
     });
@@ -215,10 +218,26 @@ function sendUpdateEvent() {
     document.getElementById('user-form').dispatchEvent(updateEvent);
 }
 
+// Sets the width of the selectmenu dropdown
+function setSelectMenuWidth(selectmenuId, className) {
+    $('#' + selectmenuId + '-menu').addClass(className);
+
+    var selectButtonId = selectmenuId + '-button'
+    console.log(selectButtonId)
+    var w = document.getElementById(selectButtonId).offsetWidth + 'px';
+    var overflowClass = document.querySelector('.' + className);
+    overflowClass.style.maxWidth = w;
+}
+
 $(document).ready(function() {
     // Set JQuery UI elements
     $('#send-button').button();
-    $('select').selectmenu();
+    $('select').selectmenu({
+        width:'25%'
+    });
+    $('#rr-select').selectmenu({
+        width: '35%'
+    });
 
     $('#crop-button').button().on('click', function() {
         var x = $('#x').val();

@@ -3,7 +3,8 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  line-height: 25px;
+  height: 30px;
+  line-height: 30px;
   padding: 5px 0px;
   width: 100%;
 }
@@ -13,14 +14,11 @@
 #canvas {
   display: none;
 }
-.ui-state-default .ui-icon {
-  background-image: url("../images/ui-icons_222222_256x240.png");
+.ui-button {
+  vertical-align: top;
 }
-#account-select-button {
-  vertical-align: middle;
-}
-#rr-select-button {
-  vertical-align: middle;
+.ui-selectmenu-button {
+  vertical-align : top;
 }
 #loading-div {
   display: none;
@@ -49,6 +47,14 @@
 #user-section {
   display: inline-block;
   flex-grow: 2;
+}
+#username {
+  font-size: 1.0em;
+  font-weight: bold;
+  margin: 0px 10px;
+}
+#user-section label {
+  #username();
 }
 #end-section {
   margin-right: 5px;
