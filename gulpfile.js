@@ -12,7 +12,7 @@ gulp.task('build', ['chrome', 'firefox'], function() {
 });
 
 gulp.task('chrome', ['chrome:js', 'css', 'chrome:html', 'images', 'js', 'html',
-                     'browserify', 'browserify2', 'font-awesome', 'jquery:ui'],
+                     'browserify', 'browserify2', 'fonts', 'jquery:ui'],
           function() {
     return gulp.src('crx/*')
         .pipe(gulp.dest('.build/chrome'));
@@ -24,7 +24,7 @@ gulp.task('chrome:js', function() {
 });
 
 gulp.task('firefox', ['firefox:js', 'css', 'firefox:html', 'images', 'js', 'html',
-                      'browserify', 'browserify2', 'font-awesome', 'jquery:ui'],
+                      'browserify', 'browserify2', 'fonts', 'jquery:ui'],
           function() {
     return gulp.src(['xpi/*', '!xpi/js', '!xpi/*.html'])
         .pipe(gulp.dest('.build/firefox'));
@@ -113,8 +113,8 @@ gulp.task('jquery:ui', function() {
         .pipe(gulp.dest('.build/firefox/data/css/images'));
 });
 
-gulp.task('font-awesome', function() {
-    return gulp.src('content/font-awesome/**/*')
-        .pipe(gulp.dest('.build/chrome/font-awesome'))
-        .pipe(gulp.dest('.build/firefox/data/font-awesome'));
+gulp.task('fonts', function() {
+    return gulp.src('content/fonts/*')
+        .pipe(gulp.dest('.build/chrome/fonts'))
+        .pipe(gulp.dest('.build/firefox/data/fonts'));
 });
