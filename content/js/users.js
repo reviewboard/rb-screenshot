@@ -4,6 +4,11 @@ var currentElement = false;
 var toDelete = [];
 var toAdd = [];
 
+$(document).ready(function() {
+    // Set Jquery UI Button element
+    $('#save').button();
+});
+
 // Add listener to remove focus on element if user clicks outside element
 document.addEventListener('click', function(e) {
     if (currentElement) {

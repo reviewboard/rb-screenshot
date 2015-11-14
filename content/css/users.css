@@ -1,8 +1,11 @@
 body {
   font-family: "FontAwesome";
+  font-size: 0.75em;
+  text-align: center;
 }
 table {
   border-collapse: collapse;
+  text-align: left;
 }
 
 thead {
@@ -34,7 +37,8 @@ tfoot tr td {
 }
 
 button {
-  margin: 5px;
+  display: block !important;
+  margin: 10px auto !important;
 }
 
 #add {
@@ -43,4 +47,8 @@ button {
 
 #user-select {
   list-style-type: none;
+}
+
+#table-div {
+  display: inline-block;
 }
