@@ -1,71 +1,73 @@
 <!doctype html>
-<html>
-    <head>
-    <link rel="stylesheet" href="css/jquery-ui.min.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/screenshot.css">
-    <link rel="stylesheet" type="text/css" href="css/jquery.Jcrop.min.css">
-    <link rel="stylesheet" type="text/css" href="css/toastr.css">
-    <script src="js/jquery-2.1.4.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/jquery.Jcrop.min.js"></script>
-    <script src="js/toastr.min.js"></script>
-    <script src="js/screenshot.js"></script>
-    </head>
-    <body>
-        <section id="options-section">
-            <div id="new-user-section">
-                <button id="add-user-button">Add User</button>
-            </div>
-            <div id="user-section">
-                <label for="account-select">Account:</label>
-                <select name="account-select" id="account-select"></select>
-                <label for="rr-select">Review Request:</label>
-                <select name="rr-select" id="rr-select"></select>
-                <span id="username">Username: </span>
-            </div>
-            <div id="end-section">
-                <button id="crop-button">Crop Image</button>
-                <button id="send-button">Send Image</button>
-            </div>
-        </section>
-        <div id="loading-div">
-            <i id="loading" class="fa fa-spinner fa-spin fa-3x"></i>
-        </div>
-        <section id="screenshot-section">
-            <canvas id="canvas"></canvas>
-            <img id="screenshot" src="images/filler.png">
-        </section>
-        <div id="dialog-form" title="Create new user">
-            <p class="validateTips">All form fields are required.</p>
+<html lang="en">
+ <head>
+ <title>Reviewboard Screenshot Extension</title>
+ <meta charset="utf-8">
+ <link rel="stylesheet" href="css/jquery-ui.min.css">
+ <link rel="stylesheet" href="css/font-awesome.min.css" />
+ <link rel="stylesheet" type="text/css" href="css/screenshot.css">
+ <link rel="stylesheet" type="text/css" href="css/jquery.Jcrop.min.css">
+ <link rel="stylesheet" type="text/css" href="css/toastr.css">
+ <script src="js/jquery-2.1.4.min.js"></script>
+ <script src="js/jquery-ui.min.js"></script>
+ <script src="js/jquery.Jcrop.min.js"></script>
+ <script src="js/toastr.min.js"></script>
+ <script src="js/screenshot.js"></script>
+ </head>
+ <body>
+  <section id="options-section">
+   <div id="new-user-section">
+    <button id="add-user-button">Add User</button>
+   </div>
+   <div id="user-section">
+    <label for="account-select">Account:</label>
+    <select name="account-select" id="account-select"></select>
+    <label for="rr-select">Review Request:</label>
+    <select name="rr-select" id="rr-select"></select>
+    <span id="username">Username: </span>
+   </div>
+   <div id="end-section">
+    <button id="crop-button">Crop Image</button>
+    <button id="send-button">Send Image</button>
+   </div>
+  </section>
+  <div id="loading-div">
+   <i id="loading" class="fa fa-spinner fa-spin fa-3x"></i>
+  </div>
+  <section id="screenshot-section">
+   <canvas id="canvas"></canvas>
+   <img id="screenshot" src="images/filler.png">
+  </section>
+  <div id="dialog-form" title="Create new user">
+   <p class="validateTips">All form fields are required.</p>
 
-            <form class="form" id="user-form">
-                <p class="server">
-                    <input type="text" name="server" id="server">
-                    <label for="server">Server</label>
-                </p>
+   <form class="form" id="user-form">
+    <p class="server">
+     <input type="text" name="server" id="server">
+     <label for="server">Server</label>
+    </p>
 
-                <p class="username">
-                    <input type="text" name="username" id="username-input">
-                    <label for"username">Username</label>
-                </p>
+    <p class="username">
+     <input type="text" name="username" id="username-input">
+     <label for"username">Username</label>
+    </p>
 
-                <p class="api-key">
-                    <input type="text" name="api-key" id="api-key">
-                    <label for="api-key">API Key</label>
-                </p>
+    <p class="api-key">
+     <input type="text" name="api-key" id="api-key">
+     <label for="api-key">API Key</label>
+    </p>
 
-                <p class="submit">
-                    <button id="submit">Submit</button>
-                </p>
-            </form>
-        </div>
-        <!-- Form for holding crop box values-->
-        <form>
-            <input type="hidden" id="x" name="x" />
-            <input type="hidden" id="y" name="y" />
-            <input type="hidden" id="w" name="w" />
-            <input type="hidden" id="h" name="h" />
-        </form>
-    </body>
+    <p class="submit">
+     <button id="submit">Submit</button>
+    </p>
+   </form>
+  </div>
+  <!-- Form for holding crop box values-->
+  <form>
+   <input type="hidden" id="x" name="x" />
+   <input type="hidden" id="y" name="y" />
+   <input type="hidden" id="w" name="w" />
+   <input type="hidden" id="h" name="h" />
+  </form>
+ </body>
 </html>
