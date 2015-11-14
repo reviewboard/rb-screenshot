@@ -14,8 +14,8 @@ document.addEventListener('click', function(e) {
     if (currentElement) {
         if (e.target.id != currentElement) {
             var current = document.getElementById(currentElement);
-            current.contentEditable = false;
-            editCell.removeEventListener('paste', pasteListener);
+            contentNotEditable(current);
+            removePasteListeners(current);
             current.blur();
             currentElement = false;
         }
@@ -56,19 +56,17 @@ function setCellListeners(tableCell) {
     if (tableCell.id != 'footer-text' && tableCell.className != 'delete' &&
         tableCell.className != 'non-edit') {
         tableCell.addEventListener('dblclick', function() {
-            tableCell.contentEditable = true;
-
+            contentEditable(tableCell);
+            addPasteListeners(tableCell);
             editCell = document.querySelector('td[contentEditable=true]');
-            editCell.addEventListener('paste', pasteListener);
-
             tableCell.focus();
             currentElement = tableCell.id;
         });
 
         tableCell.addEventListener('keypress', function(e) {
             if (e.keyCode == 13) {
-                tableCell.contentEditable = false;
-                editCell.removeEventListener('paste', pasteListener);
+                contentNotEditable(tableCell);
+                removePasteListeners(tableCell);
                 tableCell.blur();
             }
         });
@@ -83,11 +81,46 @@ var pasteListener = function(event) {
     document.execCommand('insertHTML', false, text);
 }
 
+// Add the paste listeners associated with a given cell's row
+function addPasteListeners(cell) {
+    var parentRow = cell.parentNode;
+    parentRow.cells[0].addEventListener('paste', pasteListener);
+    parentRow.cells[1].addEventListener('paste', pasteListener);
+    parentRow.cells[2].addEventListener('paste', pasteListener);
+}
+
+// Remove the paste listeners associated with a given cell's row
+function removePasteListeners(cell) {
+    var parentRow = cell.parentNode;
+    parentRow.cells[0].removeEventListener('paste', pasteListener);
+    parentRow.cells[1].removeEventListener('paste', pasteListener);
+    parentRow.cells[2].removeEventListener('paste', pasteListener);
+}
+
+// Sets the passed cell's row to be entirely editable
+function contentEditable(cell) {
+    var parentRow = cell.parentNode;
+    parentRow.cells[0].contentEditable = true;
+    parentRow.cells[1].contentEditable = true;
+    parentRow.cells[2].contentEditable = true;
+};
+
+// Sets the passed cell's row to be non editable
+function contentNotEditable(cell) {
+    var parentRow = cell.parentNode;
+    parentRow.cells[0].contentEditable = false;
+    parentRow.cells[1].contentEditable = false;
+    parentRow.cells[2].contentEditable = false;
+}
+
 function setDeleteListener(deleteButton) {
     deleteButton.addEventListener('click', function() {
         var rowIndex = this.parentNode.rowIndex - 1;
         var server = this.parentNode.cells[0];
-        var conf = confirm('Are you sure you want to delete: ' + server.innerHTML);
+        var username = this.parentNode.cells[1];
+        var conf = confirm('Are you sure you want to delete ' +
+                           server.textContent + ' associated with username: ' +
+                           username.textContent +'?');
         if (conf) {
             table.deleteRow(rowIndex);
 
