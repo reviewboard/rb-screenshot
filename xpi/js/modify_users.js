@@ -57,22 +57,22 @@ saveButton.addEventListener('click', function() {
             var id = tableCells[i].id.slice(-1);
 
             if (id && tableCells[i].className != 'delete' &&
-                (Number(id) || (Number(id) == 0)) && tableCells[i].innerHTML) {
+                (Number(id) || (Number(id) == 0)) && tableCells[i].textContent) {
                 var saveData = tableCells[i].id.slice(0, -1);
 
                 // If userInfo already exists or if it needs to be created
                 if (userInfo[id]) {
                     if (saveData == 'server') {
-                        userInfo[id].serverUrl = tableCells[i].innerHTML;
+                        userInfo[id].serverUrl = tableCells[i].textContent;
                     } else if (saveData == 'user') {
-                        userInfo[id].username = tableCells[i].innerHTML;
+                        userInfo[id].username = tableCells[i].textContent;
                     } else if (saveData == 'apiKey') {
-                        userInfo[id].apiKey = tableCells[i].innerHTML;
+                        userInfo[id].apiKey = tableCells[i].textContent;
                     }
                 } else {
                     // If it DNE, Server is the first unknown cell to be seen so
                     // push that information onto array.
-                    userInfo.push({serverUrl: tableCells[i].innerHTML});
+                    userInfo.push({serverUrl: tableCells[i].textContent});
                 }
             }
         }
