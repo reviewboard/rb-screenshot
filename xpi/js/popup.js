@@ -1,6 +1,5 @@
 var id = 100;
 
-// Check for button id when more screenshot functionality added
 function click() {
     self.port.emit('close');
     switch(this.id) {
@@ -10,7 +9,7 @@ function click() {
         case '2':
             self.port.emit('capture-area');
             break;
-        case '4':
+        case '3':
             self.port.emit('user');
             break;
         default:

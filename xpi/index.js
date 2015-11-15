@@ -18,8 +18,8 @@ var button = ToggleButton({
 });
 
 var panel = panels.Panel({
-    height: 210,
-    width: 200,
+    height: 175,
+    width: 175,
     contentURL: self.data.url("popup.html"),
     contentScriptFile: self.data.url("js/popup.js"),
     contentScriptWhen: 'ready',

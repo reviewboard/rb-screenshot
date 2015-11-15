@@ -1,16 +1,24 @@
 <!doctype html>
 
-<html>
-    <head>
-        <title>Review Board Popup</title>
-        <link rel="stylesheet" type="text/css" href="css/popup.css">
-        <script src="js/popup.js"></script>
-    </head>
-    <body>
-        <h4>Review Board Screenshot Tool</h4>
-        <a href="#" id="1" class="options">Capture Visible Content</a>
-        <a href="#" id="2" class="options">Capture Area</a>
-        <a href="#" id="3" class="options">Capture All Content</a>
-        <a href="#" id="4" class="options">Edit Users/Servers</a>
-    </body>
+<html lang="en">
+ <head>
+  <meta charset="utf-8">
+  <title>Review Board Popup</title>
+  <link rel="stylesheet" type="text/css" href="css/popup.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css" />
+  <script src="js/popup.js"></script>
+ </head>
+ <body>
+  <div id="container">
+   <div id="title">
+    <img id="logo" src="images/logo.png">
+   </div>
+   <div id="buttons">
+    <!-- Chrome automatically gives focus to one of the elements with tabindex > 0 -->
+    <a href="#" tabindex="-1" id="1" class="options">Capture Visible Content</a>
+    <a href="#" tabindex="-1" id="2" class="options">Capture Area</a>
+    <a href="#" tabindex="-1" id="3" class="options">Edit Users/Servers</a>
+   </div>
+  </div>
+ </body>
 </html>
