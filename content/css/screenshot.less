@@ -1,3 +1,7 @@
+/****************************************************************************
+ * Options Section
+ ****************************************************************************/
+
 #options-section {
   background-color: gainsboro;
   border-bottom: 2px solid #D2D2D2;
@@ -9,67 +13,101 @@
   padding: 5px 0px;
   width: 100%;
 }
+
 .option-title {
   padding-right: 5px;
 }
-#canvas {
-  display: none;
-}
-.ui-button {
-  vertical-align: top;
-}
-.ui-selectmenu-button {
-  vertical-align : top;
-}
-#loading-div {
-  display: none;
-  text-align: center;
-  width: 100%;
-}
-#loading {
-  margin-top: 5px;
-}
-#screenshot {
-  display: block;
-  margin: auto;
-  padding-top: 25px;
-}
-.ui-dialog {
-  z-index: 91;
-}
-.jcrop-holder {
-  margin: 30px auto auto auto;
-  z-index: 90;
-}
+
 #new-user-section {
   flex-grow: 1;
   margin-left: 5px;
 }
+
 #user-section {
   display: inline-block;
   flex-grow: 2;
 }
+
 #username {
   font-size: 1.0em;
   font-weight: bold;
   margin: 0px 10px;
 }
+
 #user-section label {
   #username();
 }
+
 #end-section {
   margin-right: 5px;
 }
-#end-section button {
-  margin-right: 5px;
-}
-button {
-  padding: 5px;
-}
+
 select {
   margin-right: 30px;
   padding-right: 5px;
 }
+
+/****************************************************************************
+ * Options Section - Buttons
+ ****************************************************************************/
+
+.ui-button {
+  vertical-align: top;
+}
+
+.ui-selectmenu-button {
+  vertical-align : top;
+}
+
+#end-section button {
+  margin-right: 5px;
+}
+
+button {
+  padding: 5px;
+}
+
+/****************************************************************************
+ * Loading Section
+ ****************************************************************************/
+
+#loading-div {
+  display: none;
+  text-align: center;
+  width: 100%;
+}
+
+#loading {
+  margin-top: 5px;
+}
+
+/****************************************************************************
+ * Screenshot Section
+ ****************************************************************************/
+
+#screenshot {
+  display: block;
+  margin: auto;
+  padding-top: 25px;
+}
+
+.jcrop-holder {
+  margin: 30px auto auto auto;
+  z-index: 90;
+}
+
+#canvas {
+  display: none;
+}
+
+/****************************************************************************
+ * Dialog
+ ****************************************************************************/
+
+.ui-dialog {
+  z-index: 91;
+}
+
 body {
   font-family: "FontAwesome";
   font-size: 0.75em;
