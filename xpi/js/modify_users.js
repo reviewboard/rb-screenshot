@@ -1,6 +1,11 @@
 var table = document.getElementById('user-info-body');
 var modified = false;
 
+function successToast() {
+    toastr.success('User information successfully saved.');
+    self.port.removeListener('success', successToast);
+}
+
 // Set listeners for all table cells
 self.port.emit('send-users');
 self.port.on('users', function(users) {
@@ -35,6 +40,7 @@ self.port.on('users', function(users) {
 
 var saveButton = document.getElementById('save');
 saveButton.addEventListener('click', function() {
+    self.port.on('success', successToast);
     modified = true;
     var tableRows = document.getElementById('user-info').rows;
     var tableCells = document.getElementsByTagName('td');
@@ -85,8 +91,4 @@ saveButton.addEventListener('click', function() {
 
         self.port.emit('modify-users', userInfo);
     });
-});
-
-self.port.on('success', function() {
-    toastr.success('User information successfully saved.');
 });
