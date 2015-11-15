@@ -52,7 +52,6 @@ exports.addServerToList = function addServerToList(server) {
     option.text = server;
     serverDropdown.add(option);
     setServerSelectMenu(serverDropdown);
-    setSelectMenuWidth('account-select', 'account-overflow');
 };
 
 exports.getScreenshotUri = function getScreenshotUri() {
@@ -148,7 +147,9 @@ exports.setCrop = function setCrop() {
             onSelect: updateCoords,
             setSelect: [100, 100, 50, 50]
         });
-        document.getElementById('crop-button').disabled = false;
+        $('#crop-button').button({
+            disabled: false
+        });
     });
 }
 
@@ -222,24 +223,34 @@ function sendUpdateEvent() {
 function setSelectMenuWidth(selectmenuId, className) {
     $('#' + selectmenuId + '-menu').addClass(className);
 
-    var selectButtonId = selectmenuId + '-button'
-    console.log(selectButtonId)
+    var selectButtonId = selectmenuId + '-button';
     var w = document.getElementById(selectButtonId).offsetWidth + 'px';
     var overflowClass = document.querySelector('.' + className);
     overflowClass.style.maxWidth = w;
 }
 
+function disableCrop() {
+    $('#crop-button').button({
+        disabled: true
+    });
+    $('#crop-button').off('click');
+    $('#crop-button').button('refresh');
+}
+
 $(document).ready(function() {
     // Set JQuery UI elements
     $('#send-button').button();
-    $('select').selectmenu({
-        width:'25%'
+    $('#account-select').selectmenu({
+        width: '25%'
     });
     $('#rr-select').selectmenu({
         width: '35%'
     });
 
-    $('#crop-button').button().on('click', function() {
+    $('#crop-button').button({
+        disabled: true
+    });
+    $('#crop-button').button().mousedown(function() {
         var x = $('#x').val();
         var y = $('#y').val();
         var w = $('#w').val();
@@ -253,7 +264,9 @@ $(document).ready(function() {
             $(this).remove();
         });
     });
-    document.getElementById('crop-button').disabled = true;
+    $('#crop-button').button().mouseup(function() {
+        disableCrop();
+    })
 
     toastr.options = {
         "closeButton": true,
