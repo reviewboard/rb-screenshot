@@ -4,54 +4,6 @@ var currentElement = false;
 var toDelete = [];
 var toAdd = [];
 
-$(document).ready(function() {
-    // Set Jquery UI Button element
-    $('#save').button();
-});
-
-// Add listener to remove focus on element if user clicks outside element
-document.addEventListener('click', function(e) {
-    if (currentElement) {
-        if (e.target.id != currentElement) {
-            var current = document.getElementById(currentElement);
-            contentNotEditable(current);
-            removePasteListeners(current);
-            current.blur();
-            currentElement = false;
-        }
-    }
-});
-
-// Add listener for creating a new table row
-document.getElementById('add').addEventListener('click', function() {
-    var id = table.rows.length;
-    var row = table.insertRow(id);
-    var server = row.insertCell(0);
-    var user = row.insertCell(1);
-    var apiKey = row.insertCell(2);
-    var del = row.insertCell(3);
-    row.insertCell(4);
-
-    server.id = 'server' + id;
-    server.setAttribute('data-attr', 'Server URL');
-    user.id = 'user' + id;
-    user.setAttribute('data-attr', 'Username');
-    apiKey.id = 'apiKey' + id;
-    apiKey.setAttribute('data-attr', 'API Key');
-    del.innerHTML = '<i class="fa fa-times"></i>';
-    del.id = id;
-    del.className = 'delete';
-
-    for (var i = 0; i < row.cells.length; i++) {
-        setCellListeners(row.cells[i]);
-    }
-
-    if(toAdd.indexOf(table.rows.length - 1) == -1) {
-        toAdd.push(table.rows.length - 1);
-    }
-});
-
-// Sets all the cell listeners for a given cell
 function setCellListeners(tableCell) {
     if (tableCell.id != 'footer-text' && tableCell.className != 'delete' &&
         tableCell.className != 'non-edit') {
@@ -75,44 +27,6 @@ function setCellListeners(tableCell) {
     }
 }
 
-var pasteListener = function(event) {
-    event.preventDefault();
-    var text = event.clipboardData.getData('text/plain');
-    document.execCommand('insertHTML', false, text);
-}
-
-// Add the paste listeners associated with a given cell's row
-function addPasteListeners(cell) {
-    var parentRow = cell.parentNode;
-    parentRow.cells[0].addEventListener('paste', pasteListener);
-    parentRow.cells[1].addEventListener('paste', pasteListener);
-    parentRow.cells[2].addEventListener('paste', pasteListener);
-}
-
-// Remove the paste listeners associated with a given cell's row
-function removePasteListeners(cell) {
-    var parentRow = cell.parentNode;
-    parentRow.cells[0].removeEventListener('paste', pasteListener);
-    parentRow.cells[1].removeEventListener('paste', pasteListener);
-    parentRow.cells[2].removeEventListener('paste', pasteListener);
-}
-
-// Sets the passed cell's row to be entirely editable
-function contentEditable(cell) {
-    var parentRow = cell.parentNode;
-    parentRow.cells[0].contentEditable = true;
-    parentRow.cells[1].contentEditable = true;
-    parentRow.cells[2].contentEditable = true;
-};
-
-// Sets the passed cell's row to be non editable
-function contentNotEditable(cell) {
-    var parentRow = cell.parentNode;
-    parentRow.cells[0].contentEditable = false;
-    parentRow.cells[1].contentEditable = false;
-    parentRow.cells[2].contentEditable = false;
-}
-
 function setDeleteListener(deleteButton) {
     deleteButton.addEventListener('click', function() {
         var rowIndex = this.parentNode.rowIndex - 1;
@@ -131,7 +45,6 @@ function setDeleteListener(deleteButton) {
     });
 }
 
-// Reset ids after a row is deleted
 function resetIds() {
     var rows = table.rows;
 
@@ -159,3 +72,86 @@ function difference() {
     toAdd = [];
     return diff.sort();
 }
+
+// Listener that gets plain text only from a paste event
+var pasteListener = function(event) {
+    event.preventDefault();
+    var text = event.clipboardData.getData('text/plain');
+    document.execCommand('insertHTML', false, text);
+}
+
+// Functions below deal with an entire cell's row
+function addPasteListeners(cell) {
+    var parentRow = cell.parentNode;
+    parentRow.cells[0].addEventListener('paste', pasteListener);
+    parentRow.cells[1].addEventListener('paste', pasteListener);
+    parentRow.cells[2].addEventListener('paste', pasteListener);
+}
+
+function removePasteListeners(cell) {
+    var parentRow = cell.parentNode;
+    parentRow.cells[0].removeEventListener('paste', pasteListener);
+    parentRow.cells[1].removeEventListener('paste', pasteListener);
+    parentRow.cells[2].removeEventListener('paste', pasteListener);
+}
+
+function contentEditable(cell) {
+    var parentRow = cell.parentNode;
+    parentRow.cells[0].contentEditable = true;
+    parentRow.cells[1].contentEditable = true;
+    parentRow.cells[2].contentEditable = true;
+};
+
+function contentNotEditable(cell) {
+    var parentRow = cell.parentNode;
+    parentRow.cells[0].contentEditable = false;
+    parentRow.cells[1].contentEditable = false;
+    parentRow.cells[2].contentEditable = false;
+}
+
+$(document).ready(function() {
+    // Set Jquery UI elements
+    $('#save').button();
+
+    // Listener that removes focus on element if user clicks outside element
+    document.addEventListener('click', function(e) {
+        if (currentElement) {
+            if (e.target.id != currentElement) {
+                var current = document.getElementById(currentElement);
+                contentNotEditable(current);
+                removePasteListeners(current);
+                current.blur();
+                currentElement = false;
+            }
+        }
+    });
+
+    // Listener for creating a new table row
+    document.getElementById('add').addEventListener('click', function() {
+        var id = table.rows.length;
+        var row = table.insertRow(id);
+        var server = row.insertCell(0);
+        var user = row.insertCell(1);
+        var apiKey = row.insertCell(2);
+        var del = row.insertCell(3);
+        row.insertCell(4);
+
+        server.id = 'server' + id;
+        server.setAttribute('data-attr', 'Server URL');
+        user.id = 'user' + id;
+        user.setAttribute('data-attr', 'Username');
+        apiKey.id = 'apiKey' + id;
+        apiKey.setAttribute('data-attr', 'API Key');
+        del.innerHTML = '<i class="fa fa-times"></i>';
+        del.id = id;
+        del.className = 'delete';
+
+        for (var i = 0; i < row.cells.length; i++) {
+            setCellListeners(row.cells[i]);
+        }
+
+        if(toAdd.indexOf(table.rows.length - 1) == -1) {
+            toAdd.push(table.rows.length - 1);
+        }
+    });
+});

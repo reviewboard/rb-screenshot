@@ -94,8 +94,6 @@ exports.getReviewId = function getReviewId() {
     return $('#rr-select').val();
 }
 
-// Makes request to a Review Board server for a given user's Review Requests.
-// Function then updates the review request dropdown box in screenshot.html.
 exports.reviewRequests = function reviewRequests(serverUrl, username) {
     var requestUrl = url.resolve(serverUrl, 'api/review-requests/');
     var rrSelect =  document.getElementById('rr-select');
