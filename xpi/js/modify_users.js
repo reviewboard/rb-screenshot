@@ -26,7 +26,6 @@ self.port.on('users', function(users) {
             pad.className = 'non-edit';
         }
 
-        // Set double click and enter listener for each table cell (except footer)
         var tableCells = document.getElementsByTagName('td');
         for (i = 0; i < tableCells.length; i++) {
             setCellListeners(tableCells[i]);
@@ -34,7 +33,6 @@ self.port.on('users', function(users) {
     }
 });
 
-// Set listener for save button
 var saveButton = document.getElementById('save');
 saveButton.addEventListener('click', function() {
     modified = true;
@@ -60,7 +58,6 @@ saveButton.addEventListener('click', function() {
                 (Number(id) || (Number(id) == 0)) && tableCells[i].textContent) {
                 var saveData = tableCells[i].id.slice(0, -1);
 
-                // If userInfo already exists or if it needs to be created
                 if (userInfo[id]) {
                     if (saveData == 'server') {
                         userInfo[id].serverUrl = tableCells[i].textContent;
@@ -70,14 +67,11 @@ saveButton.addEventListener('click', function() {
                         userInfo[id].apiKey = tableCells[i].textContent;
                     }
                 } else {
-                    // If it DNE, Server is the first unknown cell to be seen so
-                    // push that information onto array.
                     userInfo.push({serverUrl: tableCells[i].textContent});
                 }
             }
         }
 
-        // Delete rows in deleteDiff
         var deleteDiff = difference();
 
         // Remove deleted information in reverse order as to not change

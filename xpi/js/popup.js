@@ -1,5 +1,3 @@
-var id = 100;
-
 function click() {
     self.port.emit('close');
     switch(this.id) {
