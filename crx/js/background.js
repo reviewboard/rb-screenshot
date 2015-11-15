@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
     case 'update':
         break;
     default:
-        alert('Unmatched request from script to background 1');
+        console.log('Unmatched request from script to background 1');
     }
 });
 

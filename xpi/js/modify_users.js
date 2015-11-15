@@ -4,7 +4,7 @@ var modified = false;
 // Set listeners for all table cells
 self.port.emit('send-users');
 self.port.on('users', function(users) {
-    if(users != undefined && users.length != table.rows.length && !modified) {
+    if(users && users.length != table.rows.length && !modified) {
         for (var i = 0; i < users.length; i++) {
 
             var row = table.insertRow(i);
