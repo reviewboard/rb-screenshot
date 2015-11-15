@@ -1,7 +1,7 @@
 // Variable to keep an id for when user opens multiple screenshot tabs.
 var id = 1;
 
-// Listens to messages from other scripts. Executes commands based on message.
+// Listens to messages from other scripts
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
     switch (request.option) {
     case 'visible-content':
@@ -29,8 +29,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
     }
 });
 
-function tabScreenshotEntire() {}
-
 // Take screenshot of all visible web content.
 function tabScreenshot(area) {
     chrome.tabs.captureVisibleTab(function (screenshotUrl) {
@@ -43,7 +41,6 @@ function tabScreenshot(area) {
             }
             chrome.tabs.onUpdated.removeListener(listener);
 
-            // May have to move out of here when other screenshot functions added
             var views = chrome.extension.getViews();
             for (var i = 0; i < views.length; i++) {
                 var view = views[i];
@@ -60,7 +57,6 @@ function tabScreenshot(area) {
             }
         });
 
-        // Get tabId for the screenshot.html tab
         chrome.tabs.create({url: tabUrl}, function(tab) {
             targetTabId = tab.id;
         });
@@ -68,17 +64,14 @@ function tabScreenshot(area) {
 }
 
 function setListeners(screenshotView) {
-    // Sets a listener for the server dropdown box
     var document = screenshotView.document;
     var serverDropdown = document.getElementById('account-select');
     serverDropdown.addEventListener("change", function() {
-        // sets the username span in option bar and review requests dropdown
         setInfo(screenshotView);
     });
 
     var form = document.getElementById('user-form');
     form.addEventListener('update', function() {
-        // updates server select when new server added
         setInfo(screenshotView);
     });
 

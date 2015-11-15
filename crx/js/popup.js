@@ -1,5 +1,3 @@
-var id = 100;
-
 function click() {
     switch(this.id) {
         case '1':
