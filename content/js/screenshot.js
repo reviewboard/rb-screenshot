@@ -2,8 +2,78 @@ var url = require('url');
 var toBlob = require('data-uri-to-blob');
 var exports = module.exports;
 
-// Functions below are exported under the name 'screenshot'
+function setServerSelectMenu(serverDropdown) {
+    serverDropdown.options[0].selected = true;
+    $('#account-select').selectmenu({
+        width: '25%',
+        change: function(event, data) {
+            var serverSelect = document.getElementById('account-select');
+            serverSelect.selectedIndex = data.item.value;
+            sendUpdateEvent();
+        }
+    });
+    $('#account-select').selectmenu('refresh');
+}
 
+function resizeImage() {
+    var screenshot = document.getElementById('screenshot');
+    var width = screenshot.width * 0.9;
+    var height = screenshot.height * 0.9;
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    canvas.width = width;
+    canvas.height = height;
+    context.drawImage(screenshot, 0, 0, width, height);
+    screenshot.src = canvas.toDataURL();
+    screenshot.removeEventListener('load', resizeImage);
+}
+
+function updateCoords(c) {
+    $('#x').val(c.x);
+    $('#y').val(c.y);
+    $('#w').val(c.w);
+    $('#h').val(c.h);
+}
+
+function drawCanvas(x, y, width, height) {
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var image = document.getElementById('screenshot');
+
+    canvas.height = height;
+    canvas.width = width;
+
+    context.drawImage(image, x, y, width, height, 0, 0, width, height);
+
+    return canvas.toDataURL();
+}
+
+function sendUpdateEvent() {
+    var updateEvent = new Event('update');
+    document.getElementById('user-form').dispatchEvent(updateEvent);
+}
+
+// Sets the width of the selectmenu dropdown
+function setSelectMenuWidth(selectmenuId, className) {
+    $('#' + selectmenuId + '-menu').addClass(className);
+
+    var selectButtonId = selectmenuId + '-button';
+    var w = document.getElementById(selectButtonId).offsetWidth + 'px';
+    var overflowClass = document.querySelector('.' + className);
+    overflowClass.style.maxWidth = w;
+}
+
+function disableCrop() {
+    $('#crop-button').button({
+        disabled: true
+    });
+    $('#crop-button').off('click');
+    $('#crop-button').button('refresh');
+}
+
+// Functions below are exported under the name 'screenshot'
 exports.setScreenshotUrl = function setScreenshotUrl(url, resize) {
     document.getElementById('screenshot').src = url;
 
@@ -162,77 +232,6 @@ exports.setScript = function setScript() {
     userScript.src = 'js/user_form.js';
     head.appendChild(saveScript);
     head.appendChild(userScript);
-}
-
-function setServerSelectMenu(serverDropdown) {
-    serverDropdown.options[0].selected = true;
-    $('#account-select').selectmenu({
-        width: '25%',
-        change: function(event, data) {
-            var serverSelect = document.getElementById('account-select');
-            serverSelect.selectedIndex = data.item.value;
-            sendUpdateEvent();
-        }
-    });
-    $('#account-select').selectmenu('refresh');
-}
-
-function resizeImage() {
-    var screenshot = document.getElementById('screenshot');
-    var width = screenshot.width * 0.9;
-    var height = screenshot.height * 0.9;
-
-    var canvas = document.getElementById('canvas');
-    var context = canvas.getContext('2d');
-
-    canvas.width = width;
-    canvas.height = height;
-    context.drawImage(screenshot, 0, 0, width, height);
-    screenshot.src = canvas.toDataURL();
-    screenshot.removeEventListener('load', resizeImage);
-}
-
-function updateCoords(c) {
-    $('#x').val(c.x);
-    $('#y').val(c.y);
-    $('#w').val(c.w);
-    $('#h').val(c.h);
-}
-
-function drawCanvas(x, y, width, height) {
-    var canvas = document.getElementById('canvas');
-    var context = canvas.getContext('2d');
-    var image = document.getElementById('screenshot');
-
-    canvas.height = height;
-    canvas.width = width;
-
-    context.drawImage(image, x, y, width, height, 0, 0, width, height);
-
-    return canvas.toDataURL();
-}
-
-function sendUpdateEvent() {
-    var updateEvent = new Event('update');
-    document.getElementById('user-form').dispatchEvent(updateEvent);
-}
-
-// Sets the width of the selectmenu dropdown
-function setSelectMenuWidth(selectmenuId, className) {
-    $('#' + selectmenuId + '-menu').addClass(className);
-
-    var selectButtonId = selectmenuId + '-button';
-    var w = document.getElementById(selectButtonId).offsetWidth + 'px';
-    var overflowClass = document.querySelector('.' + className);
-    overflowClass.style.maxWidth = w;
-}
-
-function disableCrop() {
-    $('#crop-button').button({
-        disabled: true
-    });
-    $('#crop-button').off('click');
-    $('#crop-button').button('refresh');
 }
 
 $(document).ready(function() {
