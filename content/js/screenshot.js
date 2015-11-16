@@ -122,7 +122,6 @@ function updateCoords(c) {
  * @param width (Integer) - width of the cropped image.
  * @param height (Integer) - height of the cropped image.
  * @return dataURL (URI) - Data URI containing the cropped image.
- *
  */
 function crop(x, y, width, height) {
     var canvas = document.getElementById('canvas');
@@ -295,6 +294,7 @@ function setScreenshotUrl(url, resize) {
 
 /**
  * Gets the screenshot URL.
+ *
  * @return screenshotURL (URL) - returns URL of screenshot source.
  */
 function getScreenshotUri() {
@@ -303,6 +303,7 @@ function getScreenshotUri() {
 
 /**
  * Gets the current value of the selected server.
+ *
  * @return serverValue (Integer) - Value associated with selected server.
  */
 function getServerValue() {
@@ -312,6 +313,7 @@ function getServerValue() {
 
 /**
  * Gets the current value of the selected review request.
+ *
  * @return reviewRequestValue (Integer) - id associated with review request.
  */
 function getReviewId() {

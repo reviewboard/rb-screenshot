@@ -4,6 +4,11 @@ var currentElement = false;
 var toDelete = [];
 var toAdd = [];
 
+/**
+ * Sets all of the listeners for a given cell.
+ *
+ * @param tableCell (td) - Cell whose listeners we want to set.
+ */
 function setCellListeners(tableCell) {
     if (tableCell.id != 'footer-text' && tableCell.className != 'delete' &&
         tableCell.className != 'non-edit') {
@@ -27,8 +32,13 @@ function setCellListeners(tableCell) {
     }
 }
 
-function setDeleteListener(deleteButton) {
-    deleteButton.addEventListener('click', function() {
+/**
+ * Sets the listener for a delete button cell.
+ *
+ * @param deleteCell (td) - Cell that is a delete cell.
+ */
+function setDeleteListener(deleteCell) {
+    deleteCell.addEventListener('click', function() {
         var rowIndex = this.parentNode.rowIndex - 1;
         var server = this.parentNode.cells[0];
         var username = this.parentNode.cells[1];
@@ -45,6 +55,69 @@ function setDeleteListener(deleteButton) {
     });
 }
 
+/**
+ * The pasteListener ensures that we only get plain text from any
+ * cell that has pasted data.
+ */
+var pasteListener = function(event) {
+    event.preventDefault();
+    var text = event.clipboardData.getData('text/plain');
+    document.execCommand('insertHTML', false, text);
+}
+
+/**
+ * Sets paste listeners for an entire cell's row.
+ *
+ * @param cell (td) - Cell whose row we wish to add listeners to.
+ */
+function addPasteListeners(cell) {
+    var parentRow = cell.parentNode;
+    parentRow.cells[0].addEventListener('paste', pasteListener);
+    parentRow.cells[1].addEventListener('paste', pasteListener);
+    parentRow.cells[2].addEventListener('paste', pasteListener);
+}
+
+/**
+ * Removes paste listeners for an entire cell's row.
+ *
+ * @param cell (td) - Cell whose row we wish to remove listeners from.
+ */
+function removePasteListeners(cell) {
+    var parentRow = cell.parentNode;
+    parentRow.cells[0].removeEventListener('paste', pasteListener);
+    parentRow.cells[1].removeEventListener('paste', pasteListener);
+    parentRow.cells[2].removeEventListener('paste', pasteListener);
+}
+
+/**
+ * Allows an entire cell's row to have their content editable.
+ *
+ * @param cell (td) - Cell whose row we wish to allow content editable.
+ */
+function contentEditable(cell) {
+    var parentRow = cell.parentNode;
+    parentRow.cells[0].contentEditable = true;
+    parentRow.cells[1].contentEditable = true;
+    parentRow.cells[2].contentEditable = true;
+};
+
+/**
+ * Disallows an entire cell's row to have their content editable.
+ *
+ * @param cell (td element) - Cell whose row we wish to disallow content editable.
+ */
+function contentNotEditable(cell) {
+    var parentRow = cell.parentNode;
+    parentRow.cells[0].contentEditable = false;
+    parentRow.cells[1].contentEditable = false;
+    parentRow.cells[2].contentEditable = false;
+}
+
+/**
+ * Resets the table cell ids to correspond to the proper row that the
+ * cell is in. Note: the last character in a cell id, corresponds to
+ * the position of that data in the stored userInfo array.
+ */
 function resetIds() {
     var rows = table.rows;
 
@@ -59,8 +132,10 @@ function resetIds() {
     }
 }
 
-// Get the difference between the toDelete array and the
-// toAdd array.
+/**
+ * Gets the difference between the toDelete and toAdd array. This
+ * ensures we delete the correct rows upon saving.
+ */
 function difference() {
     var diff = [];
     toDelete.forEach(function(key) {
@@ -73,47 +148,13 @@ function difference() {
     return diff.sort();
 }
 
-// Listener that gets plain text only from a paste event
-var pasteListener = function(event) {
-    event.preventDefault();
-    var text = event.clipboardData.getData('text/plain');
-    document.execCommand('insertHTML', false, text);
-}
-
-// Functions below deal with an entire cell's row
-function addPasteListeners(cell) {
-    var parentRow = cell.parentNode;
-    parentRow.cells[0].addEventListener('paste', pasteListener);
-    parentRow.cells[1].addEventListener('paste', pasteListener);
-    parentRow.cells[2].addEventListener('paste', pasteListener);
-}
-
-function removePasteListeners(cell) {
-    var parentRow = cell.parentNode;
-    parentRow.cells[0].removeEventListener('paste', pasteListener);
-    parentRow.cells[1].removeEventListener('paste', pasteListener);
-    parentRow.cells[2].removeEventListener('paste', pasteListener);
-}
-
-function contentEditable(cell) {
-    var parentRow = cell.parentNode;
-    parentRow.cells[0].contentEditable = true;
-    parentRow.cells[1].contentEditable = true;
-    parentRow.cells[2].contentEditable = true;
-};
-
-function contentNotEditable(cell) {
-    var parentRow = cell.parentNode;
-    parentRow.cells[0].contentEditable = false;
-    parentRow.cells[1].contentEditable = false;
-    parentRow.cells[2].contentEditable = false;
-}
-
+/**
+ * Sets JQuery UI elements and adds listener's for events that occur
+ * outside of a table row.
+ */
 $(document).ready(function() {
-    // Set Jquery UI elements
     $('#save').button();
 
-    // Listener that removes focus on element if user clicks outside element
     document.addEventListener('click', function(e) {
         if (currentElement) {
             if (e.target.id != currentElement) {
@@ -126,7 +167,6 @@ $(document).ready(function() {
         }
     });
 
-    // Listener for creating a new table row
     document.getElementById('add').addEventListener('click', function() {
         var id = table.rows.length;
         var row = table.insertRow(id);

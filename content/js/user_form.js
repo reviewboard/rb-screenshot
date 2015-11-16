@@ -1,7 +1,13 @@
 var validUrl = require('valid-url');
 
+/**
+ * Sets the dialog and button to be JQuery UI elements and performs
+ * validation after the submit button is pressed. The data is saved
+ * to the browser's storage via the saveInformation() function in
+ * `save_user.js`.
+ *
+ */
 $(document).ready(function() {
-    // Replaces the submit event on the add user form.
     var apiKey = $('#api-key');
     var username = $('#username-input');
     var server = $('#server');
@@ -35,7 +41,6 @@ $(document).ready(function() {
         dialog.dialog('close');
     });
 
-    // Set up add user form
     var dialog;
     var form;
 
@@ -48,6 +53,11 @@ $(document).ready(function() {
     });
 });
 
+/**
+ * Updates the form with an error message to show the user.
+ *
+ * @param text (String) - error message to display.
+ */
 function updateTips(text) {
     var tips = $('.validateTips');
     tips
