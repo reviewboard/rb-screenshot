@@ -56,12 +56,12 @@ pageMod.PageMod({
         worker.port.emit('users', ss.storage.userInfo);
     });
 
+    worker.port.emit('dataUrl', dataUrl);
+
     if (crop) {
         worker.port.emit('setCrop');
         crop = false;
     }
-
-    worker.port.emit('dataUrl', dataUrl);
   }
 });
 
