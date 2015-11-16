@@ -12,7 +12,7 @@
     "toastr": "~2.1.2",
     "url-join": "~0.0.1",
     "valid-url": "~1.0.9",
-    "vinyl-source-stream": "~1.1.0",
+    "vinyl-source-stream": "~1.1.0"
   },
   "repository": {
     "type": "git",
