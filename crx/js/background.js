@@ -1,7 +1,12 @@
-// Variable to keep an id for when user opens multiple screenshot tabs.
+/**
+ * Id of the screenshot.html tab. Increments by 1 each time
+ * a new screenshot tab is created.
+ */
 var id = 1;
 
-// Listens to messages from other scripts
+/**
+ * Listens to messages from other scripts.
+ */
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
     switch (request.option) {
     case 'visible-content':
@@ -29,8 +34,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
     }
 });
 
-// Take screenshot of all visible web content.
-function tabScreenshot(area) {
+/**
+ * Takes a screenshot of all visible content in the browser. Optionally
+ * sets the crop handles on the screenshot.
+ *
+ * @paramas crop (Boolean) - Boolean specifying if crop handles should be set.
+ */
+function tabScreenshot(crop) {
     chrome.tabs.captureVisibleTab(function (screenshotUrl) {
         var tabUrl = chrome.extension.getURL('screenshot.html?id=' + id++);
         var targetTabId = null;
@@ -52,7 +62,7 @@ function tabScreenshot(area) {
                     break;
                 }
             }
-            if (area) {
+            if (crop) {
                 view.screenshot.setCrop();
             }
         });
@@ -63,69 +73,91 @@ function tabScreenshot(area) {
     });
 }
 
-function setListeners(screenshotView) {
-    var document = screenshotView.document;
+/**
+ * Sets listeners for elements that require saved Chrome browser data.
+ *
+ * @paramas view (ViewType) - View for the screenshot tab.
+ */
+function setListeners(view) {
+    var document = view.document;
     var serverDropdown = document.getElementById('account-select');
     serverDropdown.addEventListener("change", function() {
-        setInfo(screenshotView);
+        setInformation(view);
     });
 
     var form = document.getElementById('user-form');
     form.addEventListener('update', function() {
-        setInfo(screenshotView);
+        setInformation(view);
     });
 
     var send = document.getElementById('send-button');
     send.addEventListener('click', function() {
         chrome.storage.sync.get('userInfo', function(obj) {
             if (Object.keys(obj).length != 0) {
-                var selectedValue = screenshotView.screenshot.getServerValue()
-                var reviewRequest = screenshotView.screenshot.getReviewId();
-                var screenshotUri = screenshotView.screenshot.getScreenshotUri();
+                var selectedValue = view.screenshot.getServerValue()
+                var reviewRequest = view.screenshot.getReviewId();
+                var screenshotUri = view.screenshot.getScreenshotUri();
 
                 var userInfo = obj['userInfo'];
                 var server = userInfo[selectedValue].serverUrl;
                 var username = userInfo[selectedValue].username;
                 var apiKey = userInfo[selectedValue].apiKey;
 
-                screenshotView.screenshot.postScreenshot(server, username, apiKey, reviewRequest,
+                view.screenshot.postScreenshot(server, username, apiKey, reviewRequest,
                                                          screenshotUri);
             }
         });
     });
 }
 
-function setInfo(screenshotView) {
-    // Sets information in screenshot.html whenever server dropdown value changes
+/**
+ * Sets username and review requests associated with a server.
+ *
+ * @paramas view (ViewType) - View for the screenshot tab.
+ */
+function setInformation(view) {
     chrome.storage.sync.get('userInfo', function(obj) {
         if (Object.keys(obj).length != 0) {
             var userInfo = obj['userInfo'];
-            var serverId = screenshotView.screenshot.getServerValue();
+            var serverId = view.screenshot.getServerValue();
             var serverUrl = userInfo[serverId].serverUrl;
             var username = userInfo[serverId].username;
 
-            screenshotView.screenshot.setUsername(username);
-            screenshotView.screenshot.reviewRequests(serverUrl, username);
+            view.screenshot.setUsername(username);
+            view.screenshot.reviewRequests(serverUrl, username);
         }
     });
 }
 
-function setServers(screenshotView) {
-    // Set screenshot.html server dropdown with saved servers information
+/**
+ * Fill server select with saved account information.
+ *
+ * @paramas view (ViewType) - View for the screenshot tab.
+ */
+function setServers(view) {
     chrome.storage.sync.get('userInfo', function(obj) {
         if (Object.keys(obj).length != 0) {
             var userInfo = obj['userInfo'];
-            screenshotView.screenshot.setServers(userInfo);
-            setInfo(screenshotView);
+
+            view.screenshot.setServers(userInfo);
+            setInformation(view);
         }
     });
 
 }
 
+/**
+ * Saves new user information submitted through the "add user" button
+ * form.
+ *
+ * @paramas serverUrl (String) - Server URL to save.
+ * @paramas apiKey (String) - API Key to save.
+ * @paramas username (String) - Username to save.
+ */
 function saveNewUserInfo(serverUrl, apiKey, username) {
-    // Saves user information when submitted through add user form
     chrome.storage.sync.get('userInfo', function(obj) {
         var userInfo;
+
         if (Object.keys(obj).length == 0) {
             userInfo = [{
                 apiKey: apiKey,
@@ -134,7 +166,6 @@ function saveNewUserInfo(serverUrl, apiKey, username) {
             }];
 
             chrome.storage.sync.set({'userInfo': userInfo});
-
         } else {
             userInfo = obj['userInfo'];
             userInfo.push({
@@ -145,6 +176,7 @@ function saveNewUserInfo(serverUrl, apiKey, username) {
 
             chrome.storage.sync.set({'userInfo': userInfo});
         }
+
         chrome.runtime.sendMessage({option: 'update'});
     });
 }

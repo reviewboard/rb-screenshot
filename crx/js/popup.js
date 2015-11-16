@@ -1,3 +1,6 @@
+/**
+ * Handles the button presses from the popup file.
+ */
 function click() {
     switch(this.id) {
         case '1':

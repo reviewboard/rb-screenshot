@@ -1,9 +1,14 @@
 var table = document.getElementById('user-info-body');
+var saveButton = document.getElementById('save');
 
-// Set listeners for all table cells
+/**
+ * Sets up the user information table. The table cell's event listeners
+ * are also added.
+ */
 chrome.storage.sync.get('userInfo', function(obj) {
     if (Object.keys(obj).length != 0) {
         var userInfo = obj['userInfo'];
+        var tableCells = document.getElementsByTagName('td');
 
         for (var i = 0; i < userInfo.length; i++) {
             var row = table.insertRow(i);
@@ -25,14 +30,16 @@ chrome.storage.sync.get('userInfo', function(obj) {
             pad.className = 'non-edit';
         }
 
-        var tableCells = document.getElementsByTagName('td');
         for (i = 0; i < tableCells.length; i++) {
             setCellListeners(tableCells[i]);
         }
     }
 });
 
-var saveButton = document.getElementById('save');
+/**
+ * Listener for the save button which updates the saved user information
+ * with the information in the user table.
+ */
 saveButton.addEventListener('click', function() {
     var tableRows = document.getElementById('user-info').rows;
     var tableCells = document.getElementsByTagName('td');
@@ -44,7 +51,6 @@ saveButton.addEventListener('click', function() {
             var userInfo = [];
         }
 
-        // Update changed information
         for (var i = 0; i < tableCells.length; i++) {
             var id = tableCells[i].id.slice(-1);
 
@@ -68,7 +74,7 @@ saveButton.addEventListener('click', function() {
 
         var deleteDiff = difference();
 
-        // Remove deleted information in reverse order as to not change
+        // Remove deleted items in reverse order as to not change
         // the indices while removing objects
         if (deleteDiff.length > 0) {
             for (var i = deleteDiff.length; i > 0; i--) {
