@@ -1,0 +1,38 @@
+{
+  "name": "rb-screenshot",
+  "version": "0.5.0",
+  "description": "Browser extension for Chrome and Firefox that allows the user to capture their browser's web content and send it to a Review Board server.",
+  "dependencies": {
+    "data-uri-to-blob": "~0.0.4",
+    "browserify": "~11.2.0",
+    "event-stream": "~3.3.2",
+    "jquery": "~2.1.4",
+    "gulp-less": "~3.0.3",
+    "gulp": "~3.9.0",
+    "toastr": "~2.1.2",
+    "url-join": "~0.0.1",
+    "valid-url": "~1.0.9",
+    "vinyl-source-stream": "~1.1.0",
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/datjwu/rb-screenshot.git"
+  },
+  "keywords": [
+    "reviewboard",
+    "review",
+    "board",
+    "browser",
+    "extension",
+    "addon"
+  ],
+  "author": "The Authors",
+  "contributors": [{
+      "name": "Justin Wu",
+      "email": "justin.h.y.wu@gmail.com"
+    }],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/datjwu/rb-screenshot/issues"
+  }
+}
