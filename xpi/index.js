@@ -80,7 +80,7 @@ pageMod.PageMod({
     }
 });
 
-panel.port.on('capture-all-content', function() {
+panel.port.on('capture-visible-content', function() {
     captureScreen();
     browserMM.addMessageListener('dataUrl', allContent);
 });
@@ -90,7 +90,7 @@ panel.port.on('capture-area', function() {
     browserMM.addMessageListener('dataUrl', area);
 });
 
-panel.port.on('user', function() {
+panel.port.on('accounts', function() {
     tabs.open('chrome://rb-screenshot/content/users.html');
 });
 

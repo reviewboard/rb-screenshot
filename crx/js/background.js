@@ -9,23 +9,18 @@ var id = 1;
  */
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
     switch (request.option) {
-    case 'visible-content':
+    case 'capture-visible-content':
         tabScreenshot(false);
+        break;
+    case 'capture-area':
+        tabScreenshot(true);
+        break;
+    case 'accounts':
+        var tabUrl = chrome.extension.getURL('users.html');
+        chrome.tabs.create({url: tabUrl});
         break;
     case 'save-info':
         saveNewUserInfo(request.serverUrl, request.apiKey, request.username);
-        break;
-    case 'area':
-        tabScreenshot(true);
-        break;
-    case 'all-content':
-        chrome.tabs.executeScript(null, {
-            file: 'js/all_content.js'
-        });
-        break;
-    case 'user':
-        var tabUrl = chrome.extension.getURL('users.html');
-        chrome.tabs.create({url: tabUrl});
         break;
     case 'update':
         break;

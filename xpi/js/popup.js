@@ -4,17 +4,17 @@
 function click() {
     self.port.emit('close');
     switch(this.id) {
-        case '1':
-            self.port.emit('capture-all-content');
+        case 'capture-visible-content':
+            self.port.emit('capture-visible-content');
             break;
-        case '2':
+        case 'capture-area':
             self.port.emit('capture-area');
             break;
-        case '3':
-            self.port.emit('user');
+        case 'accounts':
+            self.port.emit('accounts');
             break;
         default:
-            console.log('Unhandled id');
+            console.log('Button ID not recognized.');
     }
 }
 

@@ -3,17 +3,17 @@
  */
 function click() {
     switch(this.id) {
-        case '1':
-            chrome.runtime.sendMessage({option: 'visible-content'});
+        case 'capture-visible-content':
+            chrome.runtime.sendMessage({option: 'capture-visible-content'});
             break;
-        case '2':
-            chrome.runtime.sendMessage({option: 'area'});
+        case 'capture-area':
+            chrome.runtime.sendMessage({option: 'capture-area'});
             break;
-        case '3':
-            chrome.runtime.sendMessage({option: 'user'});
+        case 'accounts':
+            chrome.runtime.sendMessage({option: 'accounts'});
             break;
         default:
-            alert('Button ID not recognized');
+            console.log('Button ID not recognized');
     }
 }
 
