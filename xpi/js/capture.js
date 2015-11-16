@@ -1,3 +1,6 @@
+/**
+ * Captures all visible content in the browser.
+ */
 var canvas = content.document.createElement('canvas');
 canvas.width = content.window.innerWidth;
 canvas.height = content.window.innerHeight;

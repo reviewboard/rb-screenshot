@@ -1,12 +1,19 @@
 var table = document.getElementById('user-info-body');
+var saveButton = document.getElementById('save');
 var modified = false;
 
+/**
+ * Toast displayed if data saved successfully.
+ */
 function successToast() {
     toastr.success('User information successfully saved.');
     self.port.removeListener('success', successToast);
 }
 
-// Set listeners for all table cells
+/**
+ * Sets up the user information table. The table cell's event listeners
+ * are also added.
+ */
 self.port.emit('send-users');
 self.port.on('users', function(users) {
     if(users && users.length != table.rows.length && !modified) {
@@ -38,7 +45,10 @@ self.port.on('users', function(users) {
     }
 });
 
-var saveButton = document.getElementById('save');
+/**
+ * Listener for the save button which updates the saved user information
+ * with the information in the user table.
+ */
 saveButton.addEventListener('click', function() {
     self.port.on('success', successToast);
     modified = true;
@@ -47,6 +57,7 @@ saveButton.addEventListener('click', function() {
 
     self.port.emit('send-users');
     self.port.on('users', function(users) {
+        var tableCells = document.getElementsByTagName('td');
 
         if (users) {
             userInfo = users;
@@ -54,9 +65,6 @@ saveButton.addEventListener('click', function() {
             userInfo = [];
         }
 
-        var tableCells = document.getElementsByTagName('td');
-
-        // Update changed information
         for (var i = 0; i < tableCells.length; i++) {
             var id = tableCells[i].id.slice(-1);
 

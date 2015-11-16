@@ -1,3 +1,6 @@
+/**
+ * Handles the button presses from the popup file.
+ */
 function click() {
     self.port.emit('close');
     switch(this.id) {

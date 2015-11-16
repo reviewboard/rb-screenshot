@@ -1,4 +1,3 @@
-// Content script for screenshot.html
 self.port.on('dataUrl', function(url) {
     var message = {'option': 'setScreenshotUrl',
                    'url': url};
@@ -13,6 +12,9 @@ self.port.on('setCrop', function() {
 setServers();
 setListeners();
 
+/**
+ * Sets listeners for elements that require saved userData from the browser.
+ */
 function setListeners() {
     var serverDropdown = document.getElementById('account-select');
     serverDropdown.addEventListener('change', function() {
@@ -31,6 +33,11 @@ function setListeners() {
     });
 }
 
+/**
+ * Sends the screenshot to a Review Board server.
+ *
+ * @param userInfo (Array) - Array of user information stored in browser.
+ */
 function sendScreenshot(userInfo) {
     if(userInfo) {
         var serverSelect = document.getElementById('account-select');
@@ -55,11 +62,20 @@ function sendScreenshot(userInfo) {
     self.port.removeListener('users', sendScreenshot);
 }
 
+/**
+ * Emits a message to the `index.js` script requesting for user
+ * data and lets sendInformation handle the data.
+ */
 function setInformation() {
     self.port.emit('get-users');
     self.port.on('users', sendInformation);
 }
 
+/**
+ * Resets the table cell ids to correspond to the proper row that the
+ * cell is in. Note: the last character in a cell id, corresponds to
+ * the position of that data in the stored userInfo array.
+ */
 function sendInformation(userInfo) {
     var serverSelect = document.getElementById('account-select');
     var index =  serverSelect.options[serverSelect.selectedIndex].value;
@@ -73,6 +89,11 @@ function sendInformation(userInfo) {
     self.port.removeListener('users', sendInformation);
 }
 
+/**
+ * Resets the table cell ids to correspond to the proper row that the
+ * cell is in. Note: the last character in a cell id, corresponds to
+ * the position of that data in the stored userInfo array.
+ */
 function setServers() {
     var serverDropdown = document.getElementById('account-select');
     self.port.emit('get-users');
@@ -85,6 +106,11 @@ function setServers() {
     });
 }
 
+/**
+ * Resets the table cell ids to correspond to the proper row that the
+ * cell is in. Note: the last character in a cell id, corresponds to
+ * the position of that data in the stored userInfo array.
+ */
 function sendMessageToPageScript(message) {
     var cloned = cloneInto(message, document.defaultView);
     var event = document.createEvent('CustomEvent');
