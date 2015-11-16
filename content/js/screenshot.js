@@ -176,6 +176,20 @@ function postScreenshot(serverUrl, username, apiKey, revRequest, screenshotUri) 
     });
 };
 
+function setCrop() {
+    document.getElementById('screenshot').addEventListener('load', function() {
+        $('#screenshot').Jcrop({
+            bgColor: 'black',
+            bgOpacity: .4,
+            onSelect: updateCoords,
+            setSelect: [100, 100, 50, 50]
+        });
+        $('#crop-button').button({
+            disabled: false
+        });
+    });
+}
+
 // Listener that allows communication between screenshot.js and
 // content scripts.
 window.addEventListener('addon-message', function(event) {
@@ -198,6 +212,9 @@ window.addEventListener('addon-message', function(event) {
                            event.detail.apiKey,
                            event.detail.reviewRequest,
                            event.detail.screenshotUri);
+            break;
+        case 'setCrop':
+            setCrop();
             break;
         default:
             break;
@@ -245,19 +262,7 @@ exports.getReviewId = function getReviewId() {
 
 exports.reviewRequests = reviewRequests;
 
-exports.setCrop = function setCrop() {
-    document.getElementById('screenshot').addEventListener('load', function() {
-        $('#screenshot').Jcrop({
-            bgColor: 'black',
-            bgOpacity: .4,
-            onSelect: updateCoords,
-            setSelect: [100, 100, 50, 50]
-        });
-        $('#crop-button').button({
-            disabled: false
-        });
-    });
-}
+exports.setCrop = setCrop;
 
 // Used in Chrome to add the save_user.js script. Firefox has a
 // specific method for attaching javascript to a popup.

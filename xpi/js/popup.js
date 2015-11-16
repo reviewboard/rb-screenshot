@@ -11,7 +11,7 @@ function click() {
             self.port.emit('user');
             break;
         default:
-            alert('Unhandled id');
+            console.log('Unhandled id');
     }
 }
 

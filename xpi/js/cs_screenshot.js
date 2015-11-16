@@ -1,7 +1,12 @@
 // Content script for screenshot.html
 self.port.on('dataUrl', function(url) {
-    var message = {'option' : 'setScreenshotUrl',
+    var message = {'option': 'setScreenshotUrl',
                    'url': url};
+    sendMessageToPageScript(message);
+});
+
+self.port.on('setCrop', function() {
+    var message = {'option': 'setCrop'}
     sendMessageToPageScript(message);
 });
 
@@ -39,12 +44,12 @@ function sendScreenshot(userInfo) {
         var username = userInfo[index].username;
         var apiKey = userInfo[index].apiKey;
 
-        var message = {'option' : 'sendScreenshot',
-                       'serverUrl' : serverUrl,
-                       'username' : username,
-                       'apiKey' : apiKey,
-                       'reviewRequest' : reviewRequest,
-                       'screenshotUri' : screenshotUri}
+        var message = {'option': 'sendScreenshot',
+                       'serverUrl': serverUrl,
+                       'username': username,
+                       'apiKey': apiKey,
+                       'reviewRequest':  reviewRequest,
+                       'screenshotUri': screenshotUri}
         sendMessageToPageScript(message);
     }
     self.port.removeListener('users', sendScreenshot);
@@ -58,12 +63,12 @@ function setInformation() {
 function sendInformation(userInfo) {
     var serverSelect = document.getElementById('account-select');
     var index =  serverSelect.options[serverSelect.selectedIndex].value;
-    var message = {'option' : 'setUsername',
-                   'username' : userInfo[index].username};
+    var message = {'option': 'setUsername',
+                   'username': userInfo[index].username};
     sendMessageToPageScript(message);
-    message = {'option' : 'setReviewRequests',
-               'serverUrl' : userInfo[index].serverUrl,
-               'username' : userInfo[index].username}
+    message = {'option': 'setReviewRequests',
+               'serverUrl': userInfo[index].serverUrl,
+               'username': userInfo[index].username}
     sendMessageToPageScript(message)
     self.port.removeListener('users', sendInformation);
 }
@@ -73,8 +78,8 @@ function setServers() {
     self.port.emit('get-users');
     self.port.once('users', function(userInfo) {
         if (userInfo) {
-            var message = {'option' : 'setServers',
-                           'users' : userInfo}
+            var message = {'option': 'setServers',
+                           'users': userInfo}
             sendMessageToPageScript(message);
         }
     });

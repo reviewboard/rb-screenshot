@@ -1,5 +1,6 @@
 var { ToggleButton } = require('sdk/ui/button/toggle');
 var { Cc, Ci } = require('chrome');
+var crop = false;
 var dataUrl;
 var tabs = require('sdk/tabs');
 var self = require('sdk/self');
@@ -50,9 +51,16 @@ pageMod.PageMod({
         }
         worker.port.emit('update');
     });
+
     worker.port.on('get-users', function() {
         worker.port.emit('users', ss.storage.userInfo);
     });
+
+    if (crop) {
+        worker.port.emit('setCrop');
+        crop = false;
+    }
+
     worker.port.emit('dataUrl', dataUrl);
   }
 });
@@ -92,11 +100,15 @@ panel.port.on('close', function() {
 
 function allContent(message) {
     dataUrl = message.data;
-    worker = tabs.open('chrome://rb-screenshot/content/screenshot.html');
+    tabs.open('chrome://rb-screenshot/content/screenshot.html');
+    browserMM.removeMessageListener('dataUrl', allContent);
 }
 
 function area(message) {
     dataUrl = message.data;
+    crop = true;
+    tabs.open('chrome://rb-screenshot/content/screenshot.html');
+    browserMM.removeMessageListener('dataUrl', area);
 }
 
 function setScreenshot(area) {
