@@ -65,6 +65,10 @@ function setSelectMenuWidth(selectmenuId, className) {
     overflowClass.style.maxWidth = w;
 }
 
+function setUsername(username) {
+    $('#username').html('Username: ' + username);
+}
+
 function disableCrop() {
     $('#crop-button').button({
         disabled: true
@@ -73,98 +77,7 @@ function disableCrop() {
     $('#crop-button').button('refresh');
 }
 
-// Functions below are exported under the name 'screenshot'
-exports.setScreenshotUrl = function setScreenshotUrl(url, resize) {
-    document.getElementById('screenshot').src = url;
-
-    // Resize screenshot to 90% of original size. This ensures the screenshot
-    // fits on the screen for whatever browser size the user has.
-    if (resize) {
-        document.getElementById('screenshot').addEventListener('load', resizeImage);
-    }
-}
-
-// Gets value of the server in the spinnerbox which is also the value
-// of it's index in the saved userInfo array.
-exports.getServerValue = function getServerValue() {
-    var serverSelect = document.getElementById('account-select');
-    return serverSelect.options[serverSelect.selectedIndex].value;
-}
-
-exports.setUsername = function setUsername(username) {
-    $('#username').html('Username: ' + username);
-}
-
-exports.setServers = function setServers(userInfo) {
-    var serverDropdown = document.getElementById('account-select');
-    serverDropdown.options.length = 0;
-
-    for (var i = 0; i < userInfo.length; i++) {
-        var option = document.createElement('option');
-        option.value = i;
-        option.text = userInfo[i].serverUrl;
-        serverDropdown.add(option);
-    }
-    setServerSelectMenu(serverDropdown);
-    setSelectMenuWidth('account-select', 'account-overflow');
-};
-
-exports.addServerToList = function addServerToList(server) {
-    var serverDropdown = document.getElementById('account-select');
-    var option = document.createElement('option');
-
-    if (serverDropdown.options.length == 0) {
-        option.value = 0;
-    } else {
-        option.value = serverDropdown.options.length;
-    }
-
-    option.text = server;
-    serverDropdown.add(option);
-    setServerSelectMenu(serverDropdown);
-};
-
-exports.getScreenshotUri = function getScreenshotUri() {
-    return document.getElementById('screenshot').src;
-}
-
-exports.postScreenshot = function postScreenshot(serverUrl, username, apiKey, revRequest, screenshotUri) {
-    var request = 'api/review-requests/' + revRequest + '/file-attachments/'
-    var postUrl = url.resolve(serverUrl, request);
-    var fd = new FormData();
-    var screenshot = toBlob(screenshotUri);
-    var rrSelect = document.getElementById('rr-select');
-    fd.append('path', screenshot);
-
-    $.ajax({
-        url: postUrl,
-        type: 'post',
-        data: fd,
-        beforeSend: function(xhr) {
-            xhr.setRequestHeader("Authorization", "token " + apiKey);
-        },
-        contentType: false,
-        processData: false,
-        error: function(jqXHR, textStatus, errorThrown) {
-            var errorString = 'Failed to post screenshot. ';
-            if(errorThrown) {
-                errorString = errorString + textStatus + ': ' + errorThrown;
-            }
-            toastr.error(errorString,
-                         rrSelect.options[rrSelect.selectedIndex].innerHTML);
-        },
-        success: function(json) {
-            toastr.success('Successfully posted screenshot',
-                            rrSelect.options[rrSelect.selectedIndex].innerHTML);
-        }
-    });
-};
-
-exports.getReviewId = function getReviewId() {
-    return $('#rr-select').val();
-}
-
-exports.reviewRequests = function reviewRequests(serverUrl, username) {
+function reviewRequests(serverUrl, username) {
     var requestUrl = url.resolve(serverUrl, 'api/review-requests/');
     var rrSelect =  document.getElementById('rr-select');
     rrSelect.options.length = 0;
@@ -206,6 +119,131 @@ exports.reviewRequests = function reviewRequests(serverUrl, username) {
         }
     });
 }
+
+function setServers(userInfo) {
+    var serverDropdown = document.getElementById('account-select');
+    serverDropdown.options.length = 0;
+
+    for (var i = 0; i < userInfo.length; i++) {
+        var option = document.createElement('option');
+        option.value = i;
+        option.text = userInfo[i].serverUrl;
+        serverDropdown.add(option);
+    }
+    setServerSelectMenu(serverDropdown);
+    setSelectMenuWidth('account-select', 'account-overflow');
+};
+
+function setScreenshotUrl(url, resize) {
+    document.getElementById('screenshot').src = url;
+
+    // Resize screenshot to 90% of original size. This ensures the screenshot
+    // fits on the screen for whatever browser size the user has.
+    if (resize) {
+        document.getElementById('screenshot').addEventListener('load', resizeImage);
+    }
+}
+
+function postScreenshot(serverUrl, username, apiKey, revRequest, screenshotUri) {
+    var request = 'api/review-requests/' + revRequest + '/file-attachments/'
+    var postUrl = url.resolve(serverUrl, request);
+    var fd = new FormData();
+    var screenshot = toBlob(screenshotUri);
+    var rrSelect = document.getElementById('rr-select');
+    fd.append('path', screenshot);
+
+    $.ajax({
+        url: postUrl,
+        type: 'post',
+        data: fd,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("Authorization", "token " + apiKey);
+        },
+        contentType: false,
+        processData: false,
+        error: function(jqXHR, textStatus, errorThrown) {
+            var errorString = 'Failed to post screenshot. ';
+            if(errorThrown) {
+                errorString = errorString + textStatus + ': ' + errorThrown;
+            }
+            toastr.error(errorString,
+                         rrSelect.options[rrSelect.selectedIndex].innerHTML);
+        },
+        success: function(json) {
+            toastr.success('Successfully posted screenshot',
+                            rrSelect.options[rrSelect.selectedIndex].innerHTML);
+        }
+    });
+};
+
+// Listener that allows communication between screenshot.js and
+// content scripts.
+window.addEventListener('addon-message', function(event) {
+    switch(event.detail.option) {
+        case 'setUsername':
+            setUsername(event.detail.username);
+            break;
+        case 'setReviewRequests':
+            reviewRequests(event.detail.serverUrl, event.detail.username);
+            break;
+        case 'setServers':
+            setServers(event.detail.users);
+            break;
+        case 'setScreenshotUrl':
+            setScreenshotUrl(event.detail.url, true);
+            break;
+        case 'sendScreenshot':
+            postScreenshot(event.detail.serverUrl,
+                           event.detail.username,
+                           event.detail.apiKey,
+                           event.detail.reviewRequest,
+                           event.detail.screenshotUri);
+            break;
+        default:
+            break;
+    }
+})
+
+// Functions below are exported under the name 'screenshot'
+exports.setScreenshotUrl = setScreenshotUrl;
+
+// Gets value of the server in the spinnerbox which is also the value
+// of it's index in the saved userInfo array.
+exports.getServerValue = function getServerValue() {
+    var serverSelect = document.getElementById('account-select');
+    return serverSelect.options[serverSelect.selectedIndex].value;
+}
+
+exports.setUsername = setUsername;
+
+exports.setServers = setServers;
+
+exports.addServerToList = function addServerToList(server) {
+    var serverDropdown = document.getElementById('account-select');
+    var option = document.createElement('option');
+
+    if (serverDropdown.options.length == 0) {
+        option.value = 0;
+    } else {
+        option.value = serverDropdown.options.length;
+    }
+
+    option.text = server;
+    serverDropdown.add(option);
+    setServerSelectMenu(serverDropdown);
+};
+
+exports.getScreenshotUri = function getScreenshotUri() {
+    return document.getElementById('screenshot').src;
+}
+
+exports.postScreenshot = postScreenshot;
+
+exports.getReviewId = function getReviewId() {
+    return $('#rr-select').val();
+}
+
+exports.reviewRequests = reviewRequests;
 
 exports.setCrop = function setCrop() {
     document.getElementById('screenshot').addEventListener('load', function() {

@@ -1,10 +1,12 @@
 var { ToggleButton } = require('sdk/ui/button/toggle');
 var { Cc, Ci } = require('chrome');
+var dataUrl;
 var tabs = require('sdk/tabs');
 var self = require('sdk/self');
 var panels = require('sdk/panel');
 var pageMod = require('sdk/page-mod');
 var ss = require('sdk/simple-storage');
+var browserMM;
 
 var button = ToggleButton({
     id: "reviewboard-icon",
@@ -18,10 +20,10 @@ var button = ToggleButton({
 });
 
 var panel = panels.Panel({
-    height: 175,
-    width: 175,
-    contentURL: self.data.url("popup.html"),
-    contentScriptFile: self.data.url("js/popup.js"),
+    height: 200,
+    width: 200,
+    contentURL: './popup.html',
+    contentScriptFile: './js/popup.js',
     contentScriptWhen: 'ready',
     onHide: handleHide
 });
@@ -29,7 +31,8 @@ var panel = panels.Panel({
 pageMod.PageMod({
   include: 'chrome://rb-screenshot/content/screenshot.html',
   contentScriptFile: ['./js/save_user.js',
-                      './js/user_form.js'],
+                      './js/user_form.js',
+                      './js/cs_screenshot.js'],
   onAttach: function(worker) {
     worker.port.on('save-info', function(userInfo) {
         if (ss.storage.userInfo) {
@@ -47,6 +50,10 @@ pageMod.PageMod({
         }
         worker.port.emit('update');
     });
+    worker.port.on('get-users', function() {
+        worker.port.emit('users', ss.storage.userInfo);
+    });
+    worker.port.emit('dataUrl', dataUrl);
   }
 });
 
@@ -66,11 +73,13 @@ pageMod.PageMod({
 });
 
 panel.port.on('capture-all-content', function() {
-    setScreenshot(false);
+    captureScreen();
+    browserMM.addMessageListener('dataUrl', allContent);
 });
 
 panel.port.on('capture-area', function() {
-    setScreenshot(true);
+    captureScreen();
+    browserMM.addMessageListener('dataUrl', area);
 });
 
 panel.port.on('user', function() {
@@ -81,21 +90,16 @@ panel.port.on('close', function() {
     panel.hide();
 });
 
+function allContent(message) {
+    dataUrl = message.data;
+    worker = tabs.open('chrome://rb-screenshot/content/screenshot.html');
+}
+
+function area(message) {
+    dataUrl = message.data;
+}
+
 function setScreenshot(area) {
-    var wm = Cc["@mozilla.org/appshell/window-mediator;1"]
-             .getService(Ci.nsIWindowMediator);
-    var gBrowser = wm.getMostRecentWindow("navigator:browser").gBrowser;
-    var window = gBrowser.contentWindow;
-    var document = window.document;
-    var canvas = document.createElement('canvas');
-    canvas.width = window.innerWidth * 0.9;
-    canvas.height = window.innerHeight * 0.9;
-
-    var ctx = canvas.getContext('2d');
-    ctx.drawWindow(window, 0, 0, canvas.width, canvas.height, 'rgb(255,255,255)');
-
-    var dataUrl = canvas.toDataURL();
-
     // Below may need to be refactored when other screenshot features added
     var tab = gBrowser.addTab('chrome://rb-screenshot/content/screenshot.html');
     gBrowser.selectedTab = tab;
@@ -111,54 +115,13 @@ function setScreenshot(area) {
     }, true);
 }
 
-function setListeners(browser) {
-    // Listens to change in server dropbox and updates values
-    var serverDropdown = browser.contentDocument.getElementById('account-select');
-    serverDropdown.addEventListener('change', function() {
-        setInfo(browser);
-    });
+function captureScreen() {
+    var currentTab = tabs.activeTab;
+    var xulTab = require('sdk/view/core').viewFor(currentTab);
+    var xulBrowser = require('sdk/tabs/utils').getBrowserForTab(xulTab);
 
-    var form = browser.contentDocument.getElementById('user-form');
-    form.addEventListener('update', function() {
-        // updates server select when new server added
-        setInfo(browser);
-    });
-
-    var send = browser.contentDocument.getElementById('send-button');
-    send.addEventListener('click', function() {
-        if(ss.storage.userInfo) {
-            var screenshot = browser.contentWindow.screenshot;
-            var selectedValue = screenshot.getServerValue();
-            var userInfo = ss.storage.userInfo[selectedValue];
-            var reviewRequest = screenshot.getReviewId();
-            var screenshotUri = screenshot.getScreenshotUri();
-
-            var serverUrl = userInfo.serverUrl;
-            var username = userInfo.username;
-            var apiKey = userInfo.apiKey;
-
-            screenshot.postScreenshot(serverUrl, username, apiKey, reviewRequest,
-                                      screenshotUri);
-        }
-    });
-}
-
-function setInfo(browser) {
-    var serverDropdown = browser.contentDocument.getElementById('account-select');
-    var index = serverDropdown.options[serverDropdown.selectedIndex].value;
-    var userInfo = ss.storage.userInfo[index];
-
-    browser.contentWindow.screenshot.setUsername(userInfo.username);
-    browser.contentWindow.screenshot.reviewRequests(userInfo.serverUrl, userInfo.username);
-}
-
-function setServers(browser) {
-    var serverDropdown = browser.contentDocument.getElementById('account-select');
-    var userInfo = ss.storage.userInfo;
-    if (userInfo) {
-        browser.contentWindow.screenshot.setServers(userInfo);
-        setInfo(browser);
-    }
+    browserMM = xulBrowser.messageManager;
+    browserMM.loadFrameScript(self.data.url('js/capture.js'), false);
 }
 
 function handleChange(state) {
