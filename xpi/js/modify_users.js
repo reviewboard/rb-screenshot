@@ -16,7 +16,7 @@ function successToast() {
  */
 self.port.emit('send-users');
 self.port.on('users', function(users) {
-    if(users && users.length != table.rows.length && !modified) {
+    if (users && users.length != table.rows.length && !modified) {
         for (var i = 0; i < users.length; i++) {
 
             var row = table.insertRow(i);
@@ -26,11 +26,11 @@ self.port.on('users', function(users) {
             var del = row.insertCell(3);
             var pad = row.insertCell(4);
 
-            server.innerHTML = users[i].serverUrl;
+            server.textContent = users[i].serverUrl;
             server.id = 'server' + i;
-            user.innerHTML = users[i].username;
+            user.textContent = users[i].username;
             user.id = 'user' + i;
-            apiKey.innerHTML = users[i].apiKey;
+            apiKey.textContent = users[i].apiKey;
             apiKey.id = 'apiKey' + i;
             del.innerHTML = '<i class="fa fa-times"></i>';
             del.id = i;

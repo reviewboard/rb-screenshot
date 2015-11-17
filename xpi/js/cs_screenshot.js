@@ -72,27 +72,29 @@ function setInformation() {
 }
 
 /**
- * Resets the table cell ids to correspond to the proper row that the
- * cell is in. Note: the last character in a cell id, corresponds to
- * the position of that data in the stored userInfo array.
+ * Listens to the 'users' message from the `index.js` script and upon
+ * recieving the users information, sends messages to the `screenshot.js`
+ * script to set user information.
+ *
+ * @params userInfo (Array) - Array of user information stored in browser.
  */
 function sendInformation(userInfo) {
-    var serverSelect = document.getElementById('account-select');
-    var index =  serverSelect.options[serverSelect.selectedIndex].value;
-    var message = {'option': 'setUsername',
-                   'username': userInfo[index].username};
-    sendMessageToPageScript(message);
-    message = {'option': 'setReviewRequests',
-               'serverUrl': userInfo[index].serverUrl,
-               'username': userInfo[index].username}
-    sendMessageToPageScript(message)
-    self.port.removeListener('users', sendInformation);
+    if (userInfo.length > 0) {
+        var serverSelect = document.getElementById('account-select');
+        var index =  serverSelect.options[serverSelect.selectedIndex].value;
+        var message = {'option': 'setUsername',
+                       'username': userInfo[index].username};
+        sendMessageToPageScript(message);
+        message = {'option': 'setReviewRequests',
+                   'serverUrl': userInfo[index].serverUrl,
+                   'username': userInfo[index].username}
+        sendMessageToPageScript(message)
+        self.port.removeListener('users', sendInformation);
+    }
 }
 
 /**
- * Resets the table cell ids to correspond to the proper row that the
- * cell is in. Note: the last character in a cell id, corresponds to
- * the position of that data in the stored userInfo array.
+ * Sets the select with the user's saved serveers.
  */
 function setServers() {
     var serverDropdown = document.getElementById('account-select');
@@ -102,14 +104,14 @@ function setServers() {
             var message = {'option': 'setServers',
                            'users': userInfo}
             sendMessageToPageScript(message);
+            setInformation();
         }
     });
 }
 
 /**
- * Resets the table cell ids to correspond to the proper row that the
- * cell is in. Note: the last character in a cell id, corresponds to
- * the position of that data in the stored userInfo array.
+ * Creates an event containing message to dispatch for the
+ * `screenshot.js` script.
  */
 function sendMessageToPageScript(message) {
     var cloned = cloneInto(message, document.defaultView);

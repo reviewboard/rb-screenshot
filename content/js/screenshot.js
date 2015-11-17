@@ -3,26 +3,6 @@ var toBlob = require('data-uri-to-blob');
 var exports = module.exports;
 
 /**
- * Sets the server select element to be a JQuery UI selectmenu and
- * sets the first option as the selected option in the menu.
- */
-function setServerSelectMenu() {
-    var serverDropdown = document.getElementById('account-select');
-    serverDropdown.options[0].selected = true;
-
-    $('#account-select').selectmenu({
-        width: '25%',
-        change: function(event, data) {
-            var serverSelect = document.getElementById('account-select');
-            serverSelect.selectedIndex = data.item.value;
-            sendUpdateEvent();
-        }
-    });
-    $('#account-select').selectmenu('refresh');
-}
-
-
-/**
  * Checks the width of the selectmenu and sets the selectmenu dropdown
  * to have the same width.
  *
@@ -57,9 +37,17 @@ function setServers(userInfo) {
         option.text = userInfo[i].serverUrl;
         serverDropdown.add(option);
     }
+    serverDropdown.options[0].selected = true;
 
-    setServerSelectMenu();
-    setSelectMenuWidth('account-select', 'account-overflow');
+    $('#account-select').selectmenu({
+        width: '25%',
+        change: function(event, data) {
+            var serverSelect = document.getElementById('account-select');
+            serverSelect.selectedIndex = data.item.value;
+            sendUpdateEvent();
+        }
+    });
+    $('#account-select').selectmenu('refresh');
 };
 
 /**
@@ -207,7 +195,7 @@ function reviewRequests(serverUrl, username) {
                 toastr.info('No open or draft review requests found for user: ' +
                             username + '.');
             } else {
-                for (i = 0; i < reqCount; i++) {
+                for (var i = 0; i < reqCount; i++) {
                     var option = document.createElement('option');
                     option.value = json.review_requests[i].id;
                     option.text = 'r/' + json.review_requests[i].id + ' - ' +
@@ -220,6 +208,7 @@ function reviewRequests(serverUrl, username) {
                 });
                 $('#rr-select').selectmenu('refresh');
                 setSelectMenuWidth('rr-select', 'rr-overflow');
+                setSelectMenuWidth('account-select', 'account-overflow');
             }
         }
     });
@@ -380,7 +369,6 @@ $(document).ready(function() {
     $('#rr-select').selectmenu({
         width: '35%'
     });
-
     $('#crop-button').button({
         disabled: true
     });
@@ -440,4 +428,5 @@ exports.setCrop = setCrop;
 exports.setScreenshotUrl = setScreenshotUrl;
 exports.setScript = setScript;
 exports.setServers = setServers;
+exports.setSelectMenuWidth = setSelectMenuWidth;
 exports.setUsername = setUsername;

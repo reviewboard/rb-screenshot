@@ -18,11 +18,11 @@ chrome.storage.sync.get('userInfo', function(obj) {
             var del = row.insertCell(3);
             var pad = row.insertCell(4);
 
-            server.innerHTML = userInfo[i].serverUrl;
+            server.textContent = userInfo[i].serverUrl;
             server.id = 'server' + i;
-            user.innerHTML = userInfo[i].username;
+            user.textContent = userInfo[i].username;
             user.id = 'user' + i;
-            apiKey.innerHTML = userInfo[i].apiKey;
+            apiKey.textContent = userInfo[i].apiKey;
             apiKey.id = 'apiKey' + i;
             del.innerHTML = '<i class="fa fa-times"></i>';
             del.id = i;
