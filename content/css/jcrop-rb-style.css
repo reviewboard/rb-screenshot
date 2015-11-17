@@ -1,0 +1,6 @@
+.jcrop-holder {
+	left: 0px;
+	position: absolute !important;
+	top: 0px;
+	z-index: 99;
+}

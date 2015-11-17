@@ -1,12 +1,12 @@
 var { ToggleButton } = require('sdk/ui/button/toggle');
-var { Cc, Ci } = require('chrome');
-var crop = false;
-var dataUrl;
 var tabs = require('sdk/tabs');
 var self = require('sdk/self');
 var panels = require('sdk/panel');
 var pageMod = require('sdk/page-mod');
 var ss = require('sdk/simple-storage');
+
+var crop = false;
+var dataUrl;
 var browserMM;
 
 var button = ToggleButton({
@@ -86,8 +86,8 @@ panel.port.on('capture-visible-content', function() {
 });
 
 panel.port.on('capture-area', function() {
-    captureScreen();
-    browserMM.addMessageListener('dataUrl', area);
+    captureArea();
+    // browserMM.addMessageListener('dataUrl', area);
 });
 
 panel.port.on('accounts', function() {
@@ -147,12 +147,31 @@ function setScreenshot(crop) {
  * takes a screenshot of all visible content.
  */
 function captureScreen() {
+    createBrowserMM();
+    browserMM.loadFrameScript(self.data.url('js/capture.js'), false);
+}
+
+function captureArea() {
+    createBrowserMM();
+    browserMM.loadFrameScript(self.data.url('js/capture-area.js'), false);
+    pageMod.PageMod({
+        include: tabs.activeTab.url,
+        attachTo: ['existing', 'top'],
+        contentScriptWhen: 'ready',
+        contentStyleFile: [self.data.url('css/jquery.Jcrop.min.css'),
+                           self.data.url('css/jcrop-rb-style.css')],
+        contentScriptFile: [self.data.url('js/jquery-2.1.4.min.js'),
+                            self.data.url('js/jquery.Jcrop.min.js'),
+                            self.data.url('js/test.js')]
+    });
+}
+
+function createBrowserMM() {
     var currentTab = tabs.activeTab;
     var xulTab = require('sdk/view/core').viewFor(currentTab);
     var xulBrowser = require('sdk/tabs/utils').getBrowserForTab(xulTab);
 
     browserMM = xulBrowser.messageManager;
-    browserMM.loadFrameScript(self.data.url('js/capture.js'), false);
 }
 
 /**
