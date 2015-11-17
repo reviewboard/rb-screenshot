@@ -98,12 +98,23 @@ panel.port.on('close', function() {
     panel.hide();
 });
 
+/**
+ * Ran when the user requests that all visible content be captured.
+ *
+ * @params message (Object) - Message containing screenshot URI.
+ */
 function allContent(message) {
+    console.log(typeof message);
     dataUrl = message.data;
     tabs.open('chrome://rb-screenshot/content/screenshot.html');
     browserMM.removeMessageListener('dataUrl', allContent);
 }
 
+/**
+ * Ran when the user requests that an area of visible content be captured.
+ *
+ * @params message (Object) - Message containing screenshot URI.
+ */
 function area(message) {
     dataUrl = message.data;
     crop = true;
@@ -111,7 +122,12 @@ function area(message) {
     browserMM.removeMessageListener('dataUrl', area);
 }
 
-function setScreenshot(area) {
+/**
+ * Sets the screenshot src and optionally crop handles.
+ *
+ * @params crop (Boolean) - Flag to set crop handles.
+ */
+function setScreenshot(crop) {
     // Below may need to be refactored when other screenshot features added
     var tab = gBrowser.addTab('chrome://rb-screenshot/content/screenshot.html');
     gBrowser.selectedTab = tab;
@@ -121,12 +137,16 @@ function setScreenshot(area) {
         setListeners(newTabBrowser);
         setServers(newTabBrowser);
 
-        if (area) {
+        if (crop) {
             newTabBrowser.contentWindow.screenshot.setCrop();
         }
     }, true);
 }
 
+/**
+ * Attaches a frame script to the active tab. The frame script
+ * takes a screenshot of all visible content.
+ */
 function captureScreen() {
     var currentTab = tabs.activeTab;
     var xulTab = require('sdk/view/core').viewFor(currentTab);
@@ -136,6 +156,11 @@ function captureScreen() {
     browserMM.loadFrameScript(self.data.url('js/capture.js'), false);
 }
 
+/**
+ * Handles the state change of the panel (shown or not).
+ *
+ * @param state (Object) - Object containing the panel's state.
+ */
 function handleChange(state) {
     if(state.checked) {
         panel.show({
@@ -144,6 +169,9 @@ function handleChange(state) {
     }
 }
 
+/**
+ * Handles the hide state of the panel.
+ */
 function handleHide() {
     button.state('window', {checked: false});
 }
