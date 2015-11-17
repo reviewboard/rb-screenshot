@@ -2,7 +2,7 @@
  * Captures all visible content in the browser.
  */
 var canvas = content.document.createElement('canvas');
-canvas.width = content.window.innerWidth;
+canvas.width = content.document.body.clientWidth;
 canvas.height = content.window.innerHeight;
 
 var ctx = canvas.getContext('2d');
