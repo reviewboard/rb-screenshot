@@ -104,7 +104,6 @@ panel.port.on('close', function() {
  * @params message (Object) - Message containing screenshot URI.
  */
 function allContent(message) {
-    console.log(typeof message);
     dataUrl = message.data;
     tabs.open('chrome://rb-screenshot/content/screenshot.html');
     browserMM.removeMessageListener('dataUrl', allContent);
