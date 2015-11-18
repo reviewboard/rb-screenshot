@@ -162,7 +162,7 @@ function captureArea() {
                            self.data.url('css/jcrop-rb-style.css')],
         contentScriptFile: [self.data.url('js/jquery-2.1.4.min.js'),
                             self.data.url('js/jquery.Jcrop.min.js'),
-                            self.data.url('js/test.js')]
+                            self.data.url('js/crop.js')]
     });
 }
 

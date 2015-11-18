@@ -1,1 +1,2 @@
 content rb-screenshot data/
+resource rb-screenshot-images data/images/

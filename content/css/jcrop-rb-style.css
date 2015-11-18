@@ -4,3 +4,9 @@
 	top: 0px;
 	z-index: 99;
 }
+
+#crop-button-container {
+	margin-top: 10px;
+	position: absolute;
+	z-index: 100;
+}
