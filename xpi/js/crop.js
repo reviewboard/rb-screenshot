@@ -25,7 +25,7 @@ function createCropButton() {
     exitButton.className = 'crop-container-button'
     exitButton.src = 'resource://rb-screenshot-images/exit.png';
     exitButton.addEventListener('click', function() {
-        console.log('exit clicked');
+        destroy();
     });
 
     var divider = document.createElement('div');
@@ -83,6 +83,7 @@ function destroy() {
     jcropAPI.destroy();
     $('#crop-button-container').remove();
     $('#rb-area').remove();
+    $('#intro-wrapper').remove();
 }
 
 function hideCropButton() {
@@ -119,6 +120,20 @@ function resetSelect() {
     jcropAPI.setSelect([x, y, x2, y2]);
 }
 
+function showIntroMessage() {
+    var introWrapper = document.createElement('div');
+    introWrapper.id = 'intro-wrapper';
+    introWrapper.style.top = window.scrollY + 'px';
+
+    var introDiv = document.createElement('div');
+    introDiv.id = 'crop-intro';
+    introDiv.innerHTML = 'Drag to Capture (Esc to Exit)';
+    introWrapper.appendChild(introDiv);
+
+    document.body.appendChild(introWrapper);
+    $('#intro-wrapper').show().delay(2500).fadeOut();
+}
+
 $(document).ready(function() {
     var imageOverlay = document.getElementById('rb-image-overlay');
 
@@ -147,6 +162,6 @@ $(document).ready(function() {
         });
 
         createCoordinateForm();
-        exists = true;
+        showIntroMessage();
     }
 });
