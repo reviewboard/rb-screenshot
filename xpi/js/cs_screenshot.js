@@ -112,6 +112,8 @@ function setServers() {
 /**
  * Creates an event containing message to dispatch for the
  * `screenshot.js` script.
+ *
+ * @param message (Object) - Object to send to page script.
  */
 function sendMessageToPageScript(message) {
     var cloned = cloneInto(message, document.defaultView);

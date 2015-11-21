@@ -1,5 +1,11 @@
 var jcropAPI;
 
+/**
+ * Creates an HTML input element.
+ *
+ * @param id (String) - ID for the created input element.
+ * @return input (Input) - HTML input element.
+ */
 function createInput(id) {
     var input = document.createElement('input');
     input.type = 'hidden';
@@ -9,7 +15,10 @@ function createInput(id) {
     return input;
 }
 
-function createCropButton() {
+/**
+ * Creates the crop buttons and the container for the buttons.
+ */
+function createCropButtons() {
     var cropButton = document.createElement('img');
     cropButton.id = 'crop-button';
     cropButton.className = 'crop-container-button';
@@ -39,6 +48,9 @@ function createCropButton() {
     document.body.appendChild(div);
 }
 
+/**
+ * Creates the form for storing the crop coordinates.
+ */
 function createCoordinateForm() {
     var coord_form = document.createElement('form');
     coord_form.style.display = 'none';
@@ -79,6 +91,9 @@ function crop() {;
     return canvas.toDataURL();
 }
 
+/**
+ * Destroys all the elements created and added to the page.
+ */
 function destroy() {
     jcropAPI.destroy();
     $('#crop-button-container').remove();
@@ -86,25 +101,42 @@ function destroy() {
     $('#intro-wrapper').remove();
 }
 
-function hideCropButton() {
+/**
+ * Hides the crop buttons.
+ */
+function hideCropButtons() {
     $('#crop-button-container').css('visibility', 'hidden');
 }
 
-function showCropButton() {
+/**
+ * Shows the crop buttons.
+ */
+function showCropButtons() {
     $('#crop-button-container').css('visibility', 'visible');
 }
 
+/**
+ * Updates the coordinates of the crop box.
+ *
+ * @param c (Coordinate) - coordinates given by JCrop onSelect.
+ */
 function updateCoords(c) {
     $('#x').val(c.x);
     $('#y').val(c.y);
     $('#w').val(c.w);
     $('#h').val(c.h);
 
-    updateCropButton(c.x2, c.y2);
-    showCropButton();
+    updateCropButtons(c.x2, c.y2);
+    showCropButtons();
 }
 
-function updateCropButton(x, y) {
+/**
+ * Updates the location of the crop buttons.
+ *
+ * @param x (Integer) - X coordinate of crop box's bottom right corner.
+ * @param y (Integer) - Y coordinate of the bottom of the crop box.
+ */
+function updateCropButtons(x, y) {
     // 45px is the width of the crop image.
     $('#crop-button-container').css({
         'top': y,
@@ -112,6 +144,11 @@ function updateCropButton(x, y) {
     });
 }
 
+/**
+ * Displays the crop box if the user clicks on the overlay.
+ * Note: by default, JCrop will remove the crop handles and overlay if the user clicks
+ *       on the overlay without dragging out the crop handles.
+ */
 function resetSelect() {
     var x = Number($('#x').val());
     var y = Number($('#y').val());
@@ -120,6 +157,9 @@ function resetSelect() {
     jcropAPI.setSelect([x, y, x2, y2]);
 }
 
+/**
+ * Shows instructions on how to operate the crop.
+ */
 function showIntroMessage() {
     var introWrapper = document.createElement('div');
     introWrapper.id = 'intro-wrapper';
@@ -134,16 +174,19 @@ function showIntroMessage() {
     $('#intro-wrapper').show().delay(2500).fadeOut();
 }
 
+/**
+ * Set up crop box and listeners for destroying the crop box.
+ */
 $(document).ready(function() {
     var imageOverlay = document.getElementById('rb-image-overlay');
 
     if (imageOverlay) {
-        createCropButton();
+        createCropButtons();
 
         $('#rb-image-overlay').Jcrop({
             bgColor: 'black',
             bgOpacity: .4,
-            onChange: hideCropButton,
+            onChange: hideCropButtons,
             onSelect: updateCoords,
             onRelease: resetSelect,
             setSelect: [0, 0, 0, 0]

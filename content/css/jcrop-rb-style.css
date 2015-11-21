@@ -3,16 +3,16 @@
  ****************************************************************************/
 
 .jcrop-holder {
-	left: 0px;
-	position: absolute !important;
-	top: 0px;
-	z-index: 999;
+    left: 0px;
+    position: absolute !important;
+    top: 0px;
+    z-index: 999;
 }
 
 #crop-button-container {
-	margin-top: 10px;
-	position: absolute;
-	z-index: 1000;
+    margin-top: 10px;
+    position: absolute;
+    z-index: 1000;
 }
 
 /****************************************************************************
@@ -20,12 +20,12 @@
  ****************************************************************************/
 
 #intro-wrapper {
-	background-color: white;
-	padding: 5px;
-	position: absolute;
-	text-align: center;
-	width: 100%;
-	z-index: 9999;
+    background-color: white;
+    padding: 5px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    z-index: 9999;
 }
 
 /****************************************************************************
@@ -33,20 +33,20 @@
  ****************************************************************************/
 
 #crop-button-container {
-	background-color: #FFFFFF;
-	border: 1px solid black;
-	max-height: 51px;
-	position: absolute;
+    background-color: #FFFFFF;
+    border: 1px solid black;
+    max-height: 51px;
+    position: absolute;
 }
 
 #crop-button-container .crop-container-button {
-	display: inline-block;
-	margin: 3px;
+    display: inline-block;
+    margin: 3px;
 }
 
 #crop-button-container .vertical-divider {
-	border-left: 1px solid #38546d;
-	border-right: 1px solid #16222c;
-	display: inline-block;
-	height: 51px;
+    border-left: 1px solid #38546d;
+    border-right: 1px solid #16222c;
+    display: inline-block;
+    height: 51px;
 }

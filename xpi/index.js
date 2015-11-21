@@ -111,6 +111,11 @@ function captureScreen() {
     browserMM.loadFrameScript(self.data.url('js/capture.js'), false);
 }
 
+/**
+ * Attaches scripts and styles to the current tabs content. The scripts
+ * create a crop overlay that the user can use to select an area of the
+ * image.
+ */
 function captureArea() {
     createBrowserMM();
     browserMM.loadFrameScript(self.data.url('js/capture-area.js'), false);
@@ -132,6 +137,9 @@ function captureArea() {
     });
 }
 
+/**
+ * Creates the message manager.
+ */
 function createBrowserMM() {
     var currentTab = tabs.activeTab;
     var xulTab = require('sdk/view/core').viewFor(currentTab);
