@@ -122,27 +122,6 @@ function area(message) {
 }
 
 /**
- * Sets the screenshot src and optionally crop handles.
- *
- * @params crop (Boolean) - Flag to set crop handles.
- */
-function setScreenshot(crop) {
-    // Below may need to be refactored when other screenshot features added
-    var tab = gBrowser.addTab('chrome://rb-screenshot/content/screenshot.html');
-    gBrowser.selectedTab = tab;
-    var newTabBrowser = gBrowser.getBrowserForTab(tab);
-    newTabBrowser.addEventListener("load", function() {
-        newTabBrowser.contentWindow.screenshot.setScreenshotUrl(dataUrl, false);
-        setListeners(newTabBrowser);
-        setServers(newTabBrowser);
-
-        if (crop) {
-            newTabBrowser.contentWindow.screenshot.setCrop();
-        }
-    }, true);
-}
-
-/**
  * Attaches a frame script to the active tab. The frame script
  * takes a screenshot of all visible content.
  */
