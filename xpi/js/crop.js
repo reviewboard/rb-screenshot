@@ -15,7 +15,9 @@ function createCropButton() {
     cropButton.className = 'crop-container-button';
     cropButton.src = 'resource://rb-screenshot-images/crop.png';
     cropButton.addEventListener('click', function() {
-        console.log('crop clicked');
+        var dataURL = crop();
+        self.port.emit('cropped', dataURL);
+        destroy();
     });
 
     var exitButton = document.createElement('img');
@@ -54,6 +56,27 @@ function createCoordinateForm() {
     coord_form.appendChild(h);
 
     document.getElementById('crop-button-container').appendChild(coord_form);
+}
+
+/**
+ * Crops the image.
+ *
+ * @return dataURL (URI) - Data URI containing the cropped image.
+ */
+function crop() {;
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    var image = document.getElementById('rb-image-overlay');
+    var x = $('#x').val();
+    var y = $('#y').val();
+    var w = $('#w').val();
+    var h = $('#h').val();
+
+    canvas.height = h;
+    canvas.width = w;
+    context.drawImage(image, x, y, w, h, 0, 0, w, h);
+
+    return canvas.toDataURL();
 }
 
 function destroy() {
@@ -124,5 +147,6 @@ $(document).ready(function() {
         });
 
         createCoordinateForm();
+        exists = true;
     }
 });

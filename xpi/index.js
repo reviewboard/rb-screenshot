@@ -5,7 +5,6 @@ var panels = require('sdk/panel');
 var pageMod = require('sdk/page-mod');
 var ss = require('sdk/simple-storage');
 
-var crop = false;
 var dataUrl;
 var browserMM;
 
@@ -57,11 +56,6 @@ pageMod.PageMod({
     });
 
     worker.port.emit('dataUrl', dataUrl);
-
-    if (crop) {
-        worker.port.emit('setCrop');
-        crop = false;
-    }
   }
 });
 
@@ -87,7 +81,6 @@ panel.port.on('capture-visible-content', function() {
 
 panel.port.on('capture-area', function() {
     captureArea();
-    // browserMM.addMessageListener('dataUrl', area);
 });
 
 panel.port.on('accounts', function() {
@@ -110,18 +103,6 @@ function allContent(message) {
 }
 
 /**
- * Ran when the user requests that an area of visible content be captured.
- *
- * @params message (Object) - Message containing screenshot URI.
- */
-function area(message) {
-    dataUrl = message.data;
-    crop = true;
-    tabs.open('chrome://rb-screenshot/content/screenshot.html');
-    browserMM.removeMessageListener('dataUrl', area);
-}
-
-/**
  * Attaches a frame script to the active tab. The frame script
  * takes a screenshot of all visible content.
  */
@@ -141,7 +122,13 @@ function captureArea() {
                            self.data.url('css/jcrop-rb-style.css')],
         contentScriptFile: [self.data.url('js/jquery-2.1.4.min.js'),
                             self.data.url('js/jquery.Jcrop.min.js'),
-                            self.data.url('js/crop.js')]
+                            self.data.url('js/crop.js')],
+        onAttach: function(worker) {
+            worker.port.on('cropped', function(dataURI) {
+                dataUrl = dataURI;
+                tabs.open('chrome://rb-screenshot/content/screenshot.html');
+            });
+        }
     });
 }
 
