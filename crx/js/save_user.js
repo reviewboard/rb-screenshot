@@ -18,11 +18,9 @@ function saveInformation(apiKey, server, username) {
     screenshot.addServerToList(server);
 
     chrome.runtime.onMessage.addListener(function(request, sender, response) {
-        switch (request.option) {
-            case 'update':
-                var updateEvent = new Event('update');
-                document.getElementById('user-form').dispatchEvent(updateEvent);
-                break;
+        if (request.option == 'update') {
+            var updateEvent = new Event('update');
+            document.getElementById('user-form').dispatchEvent(updateEvent);
         }
     });
 }

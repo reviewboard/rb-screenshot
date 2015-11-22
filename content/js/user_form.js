@@ -11,7 +11,8 @@ $(document).ready(function() {
     var apiKey = $('#api-key');
     var username = $('#username-input');
     var server = $('#server');
-    var allFields = $([]).add(apiKey).add(username).add(server);
+    var allFields = $([apiKey, username, server]);
+    var dialog;
 
     $('#submit').button().on('click', function(event) {
         event.preventDefault();
@@ -40,9 +41,6 @@ $(document).ready(function() {
         saveInformation(apiKey.val(), server.val(), username.val());
         dialog.dialog('close');
     });
-
-    var dialog;
-    var form;
 
     dialog = $('#dialog-form').dialog({
         autoOpen: false

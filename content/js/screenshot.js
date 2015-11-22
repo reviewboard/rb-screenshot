@@ -58,13 +58,7 @@ function setServers(userInfo) {
 function addServerToList(server) {
     var serverDropdown = document.getElementById('account-select');
     var option = document.createElement('option');
-
-    if (serverDropdown.options.length == 0) {
-        option.value = 0;
-    } else {
-        option.value = serverDropdown.options.length;
-    }
-
+    option.value = serverDropdown.options.length;
     option.text = server;
     serverDropdown.add(option);
     $('#account-select').selectmenu('refresh');
@@ -183,7 +177,7 @@ function reviewRequests(serverUrl, username) {
         dataType: 'json',
         error: function(jqXHR, textStatus, errorThrown) {
             var errorString = 'Failed to get review requests. '
-            if(errorThrown) {
+            if (errorThrown) {
                 errorString = errorString + textStatus + ': ' + errorThrown;
             }
             toastr.error(errorString);
@@ -191,7 +185,7 @@ function reviewRequests(serverUrl, username) {
         success: function(json) {
             var reqCount = json.total_results;
 
-            if(reqCount == 0) {
+            if (reqCount == 0) {
                 toastr.info('No open or draft review requests found for user: ' +
                             username + '.');
             } else {
@@ -244,7 +238,7 @@ function postScreenshot(serverUrl, username, apiKey, revRequest, screenshotUri) 
         processData: false,
         error: function(jqXHR, textStatus, errorThrown) {
             var errorString = 'Failed to post screenshot. ';
-            if(errorThrown) {
+            if (errorThrown) {
                 errorString = errorString + textStatus + ': ' + errorThrown;
             }
             toastr.error(errorString,

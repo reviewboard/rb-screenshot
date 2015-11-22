@@ -1,9 +1,9 @@
 /**
  * Handles the button presses from the popup file.
  */
-function click() {
+function click(id) {
     self.port.emit('close');
-    switch(this.id) {
+    switch(id) {
         case 'capture-visible-content':
             self.port.emit('capture-visible-content');
             break;
@@ -19,8 +19,8 @@ function click() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    var buttons = document.querySelectorAll('a');
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener('click', click);
-    }
+    var buttonsDiv = document.getElementById('buttons');
+    buttonsDiv.addEventListener('click', function(event) {
+        click(event.target.id);
+    });
 });
