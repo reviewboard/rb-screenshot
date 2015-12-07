@@ -3,6 +3,7 @@
  * a new screenshot tab is created.
  */
 var id = 1;
+var screenshotURI;
 
 /**
  * Listens to messages from other scripts.
@@ -13,7 +14,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
         tabScreenshot(false);
         break;
     case 'capture-area':
-        tabScreenshot(true);
+        tabFullScreenshot();
         break;
     case 'accounts':
         var tabUrl = chrome.extension.getURL('users.html');
@@ -24,16 +25,38 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
         break;
     case 'update':
         break;
+    case 'capture-visible':
+        captureVisibleContent();
+        break;
+    case 'captured-visible':
+        break;
     default:
-        console.log('Unmatched request from script to background 1');
+        console.log('Unmatched request from script to background');
     }
 });
+
+
+/**
+ * Takes a screenshot of the visible content and sends a message
+ * 'captured-visible' with the screenshot data URI.
+ */
+function captureVisibleContent() {
+    chrome.tabs.captureVisibleTab(function(dataURI) {
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, {
+                option: 'captured-visible',
+                screenshot: dataURI
+            });
+        })
+    });
+}
 
 /**
  * Takes a screenshot of all visible content in the browser. Optionally
  * sets the crop handles on the screenshot.
+ * TODO: Use captureVisibleContent()
  *
- * @paramas crop (Boolean) - Boolean specifying if crop handles should be set.
+ * @params crop (Boolean) - Boolean specifying if crop handles should be set.
  */
 function tabScreenshot(crop) {
     chrome.tabs.captureVisibleTab(function (screenshotUrl) {
@@ -62,9 +85,24 @@ function tabScreenshot(crop) {
             }
         });
 
-        chrome.tabs.create({url: tabUrl}, function(tab) {
+        chrome.tabs.create({
+            url: tabUrl,
+            active: false
+        }, function(tab) {
             targetTabId = tab.id;
         });
+    });
+}
+
+/**
+ * Takes a screenshot of all web content in the browser.
+ *
+ * @params
+ */
+function tabFullScreenshot() {
+    // Keep scrolling until: window.innerHeight + window.scrollY = document.body.clientHeight
+    chrome.tabs.executeScript(null, {
+        file: 'js/capture.js'
     });
 }
 
